@@ -757,7 +757,7 @@ var dyGraphBOptions = {
     titleHeight: 28,
     drawAxesAtZero: false,
     legend: 'always',
-    ylabel: "Harvestability Index",
+    ylabel: "Trafficability",
     labels: ["date", "Summer Index", "Winter Index"],
     //labels: ["date", "Harvestability Index"],
     //labels: ["date", "Harvestability Index SW", "Harvestability Index ST", "Harvestability Index HS"],
@@ -769,7 +769,7 @@ var dyGraphBOptions = {
         "Winter Index": { fillGraph: true },
     },
     axes: {
-        y: { valueRange: [-0.1, 2.1] },
+        y: { valueRange: [-0.1, 2.1], pixelsPerLabel: 20 },
     }
 }
 
@@ -876,7 +876,7 @@ function onMapClick(e) {
 
     latlon = e.latlng.toString();
     //latlonTitle = latlon.substring(7, latlon.length - 1);
-    latlonPoint = latlon.replace(" ", "").substring(7, latlon.length - 2);
+    latlonPoint = latlon.replace(" ", "").substring(6, latlon.length - 2);
     dyGraphBOptions.title = latlonTitle;
 
     gB = new Dygraph(
@@ -886,6 +886,7 @@ function onMapClick(e) {
     );
 
     graphTimer = setTimeout(function () {
+	$("body").css("cursor", "progress");
         graphLoad = $.getJSON("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + param1 + "," + param2 + "," + param3 + "," + param4 + "&starttime=data&endtime=data&timestep=data&format=json&precision=full&source=grid&timeformat=sql",
             function (data) {
                 //console.debug(data)
@@ -917,6 +918,7 @@ function onMapClick(e) {
                     dyGraphGrdOptions
                 );
             });
+	$("body").css("cursor", "default");
     }, 2000);
 
     /*popup

@@ -79,17 +79,19 @@
                 The E-Shape project has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement 820852.</i>
             </details>
         </header>
+        <div id="labels"></div>
+        <div id="graphB"></div>
         <div id="map" class="map">
             <p id="param"></p>
         </div>
         <div id="harvestability-legend">
             <ul class="legend">
-                <li><span class="frostheave"></span> Frost heave (kelirikko)</li>
+                <li><span class="frostheave"></span> Kelirikko =GOOD</li>
                 <li><span class="normalsummermineral"></span> Normal summer, mineral soil</li>
                 <li><span class="drysummermineral"></span> Dry summer, mineral soil</li>
                 <li><span class="normalsummerpeat"></span> Normal summer, peat soil</li>
                 <li><span class="drysummerpeat"></span> Dry summer, peat soil</li>
-                <li><span class="winter"></span> Winter</li>
+                <li><span class="winter"></span> Winter =BAD</li>
             </ul>
         </div>
         <!--
@@ -113,7 +115,7 @@
                     <td></td>
                     <td></td>
                     <td>
-                        <span id="dynamic">Dynamic harvestability</span>
+                        <span id="dynamic">Dynamic Trafficability</span>
                         <input type="checkbox" id="dynamic-checkbox" onchange="changedynamic()">
                     </td>
                     <td></td>
@@ -152,8 +154,6 @@
                 </tr>
             </table>
         </div>
-        <div id="graphB"></div>
-        <div id="labels"></div>
         <div id="graph"></div>
         <div id="graphsd"></div>
         <div id="graphgrd"></div>

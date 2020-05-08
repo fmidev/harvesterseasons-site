@@ -20,8 +20,13 @@ header{
 }
 
 #labels {
-    height: 100px;
-    text-align: center;
+    position:fixed;
+    top: 62;
+    left: 10;
+    z-index: 2;
+    width: 70%;
+    height: 20px;
+    text-align: left;
 }
 
 @media only screen and (max-width: 860px){
@@ -92,6 +97,7 @@ header{
 .legend .winter { background-color: rgb(255, 38, 0); }
 
 #set-date{
+    z-index: 3;
     margin-left: auto;
     margin-right: auto;
 }
@@ -103,12 +109,15 @@ header{
 #graphB {
     position: relative;
     /*padding-top: 20px;*/
-    height: 180px;
+    height: 120px;
     width: 95%;
     left: 20px; right: 20px; 
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
+
+#graphB .dygraph-axis-label.dygraph-axis-label-0 { color: rgb(255, 38, 0); }
+#graphB .dygraph-axis-label.dygraph-axis-label-2 { color: rgb(0, 97, 0); }
 
 #graph {
     position: relative;
@@ -273,7 +282,7 @@ ul.examples li a img{
 }
 
 .map{
-
+    z-index: 3;
     height: 600px;
 }
 
