@@ -18,14 +18,31 @@ header{
     min-height: 60px;
     margin-bottom: 10px;
 }
+
+#labels {
+    height: 100px;
+    text-align: center;
+}
+
+@media only screen and (max-width: 860px){
+    #labels {
+        height: 135px;
+    }
+ }
 @media only screen and (max-width: 740px){
     header{
         background-size: 47%;
+    }
+    #labels {
+        height: 150px;
     }
  }
 @media only screen and (max-width: 680px){
     h1{
         font-size: 4.7vw;
+    }
+    #labels {
+        font-size: 14px;
     }
  }
 @media only screen and (max-width: 480px){
@@ -38,8 +55,12 @@ header{
     summary{
         font-size: 3.5vw;
     }
-    #opacity, #opacity-value, #date, #date-value{
-        font-size: 3.0vw;
+    /*#opacity, #opacity-value, #date, #date-value{
+        font-size: 14px;
+    }*/
+    #labels {
+        height: 170px;
+        font-size: 12px;
     }
 }
 
@@ -47,6 +68,36 @@ header{
     text-decoration: none;
     color: #80bf43;
     margin-bottom: 10px;
+}
+
+/* Harvestability legend */
+#harvestability-legend {
+    position: relative;
+    height: 25px;
+    font-size: 14px;
+    /*    width: 100%;
+    left: 20px; right: 20px;
+    margin-top: 20px;*/
+    margin-bottom: 20px;
+}
+
+.legend { list-style: none; }
+.legend li { float: left; margin-right: 10px; }
+.legend span { border: 1px solid rgb(0, 0, 0); float: left; width: 12px; height: 12px; margin: 2px; }
+.legend .frostheave { background-color: rgb(0, 97, 0); }
+.legend .normalsummermineral { background-color: rgb(97, 153, 0); }
+.legend .drysummermineral { background-color: rgb(160, 219, 0); }
+.legend .normalsummerpeat { background-color: rgb(255, 250, 0); }
+.legend .drysummerpeat { background-color: rgb(255, 132, 0); }
+.legend .winter { background-color: rgb(255, 38, 0); }
+
+#set-date{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.slider {
+    width: 95%; /* Full-width */
 }
 
 #graphB {
@@ -103,11 +154,6 @@ header{
 #graphgrd .dygraph-title { font-size: 18px; align: left; }
 
 #graphgrd .dygraph-ylabel { font-size: 12px; }
-
-#labels {
-    height: 20px;
-    text-align: center;
-}
 
 #graphana {
     position: relative;

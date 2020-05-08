@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="shortcut icon" href="img/favicon.png" type="image/png" />
-    <link rel="stylesheet" href="https:////maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://www.domoritz.de/leaflet-locatecontrol/dist/L.Control.Locate.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.1/leaflet.css" />
@@ -55,6 +55,7 @@
                     Moving the cursor over the graph is returning exact values for the selected variable at each
                     timestep. Dragging allows zooming the graphs, double click to zoom out.</p>
                 <p>The service is still under construction.</p>
+                <p><a href="C3S_428g_FMI_HarvesterSeasons_Copernicus_infosheet.pdf">View infosheet (PDF)</a></p>
                 <h3>Project partners</h3>
                 <table>
                 <tr>
@@ -65,7 +66,7 @@
                 <tr>
                     <td><a href="https://www.fmi.fi">Finnish Meteorological Institute</a></td>
                     <td><a href="https://www.metsateho.fi">Metsäteho</a></td>
-                    <td><a href="https://www.metsagroup.com/en/Pages/default.aspx">Metsägroup</a></td>
+                    <td><a href="https://www.metsagroup.com/en/Pages/default.aspx">Metsä Group</a></td>
                 </tr>
                 </table>
                 <h3>Acknowledgement</h3>
@@ -81,6 +82,17 @@
         <div id="map" class="map">
             <p id="param"></p>
         </div>
+        <div id="harvestability-legend">
+            <ul class="legend">
+                <li><span class="frostheave"></span> Frost heave (kelirikko)</li>
+                <li><span class="normalsummermineral"></span> Normal summer, mineral soil</li>
+                <li><span class="drysummermineral"></span> Dry summer, mineral soil</li>
+                <li><span class="normalsummerpeat"></span> Normal summer, peat soil</li>
+                <li><span class="drysummerpeat"></span> Dry summer, peat soil</li>
+                <li><span class="winter"></span> Winter</li>
+            </ul>
+        </div>
+        <!--
         <div id="content-select">
             <table id="set-opacity">
                 <tr>
@@ -94,18 +106,49 @@
                 </tr>
             </table>
         </div>
+        -->
         <div id="date-select">
             <table id="set-date">
                 <tr>
+                    <td></td>
+                    <td></td>
                     <td>
-                        <div id="date">Date:</div>
+                        <span id="dynamic">Dynamic harvestability</span>
+                        <input type="checkbox" id="dynamic-checkbox" onchange="changedynamic()">
                     </td>
-                    <td><input type="button" value="<" onclick="dateback()"></td>
-                    <td><input type="range" min="1" max="150" value="1" id="date-range"></td>
-                    <td><input type="button" value=">" onclick="dateforward()"></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr style="height:40px">
+                    <td><input type="button" value="<<" onclick="dateback()" onmousedown="datebackscrollfast()" onmouseup="datestopscrollfast()"  onmouseleave="datestopscrollfast()"
+                         ontouchstart="datebackscrollfast()" ontouchend="datestopscrollfast()" ontouchcancel="datestopscrollfast()"></td>
+                    <td><input type="button" value="<" onclick="dateback()" onmousedown="datebackscroll()" onmouseup="datestop()"  onmouseleave="datestop()"
+                        ontouchstart="datebackscroll()" ontouchend="datestop()" ontouchcancel="datestop()"></td>
+                    <td><input type="range" min="0" max="180" value="0" id="date-range" class="slider"></td>
+                    <td><input type="button" value=">" onclick="dateforward()" onmousedown="dateforwardscroll()" onmouseup="datestop()"  onmouseleave="datestop()"
+                        ontouchstart="dateforwardscroll()" ontouchend="datestop()" ontouchcancel="datestop()"></td>
+                    <td><input type="button" value=">>" onclick="dateforward()" onmousedown="dateforwardscrollfast()" onmouseup="datestopscrollfast()"  onmouseleave="datestopscrollfast()"
+                        ontouchstart="dateforwardscrollfast()" ontouchend="datestopscrollfast()" ontouchcancel="datestopscrollfast()"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
                     <td>
-                        <div id="date-value"></div>
+                        <div id="date-value" style="text-align:center;"></div>
                     </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr style="height:40px">
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <div id="play-button" style="text-align:center;">
+                            <input id="playbutton" type="button" value="Play" onclick="playbuttonfunc()">
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
                 </tr>
             </table>
         </div>
@@ -121,8 +164,8 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.1/leaflet.js"></script>
     <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.4.2/Control.FullScreen.min.js"></script>
-    <script src="https://unpkg.com/georaster"></script>
-    <script src="https://unpkg.com/proj4"></script>
+    <script src="js/georaster.browser.bundle.min.js"></script>
+    <script src="js/proj4-src.js"></script>
     <script src="js/georaster-layer-for-leaflet.browserify.min.js"></script>
     <script type="text/javascript" src="js/dygraph-combined.js"></script>
     <script type="text/javascript" src="https://cdn.rawgit.com/nezasa/iso8601-js-period/master/iso8601.min.js"></script>

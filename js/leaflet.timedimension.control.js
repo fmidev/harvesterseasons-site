@@ -136,7 +136,8 @@ L.Control.TimeDimension = L.Control.extend({
 
     initialize: function(options) {
         L.Control.prototype.initialize.call(this, options);
-        this._dateUTC = true;
+        //this._dateUTC = true;
+        this._dateUTC = false;
         this._timeDimension = this.options.timeDimension || null;
     },
 
@@ -341,7 +342,8 @@ L.Control.TimeDimension = L.Control.extend({
         L.DomEvent
             .addListener(link, 'click', L.DomEvent.stopPropagation)
             .addListener(link, 'click', L.DomEvent.preventDefault)
-            .addListener(link, 'click', this._toggleDateUTC, this);
+            //.addListener(link, 'click', this._toggleDateUTC, this)
+            ;
 
         return link;
     },
@@ -600,7 +602,8 @@ L.Control.TimeDimension = L.Control.extend({
     },
 
     _getDisplayDateFormat: function(date) {
-        return this._dateUTC ? date.toISOString() : date.toLocaleString();
+        //return this._dateUTC ? date.toISOString() : date.toLocaleString();
+        return this._dateUTC ? date.toISOString() : date.toLocaleDateString();
     },
     _getDisplaySpeed: function(fps) {
         return fps + 'fps';
