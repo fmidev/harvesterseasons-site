@@ -109,19 +109,13 @@
             </table>
         </div>
         -->
-        <div id="date-select">
+        <div id="set-date">
             <table id="set-date">
-                <tr>
-                    <td></td>
-                    <td></td>
+                <tr style="height:40px">
                     <td>
                         <span id="dynamic">Dynamic Trafficability</span>
                         <input type="checkbox" id="dynamic-checkbox" onchange="changedynamic()">
                     </td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr style="height:40px">
                     <td><input type="button" value="<<" onclick="dateback()" onmousedown="datebackscrollfast()" onmouseup="datestopscrollfast()"  onmouseleave="datestopscrollfast()"
                          ontouchstart="datebackscrollfast()" ontouchend="datestopscrollfast()" ontouchcancel="datestopscrollfast()"></td>
                     <td><input type="button" value="<" onclick="dateback()" onmousedown="datebackscroll()" onmouseup="datestop()"  onmouseleave="datestop()"
@@ -131,26 +125,14 @@
                         ontouchstart="dateforwardscroll()" ontouchend="datestop()" ontouchcancel="datestop()"></td>
                     <td><input type="button" value=">>" onclick="dateforward()" onmousedown="dateforwardscrollfast()" onmouseup="datestopscrollfast()"  onmouseleave="datestopscrollfast()"
                         ontouchstart="dateforwardscrollfast()" ontouchend="datestopscrollfast()" ontouchcancel="datestopscrollfast()"></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
                     <td>
                         <div id="date-value" style="text-align:center;"></div>
                     </td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr style="height:40px">
-                    <td></td>
-                    <td></td>
                     <td>
                         <div id="play-button" style="text-align:center;">
                             <input id="playbutton" type="button" value="Play" onclick="playbuttonfunc()">
                         </div>
                     </td>
-                    <td></td>
-                    <td></td>
                 </tr>
             </table>
         </div>

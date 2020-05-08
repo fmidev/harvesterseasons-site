@@ -98,6 +98,8 @@ header{
 
 #set-date{
     z-index: 3;
+    background-color: rgb(222, 222, 222);
+    width: 100X;
     margin-left: auto;
     margin-right: auto;
 }
