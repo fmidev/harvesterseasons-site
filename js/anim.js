@@ -876,7 +876,7 @@ function onMapClick(e) {
 
     latlon = e.latlng.toString();
     //latlonTitle = latlon.substring(7, latlon.length - 1);
-    latlonPoint = latlon.replace(" ", "").substring(6, latlon.length - 2);
+    latlonPoint = latlon.replace(" ", "").substring(7, latlon.length - 2);
     dyGraphBOptions.title = latlonTitle;
 
     gB = new Dygraph(
