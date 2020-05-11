@@ -761,7 +761,7 @@ var dyGraphBOptions = {
     labels: ["date", "Summer Index", "Winter Index"],
     //labels: ["date", "Harvestability Index"],
     //labels: ["date", "Harvestability Index SW", "Harvestability Index ST", "Harvestability Index HS"],
-    labelsDiv: "labels",
+    labelsDiv: "labelsB",
     connectSeparatedPoints: true,
     series: {
         //"Harvestability Index": { fillGraph: true },

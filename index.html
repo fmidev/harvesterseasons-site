@@ -79,7 +79,7 @@
                 The E-Shape project has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement 820852.</i>
             </details>
         </header>
-        <div id="labels"></div>
+        <div id="labelsB"></div>
         <div id="graphB"></div>
         <div id="map" class="map">
             <p id="param"></p>
@@ -110,32 +110,17 @@
         </div>
         -->
         <div id="set-date">
-            <table id="set-date">
-                <tr style="height:40px">
-                    <td>
-                        <span id="dynamic">Dynamic Trafficability</span>
-                        <input type="checkbox" id="dynamic-checkbox" onchange="changedynamic()">
-                    </td>
-                    <td><input type="button" value="<<" onclick="dateback()" onmousedown="datebackscrollfast()" onmouseup="datestopscrollfast()"  onmouseleave="datestopscrollfast()"
-                         ontouchstart="datebackscrollfast()" ontouchend="datestopscrollfast()" ontouchcancel="datestopscrollfast()"></td>
-                    <td><input type="button" value="<" onclick="dateback()" onmousedown="datebackscroll()" onmouseup="datestop()"  onmouseleave="datestop()"
-                        ontouchstart="datebackscroll()" ontouchend="datestop()" ontouchcancel="datestop()"></td>
-                    <td><input type="range" min="0" max="180" value="0" id="date-range" class="slider"></td>
-                    <td><input type="button" value=">" onclick="dateforward()" onmousedown="dateforwardscroll()" onmouseup="datestop()"  onmouseleave="datestop()"
-                        ontouchstart="dateforwardscroll()" ontouchend="datestop()" ontouchcancel="datestop()"></td>
-                    <td><input type="button" value=">>" onclick="dateforward()" onmousedown="dateforwardscrollfast()" onmouseup="datestopscrollfast()"  onmouseleave="datestopscrollfast()"
-                        ontouchstart="dateforwardscrollfast()" ontouchend="datestopscrollfast()" ontouchcancel="datestopscrollfast()"></td>
-                    <td>
-                        <div id="date-value" style="text-align:center;"></div>
-                    </td>
-                    <td>
-                        <div id="play-button" style="text-align:center;">
-                            <input id="playbutton" type="button" value="Play" onclick="playbuttonfunc()">
-                        </div>
-                    </td>
-                </tr>
-            </table>
+          <span id="dynamic">Trafficability forecast</span>
+          <input type="checkbox" id="dynamic-checkbox" onchange="changedynamic()">
+          <input type="button" value="<<" onclick="dateback()" onmousedown="datebackscrollfast()" onmouseup="datestopscrollfast()"  onmouseleave="datestopscrollfast()" ontouchstart="datebackscrollfast()" ontouchend="datestopscrollfast()" ontouchcancel="datestopscrollfast()">
+          <input type="button" value="<" onclick="dateback()" onmousedown="datebackscroll()" onmouseup="datestop()"  onmouseleave="datestop()" ontouchstart="datebackscroll()" ontouchend="datestop()" ontouchcancel="datestop()">
+          <input type="range" min="0" max="180" value="0" id="date-range" class="slider">
+          <input type="button" value=">" onclick="dateforward()" onmousedown="dateforwardscroll()" onmouseup="datestop()"  onmouseleave="datestop()" ontouchstart="dateforwardscroll()" ontouchend="datestop()" ontouchcancel="datestop()">
+          <input type="button" value=">>" onclick="dateforward()" onmousedown="dateforwardscrollfast()" onmouseup="datestopscrollfast()" onmouseleave="datestopscrollfast()" ontouchstart="dateforwardscrollfast()" ontouchend="datestopscrollfast()" ontouchcancel="datestopscrollfast()">
+	  <div id="date-value" style="text-align:center; vertical-align:middle; min-width: 100px; display: inline;"></div>
+	  <div id="play-button" style="text-align:center; vertical-align:middle; display: inline"><input id="playbutton" type="button" value="Play" onclick="playbuttonfunc()"></div>
         </div>
+        <div id="labels"></div>
         <div id="graph"></div>
         <div id="graphsd"></div>
         <div id="graphgrd"></div>
