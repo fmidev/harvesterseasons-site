@@ -31,7 +31,6 @@ header{
 
 #graphB {
     position: relative;
-    z-index: 3;
     /*padding-top: 20px;*/
     height: 120px;
     width: 95%;
@@ -62,10 +61,20 @@ header{
     vertical-align: middle;
 }
 
+#set-date{
+    background-color: rgb(240, 248, 240);
+    padding: 5px;
+    width: 100X;
+    margin-left: auto;
+    margin-right: auto;
+    vertical-align: middle;
+    text-align: center;
+}
+
 /* Harvestability legend */
 #harvestability-legend {
     position: relative;
-    z-index: 3;
+    background-color: rgb(240, 248, 240);
     /*height: 25px;*/
     font-size: 14px;
     /*width: 100%;
@@ -112,7 +121,7 @@ header{
     #labels { height: 105px; }
 }
 @media only screen and (max-width: 405px){
-    #harvestability-legend { margin-bottom: 110px; }
+    #harvestability-legend { margin-bottom: 100px; }
     #labels { height: 120px; }
 }
 @media only screen and (max-width: 358px){
@@ -127,8 +136,7 @@ header{
     margin-bottom: 10px;
 }
 
-
-.legend { list-style: none; }
+.legend { list-style: none;}
 .legend li { float: left; margin-right: 5px; }
 .legend span { border: 1px solid rgb(0, 0, 0); float: left; width: 12px; height: 12px; margin: 2px; margin-top: 0px;}
 .legend .frostheave { background-color: rgb(0, 97, 0); }
@@ -137,17 +145,6 @@ header{
 .legend .normalsummerpeat { background-color: rgb(255, 250, 0); }
 .legend .drysummerpeat { background-color: rgb(255, 132, 0); }
 .legend .winter { background-color: rgb(255, 38, 0); }
-
-#set-date{
-    z-index: 3;
-    background-color: rgb(240, 240, 240);
-    padding: 5px;
-    width: 100X;
-    margin-left: auto;
-    margin-right: auto;
-    vertical-align: middle;
-    text-align: center;
-}
 
 /*
 #graphB .dygraph-axis-label.dygraph-axis-label-0 { color: rgb(255, 38, 0); }

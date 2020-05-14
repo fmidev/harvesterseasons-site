@@ -337,14 +337,14 @@ L.Control.TimeDimension = L.Control.extend({
 
     _createDisplayDate: function(className, container) {
         var link = L.DomUtil.create('a', className + ' utc', container);
-        link.href = '#';
+        /*link.href = '#';
         link.title = 'UTC Time';
         L.DomEvent
             .addListener(link, 'click', L.DomEvent.stopPropagation)
             .addListener(link, 'click', L.DomEvent.preventDefault)
             //.addListener(link, 'click', this._toggleDateUTC, this)
             ;
-
+        */
         return link;
     },
 
@@ -356,8 +356,8 @@ L.Control.TimeDimension = L.Control.extend({
         sliderContainer = L.DomUtil.create('div', className, container);
         /*L.DomEvent
             .addListener(sliderContainer, 'click', L.DomEvent.stopPropagation)
-            .addListener(sliderContainer, 'click', L.DomEvent.preventDefault);*/
-
+            .addListener(sliderContainer, 'click', L.DomEvent.preventDefault);
+        */
         sliderbar = L.DomUtil.create('div', 'slider', sliderContainer);
         max = this._timeDimension.getAvailableTimes().length - 1;
 
@@ -498,7 +498,7 @@ L.Control.TimeDimension = L.Control.extend({
         /* L.DomEvent
             .addListener(sliderContainer, 'click', L.DomEvent.stopPropagation)
             .addListener(sliderContainer, 'click', L.DomEvent.preventDefault);
-*/
+        */
         var speedLabel = L.DomUtil.create('span', 'speed', sliderContainer);
         var sliderbar = L.DomUtil.create('div', 'slider', sliderContainer);
         var initialSpeed = Math.round(10000 / (this._player.getTransitionTime() || 1000)) / 10;
@@ -592,10 +592,10 @@ L.Control.TimeDimension = L.Control.extend({
     _toggleDateUTC: function() {
         if (this._dateUTC) {
             L.DomUtil.removeClass(this._displayDate, 'utc');
-            this._displayDate.title = 'Local Time';
+            //this._displayDate.title = 'Local Time';
         } else {
             L.DomUtil.addClass(this._displayDate, 'utc');
-            this._displayDate.title = 'UTC Time';
+            //this._displayDate.title = 'UTC Time';
         }
         this._dateUTC = !this._dateUTC;
         this._update();

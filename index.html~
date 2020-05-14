@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="shortcut icon" href="img/favicon.png" type="image/png" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="js/L.Control.Locate.min.css" />
+    <link rel="stylesheet" href="https://www.domoritz.de/leaflet-locatecontrol/dist/L.Control.Locate.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.1/leaflet.css" />
     <link rel="stylesheet"
@@ -81,6 +81,19 @@
         </header>
         <div id="labelsB"></div>
         <div id="graphB"></div>
+        <div id="map" class="map">
+            <p id="param"></p>
+        </div>
+        <div id="harvestability-legend">
+            <ul class="legend">
+                <li><span class="frostheave"></span> Kelirikko =GOOD</li>
+                <li><span class="normalsummermineral"></span> Normal summer, mineral soil</li>
+                <li><span class="drysummermineral"></span> Dry summer, mineral soil</li>
+                <li><span class="normalsummerpeat"></span> Normal summer, peat soil</li>
+                <li><span class="drysummerpeat"></span> Dry summer, peat soil</li>
+                <li><span class="winter"></span> Winter =BAD</li>
+            </ul>
+        </div>
         <!--
         <div id="content-select">
             <table id="set-opacity">
@@ -97,55 +110,25 @@
         </div>
         -->
         <div id="set-date">
-            <div id="dynamic-control">
-                <label id="dynamic">
-                    Trafficability forecast
-                    <input type="checkbox" id="dynamic-checkbox" onchange="changedynamic()">
-                </label>
-            </div>
-            <div id="date-control">
-                <input type="button" value="<<"  
-                    onmousedown="datebackscrollfast()" onmouseup="datestopscrollfast()" onmouseleave="datestopscrollfast()" 
-                    ontouchstart="datebackscrollfast()" ontouchend="datestopscrollfast()" ontouchcancel="datestopscrollfast()">
-                <input type="button" value="<" onclick="dateback()" 
-                    onmousedown="datebackscroll()" onmouseup="datestop()" onmouseleave="datestop()" 
-                    ontouchstart="datebackscroll()" ontouchend="datestop()" ontouchcancel="datestop()">
-                <input type="range" min="0" max="180" value="0" id="date-range" class="slider">
-                <input type="button" value=">" onclick="dateforward()" 
-                    onmousedown="dateforwardscroll()" onmouseup="datestop()" onmouseleave="datestop()" 
-                    ontouchstart="dateforwardscroll()" ontouchend="datestop()" ontouchcancel="datestop()">
-                <input type="button" value=">>"  
-                    onmousedown="dateforwardscrollfast()" onmouseup="datestopscrollfast()" onmouseleave="datestopscrollfast()" 
-                    ontouchstart="dateforwardscrollfast()" ontouchend="datestopscrollfast()" ontouchcancel="datestopscrollfast()">
-            </div>
-            <div id="date-value-control">            
-                <div id="date-value" style="text-align:center; vertical-align:middle; min-width: 100px; display: inline-block;"></div>
-                <div id="play-button" style="text-align:center; vertical-align:middle; width: 50px; display: inline-block"><input id="playbutton"
-                        type="button" value="Play" onclick="playbuttonfunc()"></div>
-            </div>
-            </div>
-        <div id="map" class="map">
-            <p id="param"></p>
-        </div>
-        <div id="harvestability-legend">
-            <ul class="legend">
-                <li><span class="frostheave"></span> Frost heave (kelirikko, GOOD)</li>
-                <li><span class="normalsummermineral"></span> Normal summer, mineral soil</li>
-                <li><span class="drysummermineral"></span> Dry summer, mineral soil</li>
-                <li><span class="normalsummerpeat"></span> Normal summer, peat soil</li>
-                <li><span class="drysummerpeat"></span> Dry summer, peat soil</li>
-                <li><span class="winter"></span> Winter (BAD)</li>
-            </ul>
+          <span id="dynamic">Trafficability forecast</span>
+          <input type="checkbox" id="dynamic-checkbox" onchange="changedynamic()">
+          <input type="button" value="<<" onclick="dateback()" onmousedown="datebackscrollfast()" onmouseup="datestopscrollfast()"  onmouseleave="datestopscrollfast()" ontouchstart="datebackscrollfast()" ontouchend="datestopscrollfast()" ontouchcancel="datestopscrollfast()">
+          <input type="button" value="<" onclick="dateback()" onmousedown="datebackscroll()" onmouseup="datestop()"  onmouseleave="datestop()" ontouchstart="datebackscroll()" ontouchend="datestop()" ontouchcancel="datestop()">
+          <input type="range" min="0" max="180" value="0" id="date-range" class="slider">
+          <input type="button" value=">" onclick="dateforward()" onmousedown="dateforwardscroll()" onmouseup="datestop()"  onmouseleave="datestop()" ontouchstart="dateforwardscroll()" ontouchend="datestop()" ontouchcancel="datestop()">
+          <input type="button" value=">>" onclick="dateforward()" onmousedown="dateforwardscrollfast()" onmouseup="datestopscrollfast()" onmouseleave="datestopscrollfast()" ontouchstart="dateforwardscrollfast()" ontouchend="datestopscrollfast()" ontouchcancel="datestopscrollfast()">
+	  <div id="date-value" style="text-align:center; vertical-align:middle; min-width: 100px; display: inline;"></div>
+	  <div id="play-button" style="text-align:center; vertical-align:middle; display: inline"><input id="playbutton" type="button" value="Play" onclick="playbuttonfunc()"></div>
         </div>
         <div id="labels"></div>
+        <div id="graph"></div>
         <div id="graphsd"></div>
         <div id="graphgrd"></div>
-        <div id="graph"></div>
         <div id="footer">
             <a href="https://harvesterseasons.com/">Harvester Seasons</a></div>
     </div>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <script type="text/javascript" src="js/leaflet.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.1/leaflet.js"></script>
     <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.4.2/Control.FullScreen.min.js"></script>
     <script src="js/georaster.browser.bundle.min.js"></script>
@@ -161,7 +144,7 @@
     <script type="text/javascript" src="js/leaflet.timedimension.player.js"></script>
     <script type="text/javascript" src="js/leaflet.timedimension.control.js"></script>
     <script type="text/javascript" src="js/leaflet.synchronizer.js"></script>
-    <script type="text/javascript" src="js/L.Control.Locate.min.js"
+    <script type="text/javascript" src="https://www.domoritz.de/leaflet-locatecontrol/dist/L.Control.Locate.min.js"
         charset="utf-8"></script>
     <script type="text/javascript" src="js/anim.js"></script>
 </body>
