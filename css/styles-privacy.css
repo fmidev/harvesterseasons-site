@@ -1,18 +1,13 @@
 html *{
     box-sizing:border-box;
-    max-width: 1000px;
-    margin-right: auto;
-    margin-left: auto;
-    /*padding-left: 10px;
-    padding-right: 10px;*/
 }
 
 .container {
-    padding: 10px 15px 0px 15px;
+    padding: 10px 15px 20px 15px;
     margin-right: auto;
     margin-left: auto;
     max-width: 1000px;
-    /*margin-bottom: 10px;*/
+    margin-bottom: 10px;
 }
 header{
     background-image: url(../img/logos_long.png);
@@ -25,34 +20,23 @@ header{
 }
 
 #labelsB {
-    position: absolute;
-    /*margin-left: 25px;*/
-    margin-left: 82px;
+    position:absolute;
+    left: 10;
     font-size: 11px;
     z-index: auto;
-    /*width: 90%;*/
-    /*height: 28px;
-    line-height: 28px;*/
-    margin-top: -18px;
+    width: 90%;
+    height: 20px;
     text-align: left;
-}
-
-#titleB {
-    font-size: 22px;
-    font-weight: bold;
-    height: 28px;
-    text-align: center;
-    /*width: 100%;*/
 }
 
 #graphB {
     position: relative;
     z-index: 3;
     /*padding-top: 20px;*/
-    height: 92px;
+    height: 120px;
     width: 95%;
-    /*left: 20px; right: 20px; */
-    margin-top: 0px;
+    left: 20px; right: 20px; 
+    margin-top: 20px;
     margin-bottom: 15px;
     text-align: center;
 }
@@ -60,13 +44,9 @@ header{
 #labels {
     position:relative;
     font-size: 10px;
-    width: 95%;
+    width: 100%;
     height: 45px;
     text-align: left;
-    /*margin-left: 14px;
-    margin-left: 60px;*/
-    margin-right: auto;
-    margin-left: auto;
 }
 
 #dynamic-control, #date-control, #date-value-control {
@@ -92,7 +72,7 @@ header{
     left: 20px; right: 20px;
     margin-top: 20px;*/
     margin-bottom: 45px;
-    left: -32px;
+    left: -35px;
     width: 103%;
 }
 
@@ -178,7 +158,6 @@ header{
     #harvestability-legend { margin-bottom: 120px; }
 }
 
-
 #header a{
     text-decoration: none;
     color: #80bf43;
@@ -188,19 +167,19 @@ header{
 
 .legend { list-style: none; }
 .legend li { float: left; margin-right: 5px; }
-.legend span { border: 1px solid rgba(0, 0, 0, .8); float: left; width: 12px; height: 12px; margin: 2px; margin-top: 1px;}
-.legend .frostheave { background-color: rgba(0, 97, 0, .8); }
-.legend .normalsummermineral { background-color: rgba(97, 153, 0, .8); }
-.legend .drysummermineral { background-color: rgba(160, 219, 0, .8); }
-.legend .normalsummerpeat { background-color: rgba(255, 250, 0, .8); }
-.legend .drysummerpeat { background-color: rgba(255, 132, 0, .8); }
-.legend .winter { background-color: rgba(255, 38, 0, .8); }
+.legend span { border: 1px solid rgb(0, 0, 0); float: left; width: 12px; height: 12px; margin: 2px; margin-top: 0px;}
+.legend .frostheave { background-color: rgb(0, 97, 0); }
+.legend .normalsummermineral { background-color: rgb(97, 153, 0); }
+.legend .drysummermineral { background-color: rgb(160, 219, 0); }
+.legend .normalsummerpeat { background-color: rgb(255, 250, 0); }
+.legend .drysummerpeat { background-color: rgb(255, 132, 0); }
+.legend .winter { background-color: rgb(255, 38, 0); }
 
 #set-date{
     z-index: 3;
     background-color: rgb(240, 240, 240);
     padding: 5px;
-    width: 100%;
+    width: 100X;
     margin-left: auto;
     margin-right: auto;
     vertical-align: middle;
@@ -212,53 +191,64 @@ header{
 #graphB .dygraph-axis-label.dygraph-axis-label-2 { color: rgb(0, 97, 0); }
 */
 
-#graphsw {
+#graph {
     position: relative;
     height: 240px;
     width: 95%;
-    /*left: 20px; right: 20px;*/
-    margin-top: 10px;
+    left: 20px; right: 20px;
+    margin-top: 20px;
     margin-bottom: 20px;
-    text-align: center;
 }
 
-#graphsw .dygraph-label { font-family: Helvetica, Arial, sans-serif; }
+#graph .dygraph-label { font-family: Helvetica, Arial, sans-serif; }
 
-#graphsw .dygraph-title { font-size: 18px; align: left; }
+#graph .dygraph-title { font-size: 18px; align: left; }
 
-#graphsw .dygraph-ylabel { font-size: 12px; }
+#graph .dygraph-ylabel { font-size: 12px; }
 
-#graphst {
+#graphsd {
     position: relative;
     height: 240px;
     width: 95%;
-    /*left: 20px; right: 20px;*/ 
+    left: 20px; right: 20px; 
     margin-top: 0px;
     margin-bottom: 20px;
     text-align: center;
 }
 
-#graphst .dygraph-label { font-family: Helvetica, Arial, sans-serif;}
+#graphsd .dygraph-label { font-family: Helvetica, Arial, sans-serif;}
 
-#graphst .dygraph-title { font-size: 18px; align: left; }
+#graphsd .dygraph-title { font-size: 18px; align: left; }
 
-#graphst .dygraph-ylabel { font-size: 12px; }
+#graphsd .dygraph-ylabel { font-size: 12px; }
 
-#graphsh {
+#graphgrd {
     position: relative;
     height: 240px;
     width: 95%;
-    /*left: 20px; right: 20px;*/
+    left: 20px; right: 20px; 
     margin-top: 0px;
     margin-bottom: 20px;
-    text-align: center;
 }
 
-#graphsh .dygraph-label { font-family: Helvetica, Arial, sans-serif;}
+#graphgrd .dygraph-label { font-family: Helvetica, Arial, sans-serif;}
 
-#graphsh .dygraph-title { font-size: 18px; align: left; }
+#graphgrd .dygraph-title { font-size: 18px; align: left; }
 
-#graphsh .dygraph-ylabel { font-size: 12px; }
+#graphgrd .dygraph-ylabel { font-size: 12px; }
+
+#graphana {
+    position: relative;
+    height: 240px;
+    width: 95%;
+    left: 20px; right: 20px; 
+}
+
+#graphana .dygraph-label { font-family: Helvetica, Arial, sans-serif; }
+
+#graphana .dygraph-title { font-size: 18px; align: left; }
+
+#graphana .dygraph-ylabel { font-size: 12px; }
 
 .dygraph-legend { text-align: center; }
 
@@ -315,7 +305,7 @@ a.github:hover span{
     margin-bottom: 10px; 
 }
 
-h1, h2 {
+h1, h2, h3 {
     color: #999;
     font-family: Helvetica, Arial, sans-serif;
     font-weight: normal;    
