@@ -45,6 +45,30 @@ header{
     /*width: 100%;*/
 }
 
+#graphB_era5 {
+    position: relative;
+    z-index: 3;
+    /*padding-top: 20px;*/
+    height: 92px;
+    width: 95%;
+    /*left: 20px; right: 20px; */
+    margin-top: 0px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+#graphB_fmi {
+    position: relative;
+    z-index: 3;
+    /*padding-top: 20px;*/
+    height: 92px;
+    width: 95%;
+    /*left: 20px; right: 20px; */
+    margin-top: 0px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
 #graphB_ecsf {
     position: relative;
     z-index: 3;

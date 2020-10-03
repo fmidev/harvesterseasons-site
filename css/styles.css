@@ -265,7 +265,7 @@ header{
 #footer {
     clear: both;
     border-top: #D8D8D8 1px solid;
-    padding: 10px 0;
+    padding: 10px 0 30px;
 }
 
 #footer a{
