@@ -470,9 +470,9 @@ function changedynamic() {
 
 
 param1="utctime";
-param2="HARVIDX{20;ULSM-M3M3:HOPSSF:5026::0:3:1-50;ULSM-M3M3:HOPSSF:5026::0:1:0}";
-param3="HARVIDX{0;TSOIL-K:HOPSSF:5026::3:1-50;TSOIL-K:HOPSSF:5026::1:0}";
-param4="ensover{80;0.9;HSNOW-M:HOPSSF:5026::3:1-50;HSNOW-M:HOPSSF:5026::1:0}";
+param2="HARVIDX{0.4;SOILWET1-M:ECBSF::9:7:3:1-50;SOILWET1-M:ECBSF::9:7:1:0}";
+param3="HARVIDX{273;TSOIL-K:ECBSF::9:7:3:1-50;TSOIL-K:ECBSF::9:7:1:0}";
+param4="ensover{0.4;0.9;SD-M:ECBSF::1:0:3:1-50;SD-M:ECBSF::1:0:1:0}";
 
 var harvLayer;
 
@@ -507,7 +507,7 @@ var colorMapSummer2 = [
     [0, 97, 0], // Normal summer, mineral soil (normaali kesä, kivennäismaa)
     [0, 97, 0], // Dry summer, mineral soil (kuiva kesä, kivennäismaa)
     [0, 97, 0], // Normal summer, peat soil (normaali kesä, turvemaa)
-    [255, 132, 0], // Dry summer, peat soil (kuiva kesä, turvemaa)
+    [0, 97, 0], // Dry summer, peat soil (kuiva kesä, turvemaa)
     [255, 38, 0], // Winter (talvi)
     [128, 255, 255], // Water
 ];
@@ -699,7 +699,7 @@ var smartWMS = 'https://sm.harvesterseasons.com/wms?';
 var temperatureLayerOptions = {
     crs: L.CRS.EPSG4326,
     version: '1.3.0',
-    layers: 'harvester:hopssf:TSOIL-K',
+    layers: 'harvester:ecbsf:TSOIL-K',
     format: 'image/png',
     transparent: 'true',
     styles: 'default',
@@ -715,7 +715,7 @@ var temperatureTimeLayer = L.timeDimension.layer.wms(temperatureLayer, {cache: 1
 var soilwetnessLayerOptions = {
     crs: L.CRS.EPSG4326,
     version: '1.3.0',
-    layers: 'harvester:hopssf:ULSM-M3M3',
+    layers: 'harvester:ecbsf:SOILWET1-M',
     format: 'image/png',
     transparent: 'true',
     styles: 'default',
@@ -730,7 +730,7 @@ var soilwetnessTimeLayer = L.timeDimension.layer.wms(soilwetnessLayer, {cache: 1
 var snowthicknessLayerOptions = {
     crs: L.CRS.EPSG4326,
     version: '1.3.0',
-    layers: 'harvester:hopssf:HSNOW-M',
+    layers: 'harvester:ecbsf:SD-M',
     format: 'image/png',
     transparent: 'true',
     styles: 'default',
@@ -809,8 +809,7 @@ tempLegend.onAdd = function (map) {
 };
 
 snowLegend.onAdd = function (map) {
-    //var src = 'https://sm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:hopssf:HSNOW-M&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=60&HEIGHT=345';
-    var src = 'https://sm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:HSNOW-M&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=60&HEIGHT=345';
+    var src = 'https://sm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:SD-M&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=60&HEIGHT=345';
     var div = L.DomUtil.create('div', 'info legend');
     div.style.width = '65px';
     div.style.height = '345px';
@@ -821,7 +820,7 @@ snowLegend.onAdd = function (map) {
 };
 
 soilwetLegend.onAdd = function (map) {
-    var src = 'https://sm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:hopssf:ULSM-M3M3&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
+    var src = 'https://sm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:SOILWET1-M&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
     var div = L.DomUtil.create('div', 'info legend');
     div.style.width = '65px';
     div.style.height = '345px';
@@ -849,7 +848,6 @@ var overlayMaps = {
     "Soil Wetness": soilwetnessTimeLayer,
     "Soil Temperature": temperatureTimeLayer.addTo(map),
     "Snow Thickness": snowthicknessTimeLayer,
-    //"SWE": snowthicknessTimeLayer,
     "Forest Fire Index": forestfireTimeLayer,
 };
 
@@ -880,8 +878,7 @@ map.on('overlayremove', function (e) {
     }
     switch (e.name) {
         case "Snow Thickness": {
-        //case "SWE": {
-                map.removeControl(snowLegend);
+            map.removeControl(snowLegend);
             break;
         }
         case "Soil Wetness": {
@@ -904,7 +901,6 @@ map.on('overlayadd', function (e) {
     playButton.disabled = false;
     switch (e.name) {
         case "Snow Thickness": {
-        //case "SWE": {
             forecast = 2;
             if (map.hasLayer(soilwetnessTimeLayer)) { 
                 map.removeLayer(soilwetnessTimeLayer);
@@ -1139,7 +1135,10 @@ var dyGraphBOptions = {
     drawAxesAtZero: false,
     legend: 'always',
     ylabel: "Trafficability",
+    //labels: ["date", "Summer Forecast", "Winter Forecast", "Summer Observation", "Winter Observation"],
+
     labels: ["date", "Summer Index", "Winter Index"],
+
     //labels: ["date", "Harvestability Index"],
     //labels: ["date", "Harvestability Index SW", "Harvestability Index ST", "Harvestability Index HS"],
     labelsDiv: "labelsB",
@@ -1148,6 +1147,10 @@ var dyGraphBOptions = {
         //"Harvestability Index": { fillGraph: true },
         "Summer Index": { fillGraph: true },
         "Winter Index": { fillGraph: true },
+/*         "Summer Forecast": { fillGraph: true, color: 'green' },
+        "Winter Forecast": { fillGraph: true, color: 'rgb(0,0,150)' },
+        "Summer Observation": { fillGraph: true, strokeWidth: 3, color: 'rgb(75,75,75)' },
+        "Winter Observation": { fillGraph: true, strokeWidth: 3, color: 'rgb(150,0,0)' }, */
     },
     axes: {
         y: { 
@@ -1169,22 +1172,28 @@ var dyGraphBOptions = {
 
 var SWensemble = "";
 var label = ["date", "SW-0"];
-var labelstxt = {'SW-0': { fillGraph: true }};
+var labelstxt = {'SW-0': { fillGraph: false }};
+/* var label = ["date", "SW-FMI", "SW-0"];
+var labelstxt = {'SW-FMI': { fillGraph: false, strokeWidth: 3, color: 'rgb(75,75,75)' },
+                'SW-0': { fillGraph: false }}; */
 for (i = 1; i <= perturbations; i = i + 1) {
     label[i+1] = 'SW-' + i ;
-    labelstxt[label[i]]= { fillGraph: false };
-    SWensemble += ",ULSM-M3M3:HOPSSF:5026::0:3:" + i ;
+    labelstxt[label[i+1]]= { fillGraph: false };
+/*     label[i+2] = 'SW-' + i ;
+    labelstxt[label[i+2]]= { fillGraph: false }; */
+    SWensemble += ",SOILWET1-M:ECBSF::9:7:3:" + i ;
 }
+label[perturbations+2] = 'SW-FMI';
+labelstxt[label[perturbations+2]]= { fillGraph: false, strokeWidth: 3, color: 'red' };
+
 var dyGraphSWOptions = {
     legend: "always",
-    //ylabel: "Soil Wetness (m\u00B3/m\u00B3)",
-    ylabel: "Soil Wetness (%)",
+    ylabel: "Soil Wetness (m\u00B3/m\u00B3)",
     labels: label,
     series: labelstxt,
     labelsDiv: "labels",
     axes: {
-        //y: { valueRange: [-0.0, 1.01] },
-        y: { valueRange: [-0.0, 101] },
+        y: { valueRange: [-0.0, 1.01] },
     },
     underlayCallback: timeseriedateline,
     //clickCallback: timeserieclick,
@@ -1192,13 +1201,21 @@ var dyGraphSWOptions = {
 }
 
 var label = ["date", "ST-0"];
-var labelstxt = {'ST-0': { fillGraph: true }};
+var labelstxt = {'ST-0': { fillGraph: false }};
+//var label = ["date", "ST-FMI", "ST-0"];
+//var labelstxt = {'ST-FMI': { fillGraph: false, strokeWidth: 3, color: 'rgb(75,75,75)' },
+//                'ST-0': { fillGraph: false }};
 var TGKensemble = "";
 for (i = 1; i <= perturbations; i = i + 1) {
     label[i+1] = 'ST-' + i ;
-    labelstxt[label[i]]= { fillGraph: false };
-    TGKensemble = TGKensemble + ",TSOIL-K:HOPSSF:5026::0:3:" + i + "}";
+    labelstxt[label[i+1]]= { fillGraph: false };
+    //label[i+2] = 'ST-' + i ;
+    //labelstxt[label[i+2]]= { fillGraph: false };
+    TGKensemble = TGKensemble + ",K2C{TSOIL-K:ECBSF::9:7:3:" + i + "}";
 }
+label[perturbations+2] = 'ST-FMI';
+labelstxt[label[perturbations+2]]= { fillGraph: false, strokeWidth: 3, color: 'red' };
+
 var dyGraphSTOptions = {
     legend: 'always',
     ylabel: "Soil Temperature (°C)",
@@ -1206,22 +1223,25 @@ var dyGraphSTOptions = {
     series: labelstxt,
     labelsDiv: "labels",
     axes: {
-        y: { valueRange: [-30, 31] },
+        y: { valueRange: [-20, 41] },
     },
     underlayCallback: timeseriedateline,
     //clickCallback: timeserieclick,
     animatedZooms: true,
 }
 
+
 var SHensemble = "";
 var label = ["date", "SH-0"];
-var labelstxt = {'SH-0': { fillGraph: true }};
+var labelstxt = {'SH-0': { fillGraph: false }};
 for (i = 1; i <= perturbations; i = i + 1) {
     label[i+1] = 'SH-' + i ;
-    labelstxt[label[i]]= { fillGraph: false };
-    //SHensemble += ",HSNOW-M:HOPSSF:5026::0:3:" + i ;
-    SHensemble += ",mul{HSNOW-M:HOPSSF:5026::0:3:" + i + ";0.005}";
+    labelstxt[label[i+1]]= { fillGraph: false };
+    SHensemble += ",SD-M:ECBSF::1:0:3:" + i ;
 }
+label[perturbations+2] = 'SH-FMI';
+labelstxt[label[perturbations+2]]= { fillGraph: false, strokeWidth: 3, color: 'red' };
+
 var dyGraphSHOptions = {
     drawAxesAtZero: true,
     axisLineWidth: 0.5,
@@ -1229,7 +1249,6 @@ var dyGraphSHOptions = {
     //ylabel: "Snow",
     //labels: ["date", "Snow Height", "Snowfall Accumulation"],
     ylabel: "Snow Height (m)",
-    //ylabel: "SWE (mm)",
     labels: label,
     series: labelstxt,
     connectSeparatedPoints: true,
@@ -1240,9 +1259,9 @@ var dyGraphSHOptions = {
     },*/
     includeZero: true,
     //digitsAfterDecimal: 3,
-/*     axes: {
+    axes: {
         y: { valueRange: [-0.0, 1.51] },
-    }, */
+    },
     underlayCallback: timeseriedateline,
     //clickCallback: timeserieclick,
     animatedZooms: true,
@@ -1274,17 +1293,69 @@ var center = L.circle(null, {
 });
 */
 
+var endDate = new Date();
+endDate.setMonth(endDate.getUTCMonth() + 7);
+
+var endMonth = endDate.getUTCMonth();
+if (endMonth < 10) {
+    endMonth = '0' + endMonth;
+}
+var dateString_ecbsf = endDate.getUTCFullYear() + endMonth + '040000';
+
+
+var startDate_timeseries = new Date();
+//startDate_timeseries.setMonth(startDate_timeseries.getUTCMonth());
+
+var startMonth_timeseries = startDate_timeseries.getUTCMonth();
+if (startMonth_timeseries < 10) {
+    startMonth_timeseries = '0' + startMonth_timeseries;
+}
+var dateString_timeseries = startDate_timeseries.getUTCFullYear() + startMonth_timeseries + '020000';
+
+
 var dateFixed = false;
 
 var graphLoad, graphTimer;
 var graphLoad2, graphLoad3, graphLoad4;
 
+const param5 = "HARVIDX{0.2;SWVL2-M3M3:SMARTMET:5015}";
+const param6 = "HARVIDX{-0.7;TG-K:SMARTMET}";
+const param7 = "ensover{0.4;0.9;SD-M:SMARTMET}";
+
 function drawtimeseries() {
-    graphLoad = $.getJSON("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + param1 + "," + param2 + "," + param3 + "," + param4 + "&starttime=data&endtime=data&timestep=data&format=json&source=grid&timeformat=xml&origintime=" + dateString_origintime,
+    //graphLoad = $.getJSON("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + param1 + "," + param2 + "," + param3 + "," + param4 + "&starttime=data&endtime=data&timestep=data&format=json&source=grid&timeformat=xml&origintime=" + dateString_origintime,
+    //graphLoad = $.getJSON("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + param1 + "," + param2 + "," + param3 + "," + param4 + "," + param5 + "," + param6 + "," + param7 + "&starttime=202005020000&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc&origintime=" + dateString_origintime,
+    //graphLoad = $.getJSON("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + param1 + "," + param2 + "," + param3 + "," + param4 + "," + param5 + "," + param6 + "," + param7 + "&starttime=202005020000&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc",
+    graphLoad = $.getJSON("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + param1 + "," + param2 + "," + param3 + "," + param4 + "," + param5 + "," + param6 + "," + param7 + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc",
         function (data) {
             var graphdata = [];
-            for (i = 0; i < data.length; i++) {
+            /* for (i = 0; i < data.length; i++) {
                 graphdata[i] = [new Date(data[i][param1]), data[i][param2], Math.max(data[i][param3], data[i][param4])];
+            } */
+/*             for (i = 0, k = 0; i < data.length; i++) {
+                if ((data[i][param3] !== null || data[i][param4] !== null) && (data[i][param6] !== null || data[i][param7] !== null)) {
+                    graphdata[k] = [new Date(data[i][param1]), data[i][param2], Math.max(data[i][param3], data[i][param4]), data[i][param5], Math.max(data[i][param6], data[i][param7])];
+                    k++;
+                } else if (data[i][param3] !== null || data[i][param4] !== null) {
+                    graphdata[k] = [new Date(data[i][param1]), data[i][param2], Math.max(data[i][param3], data[i][param4]), data[i][param5], 'nan'];
+                    k++;
+                } else if (data[i][param6] !== null || data[i][param7] !== null) {
+                    graphdata[k] = [new Date(data[i][param1]), data[i][param2], 'nan', data[i][param5], Math.max(data[i][param6], data[i][param7])];
+                    k++;
+                } else {
+                    graphdata[k] = [new Date(data[i][param1]), data[i][param2], 'nan', data[i][param5], 'nan'];
+                    k++;
+                }
+            } */
+            for (i = 0, k = 0; i < data.length; i++) {
+                // Use SMARTMET when available
+                if (data[i][param5] !== null && (data[i][param6] !== null || data[i][param7] !== null)) {
+                    graphdata[k] = [new Date(data[i][param1]), data[i][param5], Math.max(data[i][param6], data[i][param7])];
+                    k++;
+                } else {
+                    graphdata[k] = [new Date(data[i][param1]), data[i][param2], Math.max(data[i][param3], data[i][param4])];
+                    k++;
+                }
             }
 
             if (!dateFixed && data.length > 0) {
@@ -1312,8 +1383,11 @@ function drawtimeseries() {
             } else {
                 document.getElementById("graphB").innerHTML = "Error loading data";
             }
-
-            graphLoad3 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,ULSM-M3M3:HOPSSF:5026::0:1:0" + SWensemble + "&starttime=data&endtime=data&timestep=data&timeformat=sql&precision=full&separator=,&source=grid&origintime=" + dateString_origintime,
+            
+            //graphLoad3 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SOILWET1-M:ECBSF::9:7:1:0" + SWensemble + "&starttime=data&endtime=data&timestep=data&timeformat=sql&precision=full&separator=,&source=grid&origintime=" + dateString_origintime,
+            //graphLoad3 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWVL2-M3M3:SMARTMET:5015,SOILWET1-M:ECBSF::9:7:1:0" + SWensemble + "&starttime=202005020000&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
+            //graphLoad3 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SOILWET1-M:ECBSF::9:7:1:0" + SWensemble + ",SWVL2-M3M3:SMARTMET:5015&starttime=202005020000&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
+            graphLoad3 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SOILWET1-M:ECBSF::9:7:1:0" + SWensemble + ",SWVL2-M3M3:SMARTMET:5015&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
                 function (data) {
                     if (data.length > 0) {
                         gsw = new Dygraph(
@@ -1335,7 +1409,10 @@ function drawtimeseries() {
                     }
                 })
 
-            graphLoad4 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,TSOIL-K:HOPSSF:5026::0:1:0" + TGKensemble + "&starttime=data&endtime=data&timestep=data&timeformat=sql&separator=,&precision=full&source=grid&origintime=" + dateString_origintime,
+            //graphLoad4 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,K2C{TSOIL-K:ECBSF::9:7:1:0}" + TGKensemble + "&starttime=data&endtime=data&timestep=data&timeformat=sql&separator=,&precision=full&source=grid&origintime=" + dateString_origintime,
+            //graphLoad4 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,TG-K:SMARTMET,K2C{TSOIL-K:ECBSF::9:7:1:0}" + TGKensemble + "&starttime=202005020000&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
+            //graphLoad4 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,K2C{TSOIL-K:ECBSF::9:7:1:0}" + TGKensemble + ",TG-K:SMARTMET&starttime=202005020000&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
+            graphLoad4 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,K2C{TSOIL-K:ECBSF::9:7:1:0}" + TGKensemble + ",TG-K:SMARTMET&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
                 function (data) {
                     if (data.length > 0) {
                         gst = new Dygraph(
@@ -1357,8 +1434,9 @@ function drawtimeseries() {
                     }
                 });
 
-            //graphLoad2 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,HSNOW-M:HOPSSF:5026::0:1:0" + SHensemble + "&starttime=data&endtime=data&timestep=data&timeformat=sql&precision=full&separator=,&source=grid&origintime=" + dateString_origintime,
-            graphLoad2 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,mul{HSNOW-M:HOPSSF:5026::0:1:0;0.005}" + SHensemble + "&starttime=data&endtime=data&timestep=data&timeformat=sql&precision=full&separator=,&source=grid&origintime=" + dateString_origintime,
+            //graphLoad2 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SD-M:ECBSF::1:0:1:0" + SHensemble + "&starttime=data&endtime=data&timestep=data&timeformat=sql&precision=full&separator=,&source=grid&origintime=" + dateString_origintime,
+            //graphLoad2 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SD-M:ECBSF::1:0:1:0" + SHensemble + ",SD-M:SMARTMET&starttime=202005020000&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
+            graphLoad2 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SD-M:ECBSF::1:0:1:0" + SHensemble + ",SD-M:SMARTMET&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
                 function (data) {
                     if (data.length > 0) {
                         gsh = new Dygraph(
