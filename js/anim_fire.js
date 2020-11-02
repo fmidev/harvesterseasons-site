@@ -18,10 +18,11 @@ var startDate = new Date(Date.UTC(startYear, startMonth-1, startDay));
 var dateString = startYear + '-' + startMonth + '-' + startDay + '/P7M';
 //var dateString = startYear + '-' + startMonth + '-' + startDay + 'T00:00:00Z/P7M';
 
-var dateString_origintime = startYear + startMonth + startDay + '0000';
+var dateString_origintime = startYear.toString() + startMonth + startDay + '0000';
 
 //console.debug(startDate)
 //console.debug(dateString)
+//console.debug(dateString_origintime)
 
 $.get('https://api.ipify.org/', function (data) {
     document.getElementById('userIP_en').value = data;
