@@ -581,12 +581,24 @@ function plotgeotiff() {
 /*             idxSummer = data[0][param2];
             idxWinter = Math.max(data[0][param3], data[0][param4]); */
 
-            // Use SMARTMET when available            
+/*             // Use SMARTMET when available            
             if (data[0][param5] !== null && (data[0][param6] !== null || data[0][param7] !== null)) {
                 idxSummer = data[0][param5];
                 idxWinter = Math.max(data[0][param6], data[0][param7]);
             } else {
                 idxSummer = data[0][param2];
+                idxWinter = Math.max(data[0][param3], data[0][param4]);
+            } */
+
+            // Use SMARTMET when available            
+            if (data[0][param5] !== null) {
+                idxSummer = data[0][param5];
+            } else {
+                idxSummer = data[0][param2];
+            }
+            if (data[0][param6] !== null || data[0][param7] !== null) {
+                idxWinter = Math.max(data[0][param6], data[0][param7]);
+            } else {
                 idxWinter = Math.max(data[0][param3], data[0][param4]);
             }
 
@@ -1311,9 +1323,10 @@ var dyGraphBOptions = {
     drawAxesAtZero: false,
     legend: 'always',
     ylabel: "Trafficability",
-    //labels: ["date", "Summer Forecast", "Winter Forecast", "Summer Observation", "Winter Observation"],
+    // labels: ["date", "Summer Forecast", "Winter Forecast", "Summer Observation", "Winter Observation"],
+    labels: ["date", "Summer Index", "Winter Index", "Summer 10 days", "Winter 10 days"],
 
-    labels: ["date", "Summer Index", "Winter Index"],
+    //labels: ["date", "Summer Index", "Winter Index"],
 
     //labels: ["date", "Harvestability Index"],
     //labels: ["date", "Harvestability Index SW", "Harvestability Index ST", "Harvestability Index HS"],
@@ -1321,12 +1334,16 @@ var dyGraphBOptions = {
     connectSeparatedPoints: true,
     series: {
         //"Harvestability Index": { fillGraph: true },
-        "Summer Index": { fillGraph: true },
-        "Winter Index": { fillGraph: true },
+/*         "Summer Index": { fillGraph: true },
+        "Winter Index": { fillGraph: true }, */
 /*         "Summer Forecast": { fillGraph: true, color: 'green' },
         "Winter Forecast": { fillGraph: true, color: 'rgb(0,0,150)' },
         "Summer Observation": { fillGraph: true, strokeWidth: 3, color: 'rgb(75,75,75)' },
         "Winter Observation": { fillGraph: true, strokeWidth: 3, color: 'rgb(150,0,0)' }, */
+        "Summer Index": { fillGraph: true, color: 'green' },
+        "Winter Index": { fillGraph: true, color: 'rgb(0,0,150)' },
+        "Summer 10 days": { fillGraph: true, strokeWidth: 3, color: 'rgb(75,75,75)' },
+        "Winter 10 days": { fillGraph: true, strokeWidth: 3, color: 'rgb(150,0,0)' },
     },
     axes: {
         y: { 
@@ -1531,7 +1548,7 @@ function drawtimeseries() {
                     k++;
                 }
             } */
-            for (i = 0, k = 0; i < data.length; i++) {
+/*             for (i = 0, k = 0; i < data.length; i++) {
                 // Use SMARTMET when available
                 if (data[i][param5] !== null && (data[i][param6] !== null || data[i][param7] !== null)) {
                     graphdata[k] = [new Date(data[i][param1]), data[i][param5], Math.max(data[i][param6], data[i][param7])];
@@ -1540,6 +1557,75 @@ function drawtimeseries() {
                     graphdata[k] = [new Date(data[i][param1]), data[i][param2], Math.max(data[i][param3], data[i][param4])];
                     k++;
                 }
+            } */
+/*             for (i = 0, k = 0; i < data.length; i++) {
+                if ((data[i][param3] !== null || data[i][param4] !== null) && (data[i][param6] !== null || data[i][param7] !== null)) {
+                    graphdata[k] = [new Date(data[i][param1]), data[i][param2], Math.max(data[i][param3], data[i][param4]), data[i][param5], Math.max(data[i][param6], data[i][param7])];
+                    k++;
+                } else if (data[i][param3] !== null || data[i][param4] !== null) {
+                    graphdata[k] = [new Date(data[i][param1]), data[i][param2], Math.max(data[i][param3], data[i][param4]), data[i][param5], 'nan'];
+                    k++;
+                } else if (data[i][param6] !== null || data[i][param7] !== null) {
+                    graphdata[k] = [new Date(data[i][param1]), data[i][param2], 'nan', data[i][param5], Math.max(data[i][param6], data[i][param7])];
+                    k++;
+                } else {
+                    graphdata[k] = [new Date(data[i][param1]), data[i][param2], 'nan', data[i][param5], 'nan'];
+                    k++;
+                }
+            } */
+/*             for (i = 0, k = 0; i < data.length; i++) {
+                if ((data[i][param2] !== null && (data[i][param3] !== null || data[i][param4] !== null)) 
+                    && (data[i][param5] !== null && (data[i][param6] !== null || data[i][param7] !== null))) {
+                    graphdata[k] = [new Date(data[i][param1]), data[i][param2], Math.max(data[i][param3], data[i][param4]), data[i][param5], Math.max(data[i][param6], data[i][param7])];
+                    k++;
+                } else if (data[i][param2] !== null && (data[i][param3] !== null || data[i][param4] !== null)) {
+                    graphdata[k] = [new Date(data[i][param1]), data[i][param2], Math.max(data[i][param3], data[i][param4]), 'nan', 'nan'];
+                    k++;
+                } else if (data[i][param5] !== null && (data[i][param6] !== null || data[i][param7] !== null)) {
+                    graphdata[k] = [new Date(data[i][param1]), 'nan', 'nan', data[i][param5], Math.max(data[i][param6], data[i][param7])];
+                    k++;
+                }
+            } */
+/*             for (i = 0, k = 0; i < data.length; i++) {
+                if ((data[i][param2] !== null && (data[i][param3] !== null || data[i][param4] !== null)) 
+                    && (data[i][param5] !== null && (data[i][param6] !== null || data[i][param7] !== null))) {
+                    graphdata[k] = [new Date(data[i][param1]), data[i][param2], Math.max(data[i][param3], data[i][param4]), data[i][param5], Math.max(data[i][param6], data[i][param7])];
+                    k++;
+                } else if (data[i][param2] !== null && (data[i][param3] !== null || data[i][param4] !== null)
+                    && (data[i][param5] !== null)) {
+                    graphdata[k] = [new Date(data[i][param1]), data[i][param2], Math.max(data[i][param3], data[i][param4]), data[i][param5], 'nan'];
+                    k++;
+                } else if (data[i][param2] !== null && (data[i][param3] !== null || data[i][param4] !== null)
+                    && (data[i][param6] !== null || data[i][param7] !== null)) {
+                    graphdata[k] = [new Date(data[i][param1]), data[i][param2], Math.max(data[i][param3], data[i][param4]), 'nan', Math.max(data[i][param6], data[i][param7])];
+                    k++;
+                } else if (data[i][param2] !== null && (data[i][param3] !== null || data[i][param4] !== null)) {
+                    graphdata[k] = [new Date(data[i][param1]), data[i][param2], Math.max(data[i][param3], data[i][param4]), 'nan', 'nan'];
+                    k++;
+                } else if (data[i][param5] !== null && (data[i][param6] !== null || data[i][param7] !== null)) {
+                    graphdata[k] = [new Date(data[i][param1]), 'nan', 'nan', data[i][param5], Math.max(data[i][param6], data[i][param7])];
+                    k++;
+                }
+            } */
+            for (i = 0, k = 0; i < data.length; i++) {
+                var summer1, summer2, winter1, winter2;
+
+                if (data[i][param2] !== null) { summer1 = data[i][param2]; } 
+                else { summer1 = 'nan'; }
+
+                if (data[i][param3] !== null || data[i][param4] !== null) { winter1 = Math.max(data[i][param3], data[i][param4]); } 
+                else { winter1 = 'nan'; }
+
+                if (data[i][param5] !== null) { summer2 = data[i][param5]; } 
+                else { summer2 = 'nan'; }
+
+                if (data[i][param6] !== null || data[i][param7] !== null) { winter2 = Math.max(data[i][param6], data[i][param7]); } 
+                else { winter2 = 'nan'; }
+
+                if (summer1 !== 'nan' || winter1 !== 'nan' || summer2 !== 'nan' || winter2 !== 'nan') { 
+                    graphdata[k] = [new Date(data[i][param1]), summer1, winter1, summer2, winter2];
+                    k++;
+                }             
             }
 
             if (!dateFixed && data.length > 0) {

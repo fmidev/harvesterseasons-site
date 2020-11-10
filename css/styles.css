@@ -25,16 +25,17 @@ header{
 }
 
 #labelsB {
-    position: absolute;
+    /* position: absolute; */
     /*margin-left: 25px;*/
-    margin-left: 82px;
+    /* margin-left: 82px; */
     font-size: 11px;
     z-index: auto;
     /*width: 90%;*/
     /*height: 28px;
     line-height: 28px;*/
-    margin-top: -18px;
-    text-align: left;
+    /* margin-top: -18px; */
+    /* text-align: left; */
+    text-align: center;
 }
 
 #titleB {
