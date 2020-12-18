@@ -18,7 +18,7 @@ var startDate = new Date(Date.UTC(startYear, startMonth-1, startDay));
 var dateString = startYear + '-' + startMonth + '-' + startDay + '/P7M';
 //var dateString = startYear + '-' + startMonth + '-' + startDay + 'T00:00:00Z/P7M';
 
-var dateString_origintime = startYear + startMonth + startDay + '0000';
+var dateString_origintime = startYear.toString() + startMonth + startDay + '0000';
 
 //console.debug(startDate)
 //console.debug(dateString)
@@ -72,7 +72,7 @@ var thunderforest = L.tileLayer('https://{s}.tile.thunderforest.com/landscape/{z
     }).addTo(map);
 
 // load a tile layer
-var maastokartta = L.tileLayer('https://avoin-karttakuva.maanmittauslaitos.fi/avoin/wmts/1.0.0/maastokartta/default/WGS84_Pseudo-Mercator/{z}/{y}/{x}.png',
+var maastokartta = L.tileLayer('https://avoin-karttakuva.maanmittauslaitos.fi/avoin/wmts/1.0.0/maastokartta/default/WGS84_Pseudo-Mercator/{z}/{y}/{x}.png?api-key=45deef08-fd2f-42ae-9953-5550fff43b17',
 {
     attribution: 'Tiles by <a href="https://www.maanmittauslaitos.fi/">Maanmittauslaitos</a> Data by <a href="https://www.fmi.fi/">Finnish Meteorological Institute</a>',
     maxZoom: 16,
@@ -81,7 +81,7 @@ var maastokartta = L.tileLayer('https://avoin-karttakuva.maanmittauslaitos.fi/av
 
 
 // load a tile layer
-var taustakartta = L.tileLayer('https://avoin-karttakuva.maanmittauslaitos.fi/avoin/wmts/1.0.0/taustakartta/default/WGS84_Pseudo-Mercator/{z}/{y}/{x}.png',
+var taustakartta = L.tileLayer('https://avoin-karttakuva.maanmittauslaitos.fi/avoin/wmts/1.0.0/taustakartta/default/WGS84_Pseudo-Mercator/{z}/{y}/{x}.png?api-key=45deef08-fd2f-42ae-9953-5550fff43b17',
 {
     attribution: 'Tiles by <a href="https://www.maanmittauslaitos.fi/">Maanmittauslaitos</a> Data by <a href="https://www.fmi.fi/">Finnish Meteorological Institute</a>',
     maxZoom: 16,
@@ -89,7 +89,7 @@ var taustakartta = L.tileLayer('https://avoin-karttakuva.maanmittauslaitos.fi/av
 })//.addTo(map);
 
 // load a tile layer
-L.tileLayer('https://avoin-karttakuva.maanmittauslaitos.fi/avoin/wmts/1.0.0/kiinteistojaotus/default/WGS84_Pseudo-Mercator/{z}/{y}/{x}.png',
+L.tileLayer('https://avoin-karttakuva.maanmittauslaitos.fi/avoin/wmts/1.0.0/kiinteistojaotus/default/WGS84_Pseudo-Mercator/{z}/{y}/{x}.png?api-key=45deef08-fd2f-42ae-9953-5550fff43b17',
     {
         maxZoom: 16,
         minZoom: 13,
@@ -470,9 +470,15 @@ function changedynamic() {
 
 
 param1="utctime";
-param2="HARVIDX{0.4;SOILWET1-M:ECSF:5014:14:7:3:1-50;SOILWET1-M:ECSF:5014:14:7:1:0}";
-param3="HARVIDX{273;TG-K:ECSF:5014:14:7:3:1-50;TG-K:ECSF:5014:14:7:1:0}";
-param4="ensover{0.4;0.9;SD-M:ECSF:5014:1:0:3:1-50;SD-M:ECSF:5014:1:0:1:0}";
+// param2="HARVIDX{0.4;SOILWET1-M:ECSF:5014:14:7:3:1-50;SOILWET1-M:ECSF:5014:14:7:1:0}";
+// param3="HARVIDX{273;TG-K:ECSF:5014:14:7:3:1-50;TG-K:ECSF:5014:14:7:1:0}";
+// param4="ensover{0.4;0.9;SD-M:ECSF:5014:1:0:3:1-50;SD-M:ECSF:5014:1:0:1:0}";
+
+const param2 = "HARVIDX{0.4;SOILWET1-M:ECSF:5014}";
+const param3 = "HARVIDX{272.45;TG-K:ECSF:5014}";
+//const param4 = "ensover{0.4;0.9;SD-M:ECSF::1:0:3:1-50;SD-M:ECSF::1:0:1:0}";
+//const param4 = "ensover{0.4;0.9;HSNOW-M:ECSF:5014:1:0:3:1-50;HSNOW-M:ECSF:5014:1:0:1:0}";
+const param4="ensover{0.4;0.9;SD-M:ECSF:5014}";
 
 var harvLayer;
 

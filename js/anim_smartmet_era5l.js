@@ -72,7 +72,7 @@ var thunderforest = L.tileLayer('https://{s}.tile.thunderforest.com/landscape/{z
     })//.addTo(map);
 
 // load a tile layer
-var maastokartta = L.tileLayer('https://avoin-karttakuva.maanmittauslaitos.fi/avoin/wmts/1.0.0/maastokartta/default/WGS84_Pseudo-Mercator/{z}/{y}/{x}.png',
+var maastokartta = L.tileLayer('https://avoin-karttakuva.maanmittauslaitos.fi/avoin/wmts/1.0.0/maastokartta/default/WGS84_Pseudo-Mercator/{z}/{y}/{x}.png?api-key=45deef08-fd2f-42ae-9953-5550fff43b17',
 {
     attribution: 'Tiles by <a href="https://www.maanmittauslaitos.fi/">Maanmittauslaitos</a> Data by <a href="https://www.fmi.fi/">Finnish Meteorological Institute</a>',
     maxZoom: 16,
@@ -81,7 +81,7 @@ var maastokartta = L.tileLayer('https://avoin-karttakuva.maanmittauslaitos.fi/av
 
 
 // load a tile layer
-var taustakartta = L.tileLayer('https://avoin-karttakuva.maanmittauslaitos.fi/avoin/wmts/1.0.0/taustakartta/default/WGS84_Pseudo-Mercator/{z}/{y}/{x}.png',
+var taustakartta = L.tileLayer('https://avoin-karttakuva.maanmittauslaitos.fi/avoin/wmts/1.0.0/taustakartta/default/WGS84_Pseudo-Mercator/{z}/{y}/{x}.png?api-key=45deef08-fd2f-42ae-9953-5550fff43b17',
 {
     attribution: 'Tiles by <a href="https://www.maanmittauslaitos.fi/">Maanmittauslaitos</a> Data by <a href="https://www.fmi.fi/">Finnish Meteorological Institute</a>',
     maxZoom: 16,
@@ -89,7 +89,7 @@ var taustakartta = L.tileLayer('https://avoin-karttakuva.maanmittauslaitos.fi/av
 })//.addTo(map);
 
 // load a tile layer
-L.tileLayer('https://avoin-karttakuva.maanmittauslaitos.fi/avoin/wmts/1.0.0/kiinteistojaotus/default/WGS84_Pseudo-Mercator/{z}/{y}/{x}.png',
+L.tileLayer('https://avoin-karttakuva.maanmittauslaitos.fi/avoin/wmts/1.0.0/kiinteistojaotus/default/WGS84_Pseudo-Mercator/{z}/{y}/{x}.png?api-key=45deef08-fd2f-42ae-9953-5550fff43b17',
     {
         maxZoom: 16,
         minZoom: 13,
@@ -1489,12 +1489,12 @@ var center = L.circle(null, {
 var endDate = new Date();
 
 if (endDate.getUTCDate() < 15) {
-    endDate.setMonth(endDate.getUTCMonth() + 7);
+    endDate.setMonth(endDate.getUTCMonth() + 6);
 } else {
-    endDate.setMonth(endDate.getUTCMonth() + 8);
+    endDate.setMonth(endDate.getUTCMonth() + 7);
 }
 
-var endMonth = endDate.getUTCMonth();
+var endMonth = endDate.getUTCMonth() + 1;
 if (endMonth < 10) {
     endMonth = '0' + endMonth;
 }
@@ -1502,21 +1502,17 @@ var dateString_ecbsf = endDate.getUTCFullYear().toString() + endMonth + '040000'
 
 
 var startDate_timeseries = new Date();
-//startDate_timeseries.setMonth(startDate_timeseries.getUTCMonth() + 1);
 
 if (startDate_timeseries.getUTCDate() < 15) {
-    startDate_timeseries.setMonth(startDate_timeseries.getUTCMonth() + 0);
-} else {
-    startDate_timeseries.setMonth(startDate_timeseries.getUTCMonth() + 1);
-}
+    startDate_timeseries.setMonth(startDate_timeseries.getUTCMonth() - 1);
+} 
 
-var startMonth_timeseries = startDate_timeseries.getUTCMonth();
+var startMonth_timeseries = startDate_timeseries.getUTCMonth() + 1;
 if (startMonth_timeseries < 10) {
     startMonth_timeseries = '0' + startMonth_timeseries;
 }
 var dateString_timeseries = startDate_timeseries.getUTCFullYear().toString() + startMonth_timeseries + '020000';
 
-//console.debug(dateString_timeseries)
 
 var dateFixed = false;
 

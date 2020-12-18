@@ -15,9 +15,9 @@ var startDate = new Date(Date.UTC(startYear, startMonth - 1, startDay));
 var dateString = startYear + '-' + startMonth + '-' + startDay + '/P7M';
 //var dateString = startYear + '-' + startMonth + '-' + startDay + 'T00:00:00Z/P7M';
 
-var dateString_era5 = startYear + startMonth + startDay + '0000';
+var dateString_era5 = startYear.toString() + startMonth + startDay + '0000';
 
-var endDate = new Date();
+/* var endDate = new Date();
 endDate.setMonth(endDate.getUTCMonth() + 8);
 
 var endMonth = endDate.getUTCMonth();
@@ -25,7 +25,22 @@ if (endMonth < 10) {
     endMonth = '0' + endMonth;
 }
 
-var dateString_ecbsf = endDate.getUTCFullYear() + endMonth + '040000';
+var dateString_ecbsf = endDate.getUTCFullYear() + endMonth + '040000'; */
+
+var endDate = new Date();
+
+if (endDate.getUTCDate() < 15) {
+    endDate.setMonth(endDate.getUTCMonth() + 6);
+} else {
+    endDate.setMonth(endDate.getUTCMonth() + 7);
+}
+
+var endMonth = endDate.getUTCMonth() + 1;
+if (endMonth < 10) {
+    endMonth = '0' + endMonth;
+}
+var dateString_ecbsf = endDate.getUTCFullYear().toString() + endMonth + '040000';
+
 
 
 //console.debug(startDate)
