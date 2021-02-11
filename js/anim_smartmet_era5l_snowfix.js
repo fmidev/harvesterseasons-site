@@ -1434,15 +1434,15 @@ var dyGraphSTOptions = {
     series: labelstxt,
     labelsDiv: "labels",
     axes: {
-        y: { valueRange: [-30, 31] },
+        y: { valueRange: [-20, 41] },
     },
     underlayCallback: timeseriedateline,
     //clickCallback: timeserieclick,
     animatedZooms: true,
 }
 
-// var SHensemble = "";
-var SHensemble = "SD-M:ECBSF::1:0:1:0";
+
+var SHensemble = "";
 var label = ["date", "SH-0"];
 var labelstxt = {'SH-0': { fillGraph: false }};
 for (i = 1; i <= perturbations; i = i + 1) {
@@ -1452,21 +1452,6 @@ for (i = 1; i <= perturbations; i = i + 1) {
 }
 label[perturbations+2] = 'SH-FMI';
 labelstxt[label[perturbations+2]]= { fillGraph: false, strokeWidth: 3, color: 'red' };
-
-/* // Test version with double ensembles
-var SHensemble = "SD-M:ECBSF::1:0:1:0";
-var label = ["date", "SH-0"];
-label[perturbations+2] = ["SH-0"];
-var labelstxt = {'SH-0': { fillGraph: false }};
-for (i = 1; i <= perturbations; i = i + 1) {
-    label[i+1] = 'SH-' + i ;
-    label[i+2+perturbations] = 'SH-' + i ;    
-    labelstxt[label[i+1]]= { fillGraph: false };
-    labelstxt[label[i+2+perturbations]]= { fillGraph: false };
-    SHensemble += ",SD-M:ECBSF::1:0:3:" + i ;
-}
-label[perturbations*2+3] = 'SH-FMI';
-labelstxt[label[perturbations*2+3]]= { fillGraph: false, strokeWidth: 3, color: 'red' }; */
 
 var dyGraphSHOptions = {
     drawAxesAtZero: true,
@@ -1548,11 +1533,7 @@ var dateString_timeseries = startDate_timeseries.getUTCFullYear().toString() + s
 
 
 var startDate_smartobs = new Date();
-if (startDate_smartobs.getUTCHours() >= 4) {
-    startDate_smartobs.setDate(startDate_smartobs.getUTCDate() - 1);
-} else {
-    startDate_smartobs.setDate(startDate_smartobs.getUTCDate() - 2);
-}
+startDate_smartobs.setDate(startDate_smartobs.getUTCDate() - 1);
 var startMonth_smartobs = startDate_smartobs.getUTCMonth() + 1;
 if (startMonth_smartobs < 10) {
     startMonth_smartobs = '0' + startMonth_smartobs;
@@ -1573,14 +1554,9 @@ for (i = 1; i <= perturbations; i = i + 1) {
     SHensemble2list[i] = "DIFF{SD-M:ECBSF::1:0:3:" + i + ";SD-M:SMARTMET:5027}";
 } */
 
-var SHensemblelist = ["SD-M:ECBSF::1:0:1:0"];
-
 var SHensemble2 = "DIFF{SD-M:ECBSF::1:0:1:0;HSNOW-M:SMARTOBS:13:4}";
 var SHensemble2list = ["DIFF{SD-M:ECBSF::1:0:1:0;HSNOW-M:SMARTOBS:13:4}"];
 for (i = 1; i <= perturbations; i = i + 1) {
-    
-    SHensemblelist[i] = "SD-M:ECBSF::1:0:3:" + i ;
-
     SHensemble2 += ",DIFF{SD-M:ECBSF::1:0:3:" + i + ";HSNOW-M:SMARTOBS:13:4}";
     SHensemble2list[i] = "DIFF{SD-M:ECBSF::1:0:3:" + i + ";HSNOW-M:SMARTOBS:13:4}";
 }
@@ -1773,8 +1749,7 @@ function drawtimeseries() {
             if (!inFinland(lat, lon)) {
                 //graphLoad2 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SD-M:ECBSF::1:0:1:0" + SHensemble + "&starttime=data&endtime=data&timestep=data&timeformat=sql&precision=full&separator=,&source=grid&origintime=" + dateString_origintime,
                 //graphLoad2 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SD-M:ECBSF::1:0:1:0" + SHensemble + ",SD-M:SMARTMET&starttime=202005020000&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
-                // graphLoad2 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SD-M:ECBSF::1:0:1:0" + SHensemble + ",SD-M:SMARTMET:5027&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
-                graphLoad2 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + SHensemble + ",SD-M:SMARTMET:5027&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
+                graphLoad2 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SD-M:ECBSF::1:0:1:0" + SHensemble + ",SD-M:SMARTMET:5027&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
                     function (data) {
                         if (data.length > 0) {
                             gsh = new Dygraph(
@@ -1812,68 +1787,19 @@ function drawtimeseries() {
                     // console.debug(data2[0][SHensemble2list[0]])
 
                     var SHensemble3 = "DIFF{SD-M:ECBSF::1:0:1:0;" + data2[0][SHensemble2list[0]] + "}";
-                    var SHensemble3list = ["DIFF{SD-M:ECBSF::1:0:1:0;" + data2[0][SHensemble2list[0]] + "}"];
                     for (i = 1; i <= perturbations; i = i + 1) {
                         SHensemble3 += ",DIFF{SD-M:ECBSF::1:0:3:" + i + ";" + data2[0][SHensemble2list[i]] + "}";
-                        SHensemble3list[i] = "DIFF{SD-M:ECBSF::1:0:3:" + i + ";" + data2[0][SHensemble2list[i]] + "}";
                     }
 
                     // graphLoad2 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SD-M:ECBSF::1:0:1:0" + SHensemble + ",SD-M:SMARTMET:5027&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
                     // graphLoad2 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + SHensemble3 + ",SD-M:SMARTMET:5027&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
                     // graphLoad2 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + SHensemble3 + ",HSNOW-M:SMARTOBS:13:4&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
-                    // graphLoad2 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + SHensemble3 + ",HSNOW-M:SMARTOBS:13:4&starttime=" + dateString_timeseries + "&endtime=202105310000&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
-/*                     graphLoad2 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + SHensemble + "," + SHensemble3 + ",HSNOW-M:SMARTOBS:13:4&starttime=" + dateString_timeseries + "&endtime=202105310000&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
+                    graphLoad2 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + SHensemble3 + ",HSNOW-M:SMARTOBS:13:4&starttime=" + dateString_timeseries + "&endtime=202105310000&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
                         function (data) {
                             if (data.length > 0) {
                                 gsh = new Dygraph(
                                     document.getElementById("graphsh"),
                                     data,
-                                    dyGraphSHOptions
-                                );
-                                if (typeof gsw !== 'undefined' && typeof gst !== 'undefined' && typeof gsh !== 'undefined') {
-                                    var sync = Dygraph.synchronize(gsw, gst, gsh, {
-                                        selection: false,
-                                        zoom: true,
-                                        range: false
-                                    });
-                                    gsw.updateOptions({dateWindow: gsw.xAxisExtremes()})                    
-                                }
-                            } else {
-                                document.getElementById("graphsh").innerHTML = "Error loading data";
-                                document.getElementById("graphsh").style = "line-height: 240px;";
-                            }
-                        }); */
-
-                        // Version json
-                        // graphLoad2 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + SHensemble + "," + SHensemble3 + ",HSNOW-M:SMARTOBS:13:4&starttime=" + dateString_timeseries + "&endtime=202105310000&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
-                        graphLoad2 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + SHensemble + "," + SHensemble3 + ",HSNOW-M:SMARTOBS:13:4&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=xml&precision=full&source=grid&tz=utc&format=json",
-                        function (data) {
-                            if (data.length > 0) {
-
-                                var data3 = [];
-                                for (k = 0; k < data.length; k++) {
-                                    // console.debug(data[k]["utctime"])
-                                    data3[k] = [];
-                                    data3[k][0] = new Date(data[k]["utctime"]);
-                                    for (i = 1; i <= perturbations+1; i = i + 1) {
-                                        if (data3[k][0] < startDate_smartobs-24*60*60000) {
-                                            // Remove seasonal forecast before startDate_smartobs-1day
-                                            data3[k][i] = "nan";
-                                        } else if (data[k][SHensemblelist[i]] == 0 || data[k][SHensemble3list[i]] < 0) {
-                                            // Set SD to 0 if non-scaled SD is 0 or scaled < 0
-                                            data3[k][i] = 0;
-                                        } else {
-                                            data3[k][i]=data[k][SHensemble3list[i]];
-                                        }
-                                    }
-                                    data3[k][perturbations+2]=data[k]["HSNOW-M:SMARTOBS:13:4"];
-                                }
-                                // console.debug(data3)
-                                // console.debug(startDate_smartobs)
-
-                                gsh = new Dygraph(
-                                    document.getElementById("graphsh"),
-                                    data3,
                                     dyGraphSHOptions
                                 );
                                 if (typeof gsw !== 'undefined' && typeof gst !== 'undefined' && typeof gsh !== 'undefined') {
