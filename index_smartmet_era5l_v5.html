@@ -15,7 +15,7 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.4.2/Control.FullScreen.min.css" />
     <link rel="stylesheet" href="js/leaflet.timedimension.control.min.css" />
-    <link rel="stylesheet" href="css/styles_altcolors.css" />
+    <link rel="stylesheet" href="css/styles.css" />
 </head>
 
 <body>
@@ -357,6 +357,50 @@
         <div id="titleB"></div>
         <div id="labelsB"></div>
         <div id="graphB"></div>
+        <!--
+        <div id="content-select">
+            <table id="set-opacity">
+                <tr>
+                    <td>
+                        <div id="opacity">Opacity:</div>
+                    </td>
+                    <td><input type="range" min="1" max="100" value="100" id="opacity-range"></td>
+                    <td>
+                        <div id="opacity-value"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        -->
+        <!-- <div id="set-date">
+            <div id="date-value-control">            
+                <div id="play-button" style="text-align:center; vertical-align:middle; width: 50px; display: inline-block;">
+                    <input id="playbutton" type="button" value="Play" onclick="playbuttonfunc()">
+                </div>
+                <div id="date-value" style="text-align:center; vertical-align:middle; min-width: 100px; display: inline-block;"></div>
+            </div>
+            <div id="date-control">
+                <input id="test" type="button" value="<<"  
+                    onmousedown="datebackscrollfast()" onmouseup="datestopscrollfast()" onmouseleave="datestopscrollfast()" 
+                    ontouchstart="datebackscrollfast()" ontouchend="datestopscrollfast()" ontouchcancel="datestopscrollfast()">
+                <input type="button" value="<" onclick="dateback()" 
+                    onmousedown="datebackscroll()" onmouseup="datestop()" onmouseleave="datestop()" 
+                    ontouchstart="datebackscroll()" ontouchend="datestop()" ontouchcancel="datestop()">
+                <input type="range" min="0" max="180" value="0" id="date-range" class="slider">
+                <input type="button" value=">" onclick="dateforward()" 
+                    onmousedown="dateforwardscroll()" onmouseup="datestop()" onmouseleave="datestop()" 
+                    ontouchstart="dateforwardscroll()" ontouchend="datestop()" ontouchcancel="datestop()">
+                <input type="button" value=">>"  
+                    onmousedown="dateforwardscrollfast()" onmouseup="datestopscrollfast()" onmouseleave="datestopscrollfast()" 
+                    ontouchstart="dateforwardscrollfast()" ontouchend="datestopscrollfast()" ontouchcancel="datestopscrollfast()">
+            </div>
+            <div id="dynamic-control" style="padding-left: 15px;">
+                <label id="dynamic">
+                    Trafficability forecast
+                    <input type="checkbox" id="dynamic-checkbox" onchange="changedynamic()">
+                </label>
+            </div>
+        </div> -->
         <div id="set-date">
             <div id="dynamic-control">
                 <label id="dynamic">
@@ -399,34 +443,11 @@
                 <li><span class="winter"></span> Winter (BAD)</li>
             </ul>
         </div>
-<!--         <div id="content-select">
-            <table id="set-opacity">
-                <tr>
-                    <td>
-                        <div id="opacity">Opacity:</div>
-                    </td>
-                    <td><input type="range" min="1" max="100" value="70" id="opacity-range"></td>
-                    <td>
-                        <div id="opacity-value"></div>
-                    </td>
-                </tr>
-            </table>
-        </div> -->
-        <div id="set-opacity" style="padding-left: 15%;">
-            <div id="opacity">
-                Opacity:
-            </div>
-            <div id="opacity-slider">
-                <input type="range" min="1" max="100" value="70" id="opacity-range">
-            </div>
-            <div id="opacity-value">
-            </div>
-            <div id="altcolors" style="margin-bottom: 15px; padding-right: 15px; float: right;">
-                <input type="button" value="Default Colors" onclick="defcolors()">
-            </div>
+        <div id="altcolors" style="margin-bottom: 15px; padding-right: 15px; text-align: right; height: 30px">
+<!--             <a href="index_smartmet_era5l_altcolors.html">Alternative Colors</a>
+ -->        
+        <input type="button" value="Alternative Colors" onclick="altcolors()">
         </div>
-        
-
         <div id="labels"></div>
         <div id="graphsw"></div>
         <div id="graphst"></div>
@@ -472,7 +493,7 @@
     <script type="text/javascript" src="js/leaflet.permalink.js"></script>
     <script type="text/javascript" src="js/plotgeotiff_era5l.js"></script>
     <script type="text/javascript" src="js/drawtimeseries_era5l.js"></script>
-    <script type="text/javascript" src="js/anim_smartmet_era5l_altcolors.js"></script>
+    <script type="text/javascript" src="js/anim_smartmet_era5l_v5.js"></script>
 </body>
 
 </html>

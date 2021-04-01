@@ -15,7 +15,7 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.4.2/Control.FullScreen.min.css" />
     <link rel="stylesheet" href="js/leaflet.timedimension.control.min.css" />
-    <link rel="stylesheet" href="css/styles_altcolors.css" />
+    <link rel="stylesheet" href="css/styles.css" />
 </head>
 
 <body>
@@ -357,6 +357,21 @@
         <div id="titleB"></div>
         <div id="labelsB"></div>
         <div id="graphB"></div>
+        <!--
+        <div id="content-select">
+            <table id="set-opacity">
+                <tr>
+                    <td>
+                        <div id="opacity">Opacity:</div>
+                    </td>
+                    <td><input type="range" min="1" max="100" value="100" id="opacity-range"></td>
+                    <td>
+                        <div id="opacity-value"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        -->
         <div id="set-date">
             <div id="dynamic-control">
                 <label id="dynamic">
@@ -399,34 +414,6 @@
                 <li><span class="winter"></span> Winter (BAD)</li>
             </ul>
         </div>
-<!--         <div id="content-select">
-            <table id="set-opacity">
-                <tr>
-                    <td>
-                        <div id="opacity">Opacity:</div>
-                    </td>
-                    <td><input type="range" min="1" max="100" value="70" id="opacity-range"></td>
-                    <td>
-                        <div id="opacity-value"></div>
-                    </td>
-                </tr>
-            </table>
-        </div> -->
-        <div id="set-opacity" style="padding-left: 15%;">
-            <div id="opacity">
-                Opacity:
-            </div>
-            <div id="opacity-slider">
-                <input type="range" min="1" max="100" value="70" id="opacity-range">
-            </div>
-            <div id="opacity-value">
-            </div>
-            <div id="altcolors" style="margin-bottom: 15px; padding-right: 15px; float: right;">
-                <input type="button" value="Default Colors" onclick="defcolors()">
-            </div>
-        </div>
-        
-
         <div id="labels"></div>
         <div id="graphsw"></div>
         <div id="graphst"></div>
@@ -470,9 +457,7 @@
     <script type="text/javascript" src="js/L.Control.Locate.min.js"
         charset="utf-8"></script>
     <script type="text/javascript" src="js/leaflet.permalink.js"></script>
-    <script type="text/javascript" src="js/plotgeotiff_era5l.js"></script>
-    <script type="text/javascript" src="js/drawtimeseries_era5l.js"></script>
-    <script type="text/javascript" src="js/anim_smartmet_era5l_altcolors.js"></script>
+    <script type="text/javascript" src="js/anim_smartmet_era5_snowfix.js"></script>
 </body>
 
 </html>

@@ -146,12 +146,12 @@ var dyGraphBOptions_ecsf = {
       }, */
 }
 
-var dyGraphBOptions_ecbsf = {
+var dyGraphBOptions_ECB2SF = {
     drawAxesAtZero: false,
     legend: 'always',
     //ylabel: "Trafficability",
     labels: ["date", "Summer Index", "Winter Index"],
-    labelsDiv: "labelsB_ecbsf",
+    labelsDiv: "labelsB_ECB2SF",
     connectSeparatedPoints: true,
     series: {
         "Summer Index": { fillGraph: true },
@@ -204,7 +204,7 @@ var labelstxt = {'SW-0': { fillGraph: true }};
 for (i = 1; i <= perturbations; i = i + 1) {
     label[i+1] = 'SW-' + i ;
     labelstxt[label[i]]= { fillGraph: false };
-    SWensemble += ",SOILWET1-M:ECBSF::9:7:3:" + i ;
+    SWensemble += ",SOILWET1-M:ECB2SF::9:7:3:" + i ;
 }
 var dyGraphSWOptions = {
     legend: "always",
@@ -225,7 +225,7 @@ var TGKensemble = "";
 for (i = 1; i <= perturbations; i = i + 1) {
     label[i+1] = 'ST-' + i ;
     labelstxt[label[i]]= { fillGraph: false };
-    TGKensemble = TGKensemble + ",K2C{TSOIL-K:ECBSF::9:7:3:" + i + "}";
+    TGKensemble = TGKensemble + ",K2C{TSOIL-K:ECB2SF::9:7:3:" + i + "}";
 }
 var dyGraphSTOptions = {
     legend: 'always',
@@ -246,7 +246,7 @@ var labelstxt = {'SH-0': { fillGraph: true }};
 for (i = 1; i <= perturbations; i = i + 1) {
     label[i+1] = 'SH-' + i ;
     labelstxt[label[i]]= { fillGraph: false };
-    SHensemble += ",SD-M:ECBSF::1:0:3:" + i ;
+    SHensemble += ",SD-M:ECB2SF::1:0:3:" + i ;
 }
 var dyGraphSHOptions = {
     drawAxesAtZero: true,
@@ -275,7 +275,7 @@ var dyGraphSHOptions = {
 
 //var dateFixed = false;
 
-var graphLoad_era5, graphLoad_fmi, graphLoad_ecsf, graphLoad_ecbsf, graphLoad_ecb2sf;
+var graphLoad_era5, graphLoad_fmi, graphLoad_ecsf, graphLoad_ECB2SF, graphLoad_ecb2sf;
 
 //console.debug(document.getElementById("latitude").value)
 
@@ -294,24 +294,24 @@ function drawtimeseries() {
     drawtimeseries_era5();
     drawtimeseries_fmi();
     drawtimeseries_ecsf();
-    drawtimeseries_ecbsf();
+    drawtimeseries_ECB2SF();
     drawtimeseries_ecb2sf();
 }
 
 // var graphLoad, graphTimer;
 // var graphLoad2, graphLoad3, graphLoad4;
 
-function drawtimeseries_ecbsf() {
+function drawtimeseries_ECB2SF() {
 
-    document.getElementById("graphB_ecbsf").innerHTML = "Loading...";
-    document.getElementById("graphB_ecbsf").style = "line-height: 120px;";
+    document.getElementById("graphB_ECB2SF").innerHTML = "Loading...";
+    document.getElementById("graphB_ECB2SF").style = "line-height: 120px;";
 
     const param1 = "utctime";
-    const param2 = "HARVIDX{0.4;SOILWET1-M:ECBSF::9:7:3:1-50;SOILWET1-M:ECBSF::9:7:1:0}";
-    const param3 = "HARVIDX{273;TSOIL-K:ECBSF::9:7:3:1-50;TSOIL-K:ECBSF::9:7:1:0}";
-    const param4 = "ensover{0.4;0.9;SD-M:ECBSF::1:0:3:1-50;SD-M:ECBSF::1:0:1:0}";
+    const param2 = "HARVIDX{0.4;SOILWET1-M:ECB2SF::9:7:3:1-50;SOILWET1-M:ECB2SF::9:7:1:0}";
+    const param3 = "HARVIDX{273;TSOIL-K:ECB2SF::9:7:3:1-50;TSOIL-K:ECB2SF::9:7:1:0}";
+    const param4 = "ensover{0.4;0.9;SD-M:ECB2SF::1:0:3:1-50;SD-M:ECB2SF::1:0:1:0}";
 
-    graphLoad_ecbsf = $.getJSON("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + param1 + "," + param2 + "," + param3 + "," + param4 + "&starttime=data&endtime=data&timestep=data&format=json&source=grid&timeformat=xml",
+    graphLoad_ECB2SF = $.getJSON("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + param1 + "," + param2 + "," + param3 + "," + param4 + "&starttime=data&endtime=data&timestep=data&format=json&source=grid&timeformat=xml",
         function (data) {
             let graphdata = [];
 /*             for (i = 0; i < data.length; i++) {
@@ -325,31 +325,31 @@ function drawtimeseries_ecbsf() {
             }
 
             if (graphdata.length > 0) {
-                //console.debug(graphdata_ecbsf.length)
+                //console.debug(graphdata_ECB2SF.length)
                 //console.debug(param2)
                 //console.debug(data)
 
-                gB_ecbsf = new Dygraph(
-                    document.getElementById("graphB_ecbsf"),
+                gB_ECB2SF = new Dygraph(
+                    document.getElementById("graphB_ECB2SF"),
                     graphdata,
-                    dyGraphBOptions_ecbsf
+                    dyGraphBOptions_ECB2SF
                 );
-                document.getElementById("graphB_ecbsf").style = "line-height: 1;";
+                document.getElementById("graphB_ECB2SF").style = "line-height: 1;";
 
-                if (typeof gB_era5 !== 'undefined' && gB_fmi !== 'undefined' && typeof gB_ecsf !== 'undefined' && typeof gB_ecbsf !== 'undefined' && typeof gB_ecb2sf !== 'undefined') {
-                    var sync = Dygraph.synchronize(gB_era5, gB_fmi, gB_ecsf, gB_ecbsf, gB_ecb2sf);
-            //gB_era5.updateOptions({dateWindow: gB_ecbsf.xAxisExtremes()})                    
-                    gB_ecsf.updateOptions({dateWindow: gB_ecbsf.xAxisExtremes()})                    
+                if (typeof gB_era5 !== 'undefined' && gB_fmi !== 'undefined' && typeof gB_ecsf !== 'undefined' && typeof gB_ECB2SF !== 'undefined' && typeof gB_ecb2sf !== 'undefined') {
+                    var sync = Dygraph.synchronize(gB_era5, gB_fmi, gB_ecsf, gB_ECB2SF, gB_ecb2sf);
+            //gB_era5.updateOptions({dateWindow: gB_ECB2SF.xAxisExtremes()})                    
+                    gB_ecsf.updateOptions({dateWindow: gB_ECB2SF.xAxisExtremes()})                    
                 }
-                /* if (typeof gB_ecsf !== 'undefined' && typeof gB_ecbsf !== 'undefined') {
-                    var sync = Dygraph.synchronize(gB_ecsf, gB_ecbsf);
-                    gB_ecsf.updateOptions({dateWindow: gB_ecbsf.xAxisExtremes()})                    
+                /* if (typeof gB_ecsf !== 'undefined' && typeof gB_ECB2SF !== 'undefined') {
+                    var sync = Dygraph.synchronize(gB_ecsf, gB_ECB2SF);
+                    gB_ecsf.updateOptions({dateWindow: gB_ECB2SF.xAxisExtremes()})                    
                 } */
             } else {
-                document.getElementById("graphB_ecbsf").innerHTML = "Error loading data";
+                document.getElementById("graphB_ECB2SF").innerHTML = "Error loading data";
             }
 
-/*             graphLoad3 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SOILWET1-M:ECBSF::9:7:1:0" + SWensemble + "&starttime=data&endtime=data&timestep=data&timeformat=sql&precision=full&separator=,&source=grid",
+/*             graphLoad3 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SOILWET1-M:ECB2SF::9:7:1:0" + SWensemble + "&starttime=data&endtime=data&timestep=data&timeformat=sql&precision=full&separator=,&source=grid",
                 function (data) {
                     if (data.length > 0) {
                         gsw = new Dygraph(
@@ -363,7 +363,7 @@ function drawtimeseries_ecbsf() {
                     }
                 })
 
-            graphLoad4 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,K2C{TSOIL-K:ECBSF::9:7:1:0}" + TGKensemble + "&starttime=data&endtime=data&timestep=data&timeformat=sql&separator=,&precision=full&source=grid",
+            graphLoad4 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,K2C{TSOIL-K:ECB2SF::9:7:1:0}" + TGKensemble + "&starttime=data&endtime=data&timestep=data&timeformat=sql&separator=,&precision=full&source=grid",
                 function (data) {
                     if (data.length > 0) {
                         gst = new Dygraph(
@@ -377,7 +377,7 @@ function drawtimeseries_ecbsf() {
                     }
                 });
 
-            graphLoad2 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SD-M:ECBSF::1:0:1:0" + SHensemble + "&starttime=data&endtime=data&timestep=data&timeformat=sql&precision=full&separator=,&source=grid",
+            graphLoad2 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SD-M:ECB2SF::1:0:1:0" + SHensemble + "&starttime=data&endtime=data&timestep=data&timeformat=sql&precision=full&separator=,&source=grid",
                 function (data) {
                     if (data.length > 0) {
                         gsh = new Dygraph(
@@ -441,14 +441,14 @@ function drawtimeseries_ecsf() {
                 );
                 document.getElementById("graphB_ecsf").style = "line-height: 1;";
 
-                if (typeof gB_era5 !== 'undefined' && gB_fmi !== 'undefined' && typeof gB_ecsf !== 'undefined' && typeof gB_ecbsf !== 'undefined' && typeof gB_ecb2sf !== 'undefined') {
-                    var sync = Dygraph.synchronize(gB_era5, gB_fmi, gB_ecsf, gB_ecbsf, gB_ecb2sf);
-            //gB_era5.updateOptions({dateWindow: gB_ecbsf.xAxisExtremes()})                    
-                    gB_ecsf.updateOptions({dateWindow: gB_ecbsf.xAxisExtremes()})                    
+                if (typeof gB_era5 !== 'undefined' && gB_fmi !== 'undefined' && typeof gB_ecsf !== 'undefined' && typeof gB_ECB2SF !== 'undefined' && typeof gB_ecb2sf !== 'undefined') {
+                    var sync = Dygraph.synchronize(gB_era5, gB_fmi, gB_ecsf, gB_ECB2SF, gB_ecb2sf);
+            //gB_era5.updateOptions({dateWindow: gB_ECB2SF.xAxisExtremes()})                    
+                    gB_ecsf.updateOptions({dateWindow: gB_ECB2SF.xAxisExtremes()})                    
                 }
-/*                 if (typeof gB_ecsf !== 'undefined' && typeof gB_ecbsf !== 'undefined') {
-                    var sync = Dygraph.synchronize(gB_ecsf, gB_ecbsf);
-                    gB_ecsf.updateOptions({dateWindow: gB_ecbsf.xAxisExtremes()})
+/*                 if (typeof gB_ecsf !== 'undefined' && typeof gB_ECB2SF !== 'undefined') {
+                    var sync = Dygraph.synchronize(gB_ecsf, gB_ECB2SF);
+                    gB_ecsf.updateOptions({dateWindow: gB_ECB2SF.xAxisExtremes()})
                 } */
 
             } else {
@@ -489,10 +489,10 @@ function drawtimeseries_ecsf() {
                     );
                     document.getElementById("graphB_ecb2sf").style = "line-height: 1;";
 
-                    if (typeof gB_era5 !== 'undefined' && gB_fmi !== 'undefined' && typeof gB_ecsf !== 'undefined' && typeof gB_ecbsf !== 'undefined' && typeof gB_ecb2sf !== 'undefined') {
-                        var sync = Dygraph.synchronize(gB_era5, gB_fmi, gB_ecsf, gB_ecbsf, gB_ecb2sf);
-                    //gB_era5.updateOptions({dateWindow: gB_ecbsf.xAxisExtremes()})                    
-                        gB_ecsf.updateOptions({dateWindow: gB_ecbsf.xAxisExtremes()})                    
+                    if (typeof gB_era5 !== 'undefined' && gB_fmi !== 'undefined' && typeof gB_ecsf !== 'undefined' && typeof gB_ECB2SF !== 'undefined' && typeof gB_ecb2sf !== 'undefined') {
+                        var sync = Dygraph.synchronize(gB_era5, gB_fmi, gB_ecsf, gB_ECB2SF, gB_ecb2sf);
+                    //gB_era5.updateOptions({dateWindow: gB_ECB2SF.xAxisExtremes()})                    
+                        gB_ecsf.updateOptions({dateWindow: gB_ECB2SF.xAxisExtremes()})                    
                     }
     
                 } else {
@@ -543,14 +543,14 @@ function drawtimeseries_ecsf() {
                     );
                     document.getElementById("graphB_era5").style = "line-height: 1;";
     
-                    if (typeof gB_era5 !== 'undefined' && gB_fmi !== 'undefined' && typeof gB_ecsf !== 'undefined' && typeof gB_ecbsf !== 'undefined' && typeof gB_ecb2sf !== 'undefined') {
-                        var sync = Dygraph.synchronize(gB_era5, gB_fmi, gB_ecsf, gB_ecbsf, gB_ecb2sf);
-                    //gB_era5.updateOptions({dateWindow: gB_ecbsf.xAxisExtremes()})                    
-                        gB_ecsf.updateOptions({dateWindow: gB_ecbsf.xAxisExtremes()})                    
+                    if (typeof gB_era5 !== 'undefined' && gB_fmi !== 'undefined' && typeof gB_ecsf !== 'undefined' && typeof gB_ECB2SF !== 'undefined' && typeof gB_ecb2sf !== 'undefined') {
+                        var sync = Dygraph.synchronize(gB_era5, gB_fmi, gB_ecsf, gB_ECB2SF, gB_ecb2sf);
+                    //gB_era5.updateOptions({dateWindow: gB_ECB2SF.xAxisExtremes()})                    
+                        gB_ecsf.updateOptions({dateWindow: gB_ECB2SF.xAxisExtremes()})                    
                     }
-    /*                 if (typeof gB_ecsf !== 'undefined' && typeof gB_ecbsf !== 'undefined') {
-                        var sync = Dygraph.synchronize(gB_ecsf, gB_ecbsf);
-                        gB_ecsf.updateOptions({dateWindow: gB_ecbsf.xAxisExtremes()})
+    /*                 if (typeof gB_ecsf !== 'undefined' && typeof gB_ECB2SF !== 'undefined') {
+                        var sync = Dygraph.synchronize(gB_ecsf, gB_ECB2SF);
+                        gB_ecsf.updateOptions({dateWindow: gB_ECB2SF.xAxisExtremes()})
                     } */
     
                 } else {
@@ -612,14 +612,14 @@ function drawtimeseries_ecsf() {
                         );
                         document.getElementById("graphB_fmi").style = "line-height: 1;";
         
-                        if (typeof gB_era5 !== 'undefined' && gB_fmi !== 'undefined' && typeof gB_ecsf !== 'undefined' && typeof gB_ecbsf !== 'undefined' && typeof gB_ecb2sf !== 'undefined') {
-                            var sync = Dygraph.synchronize(gB_era5, gB_fmi, gB_ecsf, gB_ecbsf, gB_ecb2sf);
-                            //gB_era5.updateOptions({dateWindow: gB_ecbsf.xAxisExtremes()})                    
-                            gB_ecsf.updateOptions({dateWindow: gB_ecbsf.xAxisExtremes()})                    
+                        if (typeof gB_era5 !== 'undefined' && gB_fmi !== 'undefined' && typeof gB_ecsf !== 'undefined' && typeof gB_ECB2SF !== 'undefined' && typeof gB_ecb2sf !== 'undefined') {
+                            var sync = Dygraph.synchronize(gB_era5, gB_fmi, gB_ecsf, gB_ECB2SF, gB_ecb2sf);
+                            //gB_era5.updateOptions({dateWindow: gB_ECB2SF.xAxisExtremes()})                    
+                            gB_ecsf.updateOptions({dateWindow: gB_ECB2SF.xAxisExtremes()})                    
                         }
-        /*                 if (typeof gB_ecsf !== 'undefined' && typeof gB_ecbsf !== 'undefined') {
-                            var sync = Dygraph.synchronize(gB_ecsf, gB_ecbsf);
-                            gB_ecsf.updateOptions({dateWindow: gB_ecbsf.xAxisExtremes()})
+        /*                 if (typeof gB_ecsf !== 'undefined' && typeof gB_ECB2SF !== 'undefined') {
+                            var sync = Dygraph.synchronize(gB_ecsf, gB_ECB2SF);
+                            gB_ecsf.updateOptions({dateWindow: gB_ECB2SF.xAxisExtremes()})
                         } */
         
                     } else {

@@ -78,7 +78,7 @@ var maastokartta = L.tileLayer('https://avoin-karttakuva.maanmittauslaitos.fi/av
     attribution: 'Tiles by <a href="https://www.maanmittauslaitos.fi/">Maanmittauslaitos</a> Data by <a href="https://www.fmi.fi/">Finnish Meteorological Institute</a>',
     maxZoom: 16,
     minZoom: 0,
-})//.addTo(map);
+}).addTo(map);
 
 
 // load a tile layer
@@ -87,7 +87,7 @@ var taustakartta = L.tileLayer('https://avoin-karttakuva.maanmittauslaitos.fi/av
     attribution: 'Tiles by <a href="https://www.maanmittauslaitos.fi/">Maanmittauslaitos</a> Data by <a href="https://www.fmi.fi/">Finnish Meteorological Institute</a>',
     maxZoom: 16,
     minZoom: 0,
-}).addTo(map);
+})//.addTo(map);
 
 // load a tile layer
 L.tileLayer('https://avoin-karttakuva.maanmittauslaitos.fi/avoin/wmts/1.0.0/kiinteistojaotus/default/WGS84_Pseudo-Mercator/{z}/{y}/{x}.png?api-key=45deef08-fd2f-42ae-9953-5550fff43b17',
@@ -509,13 +509,13 @@ for (i = 1; i <= perturbations; i = i + 1) {
 }
 
 
-// Tol sunset colormap v3
-const colorFrost = [54, 75, 154];
-const colorNormalMineral = [74, 123, 183];
-const colorDryMineral = [110, 166, 205];
-const colorNormalPeat = [254, 218, 139];
-const colorDryPeat = [246, 126, 75];
-const colorWinter = [165, 0, 38]; 
+// Default colormap
+const colorFrost = [0, 97, 0];
+const colorNormalMineral = [97, 153, 0];
+const colorDryMineral = [160, 219, 0];
+const colorNormalPeat = [255, 250, 0];
+const colorDryPeat = [255, 132, 0];
+const colorWinter = [255, 38, 0]; 
 
 const colorWater = [128, 255, 255];
 
@@ -583,11 +583,7 @@ var idxSummer, idxWinter, idx2;
 
 var idx = -100;
 
-var slider = document.getElementById("opacity-range");
-var output = document.getElementById("opacity-value");
-slider.value = 70;
-output.innerHTML = slider.value + " %"; // Display the default slider value
-var opacity = slider.value;
+var opacity = 70;
 
 // function plotgeotiff() {
 // }
@@ -689,7 +685,7 @@ var treecoverLayerOptions = {
     transparent: 'true',
     styles: 'default',
     //source: 'grid',
-    opacity: 0.7,
+    opacity: 0.8,
     //maxZoom: 9,
     zIndex: 20,
 };
@@ -1152,45 +1148,30 @@ map.on('moveend', function(e) {
 });
 
 
+/*
+var slider = document.getElementById("opacity-range");
+var output = document.getElementById("opacity-value");
+output.innerHTML = slider.value + " %"; // Display the default slider value
+opacity = slider.value;
+
 slider.oninput = function () {
-    if (soilwetnessTimeLayer) {
+    if (fr20TimeLayer) {
         opacity = this.value;
-        soilwetnessTimeLayer.setOpacity(this.value / 100);
+        fr20TimeLayer.setOpacity(this.value / 100);
         output.innerHTML = this.value + " %";
     }
-    if (temperatureTimeLayer) {
+    if (sd20TimeLayer) {
         opacity = this.value;
-        temperatureTimeLayer.setOpacity(this.value / 100);
+        sd20TimeLayer.setOpacity(this.value / 100);
         output.innerHTML = this.value + " %";
     }
-    if (snowthicknessTimeLayer) {
+    if (sd80TimeLayer) {
         opacity = this.value;
-        snowthicknessTimeLayer.setOpacity(this.value / 100);
-        output.innerHTML = this.value + " %";
-    }
-    if (forestfireTimeLayer) {
-        opacity = this.value;
-        forestfireTimeLayer.setOpacity(this.value / 100);
-        output.innerHTML = this.value + " %";
-    }
-    if (treecoverLayer) {
-        opacity = this.value;
-        treecoverLayer.setOpacity(this.value / 100);
+        sd80TimeLayer.setOpacity(this.value / 100);
         output.innerHTML = this.value + " %";
     }
 }
-
-slider.onchange = function () {
-    if (georastercache && map.hasLayer(harvLayer)) {
-        idx = -1;
-        plotgeotiff();
-    }
-    if (georastercache && map.hasLayer(harvStaticLayer)) { 
-        map.removeLayer(harvStaticLayer);
-        plotgeotiffstatic();
-    }
-
-}
+*/
 
 //var latlonPoint = 'Kajaani';
 var latlonPoint;
@@ -1819,7 +1800,8 @@ function timeserieclick(e, x, points) {
 
 }
 
-function defcolors() {
+function altcolors() {
     urlpos=L.Permalink.getMapLocation();
-    location.href = "index_smartmet_era5l_v5.html#" + urlpos.center.lat + "," + urlpos.center.lng + "," + urlpos.zoom + "z";
+    // location.href = "index_smartmet_era5l_altcolors.html";
+    location.href = "index_smartmet_era5l_altcolors.html#" + urlpos.center.lat + "," + urlpos.center.lng + "," + urlpos.zoom + "z";
 }
