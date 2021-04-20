@@ -3,3 +3,6 @@ media/*
 old/*
 feedback/*
 feedback_old/*
+custom/*json
+custom/*.tif
+*.old*
