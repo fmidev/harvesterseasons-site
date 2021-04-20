@@ -5,4 +5,5 @@ feedback/*
 feedback_old/*
 custom/*json
 custom/*.tif
+custom/*.tif.aux.xml
 *.old*
