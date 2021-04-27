@@ -93,7 +93,7 @@ header{
     /*width: 100%;
     left: 20px; right: 20px;
     margin-top: 20px;*/
-    margin-bottom: 45px;
+    margin-bottom: 40px;
     left: -32px;
     width: 103%;
 }
@@ -207,6 +207,22 @@ header{
     margin-right: auto;
     vertical-align: middle;
     text-align: center;
+}
+
+#set-opacity {
+    /* background-color: rgb(240, 240, 240); */
+    text-align: center; 
+    vertical-align: middle; 
+    margin-bottom: 15px;
+}
+
+#opacity, #opacity-slider, #opacity-value {
+    display: inline-block;
+    vertical-align: middle; 
+}
+
+#opacity-range {
+    vertical-align: middle; 
 }
 
 /*

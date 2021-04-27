@@ -177,7 +177,8 @@ L.TimeDimension.Layer.WMS = L.TimeDimension.Layer.extend({
         if (this._layers.hasOwnProperty(time)) {
             return this._layers[time];
         }
-        var nearestTime = this._getNearestTime(time);
+        // var nearestTime = this._getNearestTime(time);
+        var nearestTime = time;
         if (this._layers.hasOwnProperty(nearestTime)) {
             return this._layers[nearestTime];
         }
