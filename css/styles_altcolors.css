@@ -99,6 +99,27 @@ header{
     width: 103%;
 }
 
+#set-opacity {
+    /* background-color: rgb(240, 240, 240); */
+    text-align: center; 
+    vertical-align: middle; 
+    margin-bottom: 15px;
+}
+
+#opacity, #opacity-slider, #opacity-value {
+    display: inline-block;
+    vertical-align: middle; 
+}
+
+#opacity-range {
+    vertical-align: middle; 
+}
+
+#altcolors {
+    margin-bottom: 15px; 
+    padding-right: 15px; 
+    float: right;
+}
 
 @media only screen and (max-width: 999px){
     #harvestability-legend { margin-bottom: 55px; }
@@ -151,6 +172,8 @@ header{
     header{ background-size: 48%; }
     h1{ font-size: 5vw; }
     summary{ font-size: 3.5vw; }
+    /* #set-opacity { margin-bottom: 40px; } */
+    #altcolors { float: none; margin-top: 5px;}
 }
 @media only screen and (max-width: 450px){
     #labels { height: 120px; }
@@ -167,6 +190,7 @@ header{
 @media only screen and (max-width: 378px){
     #harvestability-legend { margin-bottom: 110px; }
     #labels { height: 140px; }
+    #labelsB { height: 30px; }
 }
 @media only screen and (max-width: 365px){
     #labels { height: 150px; }
@@ -249,22 +273,6 @@ header{
     margin-right: auto;
     vertical-align: middle;
     text-align: center;
-}
-
-#set-opacity {
-    /* background-color: rgb(240, 240, 240); */
-    text-align: center; 
-    vertical-align: middle; 
-    margin-bottom: 15px;
-}
-
-#opacity, #opacity-slider, #opacity-value {
-    display: inline-block;
-    vertical-align: middle; 
-}
-
-#opacity-range {
-    vertical-align: middle; 
 }
 
 /*

@@ -195,7 +195,7 @@ dateslider.oninput = function () {
 }
 
 dateslider.onchange = function () {
-    if (harvDynamic.checked && georastercache) {
+    if (harvDynamic.checked && georastercache && map.hasLayer(traffLayer)) {
          plotgeotiff();
     }
     map.timeDimension.setCurrentTime(sliderDate.getTime());
@@ -218,7 +218,7 @@ function dateback() {
         sliderDate.setUTCDate(sliderDate.getUTCDate() - 1);
         dateoutput.innerHTML = sliderDate.toLocaleDateString();
         //dateoutput.innerHTML = sliderDate.toDateString().substring(4);
-        if (harvDynamic.checked && georastercache) {
+        if (harvDynamic.checked && georastercache && map.hasLayer(traffLayer)) {
             plotgeotiff();
         }
         map.timeDimension.setCurrentTime(sliderDate.getTime());
@@ -235,7 +235,7 @@ function datebackscrollIntervalFunc() {
         sliderDate.setUTCDate(sliderDate.getUTCDate() - 1);
         dateoutput.innerHTML = sliderDate.toLocaleDateString();
         //dateoutput.innerHTML = sliderDate.toDateString().substring(4);        
-        if (harvDynamic.checked && georastercache) {
+        if (harvDynamic.checked && georastercache && map.hasLayer(traffLayer)) {
             plotgeotiff();
         }
         map.timeDimension.setCurrentTime(sliderDate.getTime());
@@ -280,7 +280,7 @@ function dateforward() {
         dateoutput.innerHTML = sliderDate.toLocaleDateString();
         //dateoutput.innerHTML = sliderDate.toDateString().substring(4);
         //console.debug(harvDynamic._map)
-        if (harvDynamic.checked && georastercache) {
+        if (harvDynamic.checked && georastercache && map.hasLayer(traffLayer)) {
             plotgeotiff();
         }
         map.timeDimension.setCurrentTime(sliderDate.getTime());
@@ -297,7 +297,7 @@ function dateforwardscrollIntervalFunc() {
         sliderDate.setUTCDate(sliderDate.getUTCDate() + 1);
         dateoutput.innerHTML = sliderDate.toLocaleDateString();
         //dateoutput.innerHTML = sliderDate.toDateString().substring(4);
-        if (harvDynamic.checked && georastercache) {
+        if (harvDynamic.checked && georastercache && map.hasLayer(traffLayer)) {
             plotgeotiff();
         }
         map.timeDimension.setCurrentTime(sliderDate.getTime());
@@ -344,7 +344,7 @@ function datestop() {
   }
 
 function datestopscrollfast() {
-    if (repeatId > 0 && harvDynamic.checked && georastercache) {
+    if (repeatId > 0 && harvDynamic.checked && georastercache && map.hasLayer(traffLayer)) {
         plotgeotiff();
         //console.debug(repeatId)
     }
@@ -374,7 +374,7 @@ function playButtonIntervalFunc() {
         sliderDate.setUTCDate(sliderDate.getUTCDate() + 1);
         dateoutput.innerHTML = sliderDate.toLocaleDateString();
         //dateoutput.innerHTML = sliderDate.toDateString().substring(4);
-        if (harvDynamic.checked && georastercache) {
+        if (harvDynamic.checked && georastercache && map.hasLayer(traffLayer)) {
             plotgeotiff();
         }
         map.timeDimension.setCurrentTime(sliderDate.getTime());
@@ -445,6 +445,8 @@ document.getElementById("dynamic").style.color = "rgb(190, 190, 190)";
 playButton.disabled = false;
 
 var harvDynamicState = true; // set by user
+var traffState = true; // set by user
+
 
 function changedynamic() {
     if (!harvDynamic.checked && !map.hasLayer(snowthicknessTimeLayer) &&
@@ -464,7 +466,7 @@ function changedynamic() {
     }
     //if (georastercache) { plotgeotiff(); };
     if (georastercache) { 
-        idx = -10; 
+        idx = -10; // redraw trafficability
         setTimeout( function () { plotgeotiff() }, 1000); 
     }; // always re-draw
 }
@@ -747,7 +749,8 @@ tempLegend.onAdd = function (map) {
     if (screen.width < 425) {
         //div.style.width = '48px';
         //div.style.height = '345px';
-        div.style.height = '325px';
+        // div.style.height = '325px';
+        div.style.height = '305px';
     } else {
         //div.style.height = '380px';
         //div.style.height = '360px';
@@ -763,8 +766,10 @@ snowLegend.onAdd = function (map) {
     var src = 'https://sm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:SD-M&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=60&HEIGHT=345';
     var div = L.DomUtil.create('div', 'info legend');
     if (screen.width < 425) {
-        div.style.width = '65px';
-        div.style.height = '325px';
+        // div.style.width = '65px';
+        // div.style.height = '325px';
+        div.style.width = '60px';
+        div.style.height = '305px';
     } else {
         div.style.width = '65px';
         div.style.height = '345px';
@@ -779,8 +784,10 @@ soilwetLegend.onAdd = function (map) {
     var src = 'https://sm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:SOILWET1-M&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
     var div = L.DomUtil.create('div', 'info legend');
     if (screen.width < 425) {
-        div.style.width = '65px';
-        div.style.height = '325px';
+        // div.style.width = '65px';
+        // div.style.height = '325px';
+        div.style.width = '60px';
+        div.style.height = '305px';
     } else {
         div.style.width = '65px';
         div.style.height = '345px';
@@ -820,8 +827,10 @@ treecoverLegend.onAdd = function (map) {
     var src = 'https://sm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:copernicus:treecoverdensitylegend&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
     var div = L.DomUtil.create('div', 'info legend');
     if (screen.width < 425) {
-        div.style.width = '65px';
-        div.style.height = '325px';
+        // div.style.width = '65px';
+        // div.style.height = '325px';
+        div.style.width = '60px';
+        div.style.height = '305px';
     } else {
         div.style.width = '65px';
         div.style.height = '345px';
@@ -832,15 +841,24 @@ treecoverLegend.onAdd = function (map) {
     return div;
 };
 
+var traffLayer = L.tileLayer('');
+
 var overlayMaps = {
     "Soil Wetness": soilwetnessTimeLayer,
     "Soil Temperature": temperatureTimeLayer.addTo(map),
     "Snow Thickness": snowthicknessTimeLayer,
     "Forest Fire Index": forestfireTimeLayer,
     "Tree Cover % 2018": treecoverLayer,
+    "Trafficability": traffLayer,
 };
 
-var lcontrol = L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
+if (screen.width < 425) {
+    var lcontrol = L.control.layers(baseMaps, overlayMaps).addTo(map);
+} else {
+    var lcontrol = L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
+}
+
+
 //var soilwetControl = lcontrol._overlaysList.children[0].control;
 //var tempControl = lcontrol._overlaysList.children[1].control;
 //var snowControl = lcontrol._overlaysList.children[2].control;
@@ -849,21 +867,29 @@ var lcontrol = L.control.layers(baseMaps, overlayMaps, { collapsed: false }).add
 
 //forestfire1kmTimeLayer.addTo(map);
 
+// Trafficability layer disabled
+lcontrol._overlaysList.children[5].control.disabled = true;
+lcontrol._overlaysList.children[5].style.color = "rgb(190, 190, 190)";
+
 //soilwetLegend.addTo(map); 
 tempLegend.addTo(map); 
 
 //fireLegend.addTo(map); 
 
 map.on('overlayremove', function (e) {
-    forecast = -1;
-    //if (!harvDynamic.checked && !map.hasLayer(snowthicknessTimeLayer) &&
-    //    !map.hasLayer(soilwetnessTimeLayer) && !map.hasLayer(temperatureTimeLayer)) {
-        if (!harvDynamic.checked && !map.hasLayer(snowthicknessTimeLayer) &&
-          !map.hasLayer(soilwetnessTimeLayer) && !map.hasLayer(temperatureTimeLayer) &&
-          !map.hasLayer(forestfireTimeLayer)) {
-            clearInterval(playButtonRepeatId);
-            playButton.value = "Play";
-            playButton.disabled = true;
+
+    if (map.getZoom() <= 9 && !map.hasLayer(snowthicknessTimeLayer) &&
+    !map.hasLayer(soilwetnessTimeLayer) && !map.hasLayer(temperatureTimeLayer) &&
+    !map.hasLayer(forestfireTimeLayer) && !map.hasLayer(traffLayer)) {
+        forecast = -1;
+    }
+
+    if (!harvDynamic.checked && !map.hasLayer(snowthicknessTimeLayer) &&
+        !map.hasLayer(soilwetnessTimeLayer) && !map.hasLayer(temperatureTimeLayer) &&
+        !map.hasLayer(forestfireTimeLayer)) {
+        clearInterval(playButtonRepeatId);
+        playButton.value = "Play";
+        playButton.disabled = true;
     }
     switch (e.name) {
         case "Snow Thickness": {
@@ -885,23 +911,19 @@ map.on('overlayremove', function (e) {
         }
         case "Tree Cover % 2018": {
             map.removeControl(treecoverLegend);
-            if (map.getZoom() >= 13) {
-/*                 if (harvDynamicState == true) { harvDynamic.checked = true; }
-                if (harvDynamic.checked) { playButton.disabled = false; } */
-                if (harvDynamicState == true) { 
-                    harvDynamic.checked = true;
-                    playButton.disabled = false;
-                }
-                harvDynamic.disabled = false;
-                document.getElementById("dynamic").style.color = "initial";
+            break;
+        }
+        case "Trafficability": {
+            if (map.hasLayer(harvLayer)) { 
+                map.removeLayer(harvLayer); 
             }
-            if (georastercache) {
-                plotgeotiff();
-                plotgeotiffstatic();
+            map.removeLayer(harvStaticLayer);
+            if (map.getZoom() > 9) {
+                traffState = false;
             }
-/*             if (harvDynamic.checked && georastercache) {
-                plotgeotiff();
-            } */
+            harvDynamic.disabled = true;
+            document.getElementById("dynamic").style.color = "rgb(190, 190, 190)";
+            playButton.disabled = true;
             break;
         }
     }
@@ -930,10 +952,11 @@ map.on('overlayadd', function (e) {
                 lcontrol._update();
             }
             if (!snowthicknessTimeLayer._currentLayer._map) {
-                //console.debug(snowthicknessTimeLayer._currentLayer._map)
                 snowthicknessTimeLayer.setParams({});
             }
             snowLegend.addTo(this);
+            lcontrol._overlaysList.children[5].control.disabled = true;
+            lcontrol._overlaysList.children[5].style.color = "rgb(190, 190, 190)";
             break;
         }
         case "Soil Wetness": {
@@ -956,10 +979,11 @@ map.on('overlayadd', function (e) {
                 lcontrol._update();
             }
             if (!soilwetnessTimeLayer._currentLayer._map) {
-                //console.debug(soilwetnessTimeLayer._currentLayer._map)
                 soilwetnessTimeLayer.setParams({});
             }
             soilwetLegend.addTo(this);
+            lcontrol._overlaysList.children[5].control.disabled = true;
+            lcontrol._overlaysList.children[5].style.color = "rgb(190, 190, 190)";
             break;
         }
         case "Soil Temperature": {
@@ -982,10 +1006,11 @@ map.on('overlayadd', function (e) {
                 lcontrol._update();
             }
             if (!temperatureTimeLayer._currentLayer._map) {
-                //console.debug(temperatureTimeLayer._currentLayer._map)
                 temperatureTimeLayer.setParams({});
             }
             tempLegend.addTo(this);
+            lcontrol._overlaysList.children[5].control.disabled = true;
+            lcontrol._overlaysList.children[5].style.color = "rgb(190, 190, 190)";
             break;
         }
         case "Forest Fire Index": {
@@ -1014,6 +1039,8 @@ map.on('overlayadd', function (e) {
             // // When only one forest fire layer:
             // forestfireTimeLayer.setParams({});
             fireLegend.addTo(this);
+            lcontrol._overlaysList.children[5].control.disabled = true;
+            lcontrol._overlaysList.children[5].style.color = "rgb(190, 190, 190)";
             break;
         }
         case "Tree Cover % 2018": {
@@ -1021,7 +1048,10 @@ map.on('overlayadd', function (e) {
             harvDynamic.disabled = true;
             document.getElementById("dynamic").style.color = "rgb(190, 190, 190)";
 
-            forecast = 4;
+            if (map.getZoom() > 9) {
+                traffState = false;
+            }
+            // forecast = 4;
             if (map.hasLayer(soilwetnessTimeLayer)) { 
                 map.removeLayer(soilwetnessTimeLayer);
                 lcontrol._update();
@@ -1039,14 +1069,88 @@ map.on('overlayadd', function (e) {
                 map.removeLayer(forestfire1kmTimeLayer);
                 lcontrol._update();
             }
-            else if (map.hasLayer(harvLayer)) { map.removeLayer(harvLayer); idx = -1; }
+            else if (map.hasLayer(harvLayer)) { 
+                map.removeLayer(harvLayer); 
+                idx = -1;
+            }
 
-/*             if (map.hasLayer(harvStaticLayer)) { 
-                map.removeLayer(harvStaticLayer);
-            } */
+            if (map.hasLayer(traffLayer)) { 
+                map.removeLayer(traffLayer); 
+                lcontrol._update(); 
+            }
+
             map.removeLayer(harvStaticLayer);
 
+            if (map.getZoom() > 9) {
+                lcontrol._overlaysList.children[0].control.disabled = true;
+                lcontrol._overlaysList.children[1].control.disabled = true;
+                lcontrol._overlaysList.children[2].control.disabled = true;
+                lcontrol._overlaysList.children[3].control.disabled = true;
+                        
+                lcontrol._overlaysList.children[0].style.color = "rgb(190, 190, 190)";
+                lcontrol._overlaysList.children[1].style.color = "rgb(190, 190, 190)";
+                lcontrol._overlaysList.children[2].style.color = "rgb(190, 190, 190)";
+                lcontrol._overlaysList.children[3].style.color = "rgb(190, 190, 190)";
+            } else {
+                lcontrol._overlaysList.children[5].control.disabled = true;        
+                lcontrol._overlaysList.children[5].style.color = "rgb(190, 190, 190)";
+            }
+
             treecoverLegend.addTo(this);
+            break;
+        }
+        case "Trafficability": {
+            playButton.disabled = true;
+            traffState = true;
+
+            if (map.hasLayer(soilwetnessTimeLayer)) { 
+                map.removeLayer(soilwetnessTimeLayer);
+                lcontrol._update();
+            }
+            else if (map.hasLayer(temperatureTimeLayer)) { 
+                map.removeLayer(temperatureTimeLayer);
+                lcontrol._update();
+            }
+            else if (map.hasLayer(snowthicknessTimeLayer)) { 
+                map.removeLayer(snowthicknessTimeLayer);
+                lcontrol._update();
+            }
+            else if (map.hasLayer(forestfireTimeLayer)) { 
+                map.removeLayer(forestfireTimeLayer);
+                map.removeLayer(forestfire1kmTimeLayer);
+                lcontrol._update();
+            }
+            else if (map.hasLayer(treecoverLayer)) { 
+                map.removeLayer(treecoverLayer);
+                lcontrol._update();
+            }
+
+            if (map.getZoom() >= 13) {
+                if (harvDynamicState == true) {
+                    harvDynamic.checked = true;
+                    playButton.disabled = false;
+                }
+                harvDynamic.disabled = false;
+                document.getElementById("dynamic").style.color = "initial";
+            }
+            if (georastercache) {
+                idx = -10; // redraw trafficability
+                plotgeotiff();
+                plotgeotiffstatic();
+            }
+
+            if (map.getZoom() > 9) {
+                lcontrol._overlaysList.children[0].control.disabled = true;
+                lcontrol._overlaysList.children[1].control.disabled = true;
+                lcontrol._overlaysList.children[2].control.disabled = true;
+                lcontrol._overlaysList.children[3].control.disabled = true;
+        
+                lcontrol._overlaysList.children[0].style.color = "rgb(190, 190, 190)";
+                lcontrol._overlaysList.children[1].style.color = "rgb(190, 190, 190)";
+                lcontrol._overlaysList.children[2].style.color = "rgb(190, 190, 190)";
+                lcontrol._overlaysList.children[3].style.color = "rgb(190, 190, 190)";
+            }
+            
             break;
         }
     }
@@ -1095,6 +1199,11 @@ map.on('zoomend', function(e) {
     }
 
     if (map.getZoom() > 9) {
+        if (traffState && !map.hasLayer(treecoverLayer)) {
+            traffLayer.addTo(map);
+            lcontrol._overlaysList.children[5].control.checked = true;
+        }
+
         if (map.hasLayer(soilwetnessTimeLayer)) { 
             map.removeLayer(soilwetnessTimeLayer);
             forecast = 0; 
@@ -1112,53 +1221,49 @@ map.on('zoomend', function(e) {
             map.removeLayer(forestfire1kmTimeLayer); 
             forecast = 3; 
         }
-/*         else if (map.hasLayer(treecoverLayer)) {
-            map.removeLayer(treecoverLayer); 
-            forecast = 4; 
-        } */
-/*         else if (map.hasLayer(treecoverLayer) && map.hasLayer(harvStaticLayer)) { 
-            map.removeLayer(harvStaticLayer); 
-            forecast = 4; 
-        } */
 
         lcontrol._overlaysList.children[0].control.disabled = true;
         lcontrol._overlaysList.children[1].control.disabled = true;
         lcontrol._overlaysList.children[2].control.disabled = true;
         lcontrol._overlaysList.children[3].control.disabled = true;
-        //lcontrol._overlaysList.children[4].control.disabled = true;
 
         lcontrol._overlaysList.children[0].style.color = "rgb(190, 190, 190)";
         lcontrol._overlaysList.children[1].style.color = "rgb(190, 190, 190)";
         lcontrol._overlaysList.children[2].style.color = "rgb(190, 190, 190)";
         lcontrol._overlaysList.children[3].style.color = "rgb(190, 190, 190)";
-        //lcontrol._overlaysList.children[4].style.color = "rgb(190, 190, 190)";
+
+        // Trafficability layer control
+        lcontrol._overlaysList.children[5].style.color = "initial";
+        lcontrol._overlaysList.children[5].control.disabled = false;
 
         map.removeControl(snowLegend);
         map.removeControl(soilwetLegend);
         map.removeControl(tempLegend);
         map.removeControl(fireLegend);
-        //map.removeControl(treecoverLegend);
 
     } else {
-        if (!map.hasLayer(soilwetnessTimeLayer) && forecast == 0) {
-            soilwetnessTimeLayer.addTo(map);
-        } else if (!map.hasLayer(temperatureTimeLayer) && forecast == 1) {
-            temperatureTimeLayer.addTo(map);
-        } else if (!map.hasLayer(snowthicknessTimeLayer) && forecast == 2) {
-            snowthicknessTimeLayer.addTo(map);
-        } else if (!map.hasLayer(forestfireTimeLayer) && forecast == 3) {
-            forestfireTimeLayer.addTo(map);
-            forestfire1kmTimeLayer.addTo(map);
-        } 
-        else if (!map.hasLayer(treecoverLayer) && forecast == 4) {
-            treecoverLayer.addTo(map);
+        if (!map.hasLayer(treecoverLayer)) {
+            if (!map.hasLayer(soilwetnessTimeLayer) && forecast == 0) {
+                soilwetnessTimeLayer.addTo(map);
+            } else if (!map.hasLayer(temperatureTimeLayer) && forecast == 1) {
+                temperatureTimeLayer.addTo(map);
+            } else if (!map.hasLayer(snowthicknessTimeLayer) && forecast == 2) {
+                snowthicknessTimeLayer.addTo(map);
+            } else if (!map.hasLayer(forestfireTimeLayer) && forecast == 3) {
+                forestfireTimeLayer.addTo(map);
+                forestfire1kmTimeLayer.addTo(map);
+            }
         }
 
         lcontrol._overlaysList.children[0].style.color = "initial";
         lcontrol._overlaysList.children[1].style.color = "initial";
         lcontrol._overlaysList.children[2].style.color = "initial";
         lcontrol._overlaysList.children[3].style.color = "initial";
-        //lcontrol._overlaysList.children[4].style.color = "initial";
+
+        // Trafficability layer control
+        lcontrol._overlaysList.children[5].control.disabled = true;
+        lcontrol._overlaysList.children[5].style.color = "rgb(190, 190, 190)";
+        lcontrol._overlaysList.children[5].control.checked = false;
 
         if (lcontrol._overlaysList.children[0].control.checked) { 
             soilwetLegend.addTo(this); 
@@ -1562,17 +1667,19 @@ function onMapClick(e) {
         geotiffArea = true;
     }
 
-    //if (map.hasLayer(treecoverLayer) && geotiffArea) {
-    if (map.getZoom() > 6 && map.hasLayer(treecoverLayer) && geotiffArea) {
-        map.removeLayer(treecoverLayer);
-        forecast = 4;
-/*         lcontrol._overlaysList.children[4].control.disabled = true;
-        lcontrol._overlaysList.children[4].style.color = "rgb(190, 190, 190)"; */
-        map.removeControl(treecoverLegend);
-        lcontrol._update();
+    if (map.getZoom() > 6 && geotiffArea) {
+        if (map.hasLayer(treecoverLayer)) {
+            map.removeLayer(treecoverLayer);
+            map.removeControl(treecoverLegend);
+            lcontrol._update();
+        }
+        traffState = true;
+        traffLayer.addTo(map);
+        lcontrol._overlaysList.children[5].control.checked = true;
         if (georastercache) {
+            // idx = -100; // redraw dynamic trafficability
             plotgeotiff();
-            //plotgeotiffstatic();
+            plotgeotiffstatic();
         }
     }
 
