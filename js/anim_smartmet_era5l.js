@@ -135,7 +135,8 @@ if (mappos.center[0] == 64 && mappos.center[1] == 27) {
 //map.on('timeloading',console.debug(L.timeDimension().getCurrentTime()));
 //map.on('timeload',console.debug(L.timeDimension().getCurrentTime()));
 
-const rasterUrl = "https://pta.data.lit.fmi.fi/geo/harvestability/KKL_SMK_Suomi_2020_09_02-UTM35.tif";
+// const rasterUrl = "https://pta.data.lit.fmi.fi/geo/harvestability/KKL_SMK_Suomi_2020_09_02-UTM35.tif";
+const rasterUrl = "https://pta.data.lit.fmi.fi/geo/harvestability/KKL_SMK_Suomi_2021_06_01-UTM35.tif";
 
 var georastercache;
 

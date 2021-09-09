@@ -639,7 +639,7 @@ var snowthicknessLayerOptions = {
 var snowthicknessLayer = L.tileLayer.wms(smartWMS, snowthicknessLayerOptions);
 var snowthicknessTimeLayer = L.timeDimension.layer.wms(snowthicknessLayer, {cache: 100});
 
-//fireWMS = "https://data.fmi.fi/fmi-apikey/edfa704e-69a2-45e2-89bf-d173d79b6b76/wms?";
+/* //fireWMS = "https://data.fmi.fi/fmi-apikey/edfa704e-69a2-45e2-89bf-d173d79b6b76/wms?";
 fireWMS2 = "https://ies-ows.jrc.ec.europa.eu/effis?";
 
 var forestfireLayerOptions = {
@@ -658,9 +658,28 @@ var forestfireLayerOptions = {
 var forestfireLayer = L.tileLayer.wms(fireWMS2, forestfireLayerOptions);
 //var firedateString = startYear + '-' + startMonth + '-' + startDay + 'T12:00:00Z/P7M';
 //var forestfireTimeLayer = L.timeDimension.layer.wms(forestfireLayer, {cache: 10, timeInterval: firedateString});
-var forestfireTimeLayer = L.timeDimension.layer.wms(forestfireLayer, {cache: 10});
+var forestfireTimeLayer = L.timeDimension.layer.wms(forestfireLayer, {cache: 10}); */
 
-/* var forestfire1kmLayerOptions = {
+fireWMS = "https://data.fmi.fi/fmi-apikey/edfa704e-69a2-45e2-89bf-d173d79b6b76/wms?";
+
+var forestfireLayerOptions = {
+    crs: L.CRS.EPSG4326,
+    version: '1.3.0',
+    //layers: 'fmi:kosteusmalli:1km:obs:forestfireindex',
+    layers: 'fmi:kosteusmalli:10km:forestfireindex',
+    format: 'image/png',
+    transparent: 'true',
+    styles: 'default',
+    opacity: 0.7,
+    maxZoom: 9,
+    zIndex: 20,
+    exceptions: 'blank',
+};
+var forestfireLayer = L.tileLayer.wms(fireWMS, forestfireLayerOptions);
+var firedateString = startYear + '-' + startMonth + '-' + startDay + 'T12:00:00Z/P7M';
+var forestfireTimeLayer = L.timeDimension.layer.wms(forestfireLayer, {cache: 10, timeInterval: firedateString});
+
+var forestfire1kmLayerOptions = {
     crs: L.CRS.EPSG4326,
     version: '1.3.0',
     layers: 'fmi:kosteusmalli:1km:obs:forestfireindex',
@@ -670,10 +689,11 @@ var forestfireTimeLayer = L.timeDimension.layer.wms(forestfireLayer, {cache: 10}
     opacity: 0.7,
     maxZoom: 9,
     zIndex: 20,
+    exceptions: 'blank',
 };
 var forestfire1kmLayer = L.tileLayer.wms(fireWMS, forestfire1kmLayerOptions);
 var forestfire1kmTimeLayer = L.timeDimension.layer.wms(forestfire1kmLayer, {cache: 1});
-//forestfire1kmTimeLayer.addTo(map); */
+//forestfire1kmTimeLayer.addTo(map);
 
 var copernicusWMS = 'https://image.discomap.eea.europa.eu/arcgis/services/GioLandPublic/HRL_TreeCoverDensity_2018/ImageServer/WMSServer?';
 
@@ -765,7 +785,7 @@ soilwetLegend.onAdd = function (map) {
     return div;
 };
 
-fireLegend.onAdd = function (map) {
+/* fireLegend.onAdd = function (map) {
     //var src = 'https://sm.harvesterseasons.com/wms?service=WMS&request=GetLegendGraphic&version=1.3.0&sld_version=1.1.0&style=default&format=image%2Fpng&layer=fmi%3Akosteusmalli%3A10km%3Aforestfireindexlegend&WIDTH=65&HEIGHT=110';
     var src = 'https://ies-ows.jrc.ec.europa.eu/effis?format=image/png&request=getlegendgraphic&service=WMS&singletile=false&transparent=true&version=1.1.1&scale=1000000&layer=ecmwf007.fwi';
     var div = L.DomUtil.create('div', 'info legend');
@@ -773,6 +793,17 @@ fireLegend.onAdd = function (map) {
     div.style.height = '110px';
     //div.style.width = '75px';
     //div.style.height = '120px';
+    div.style['background-image'] = 'url(' + src + ')';
+    div.style['background-size'] = 'contain';
+    div.style['background-repeat'] = 'no-repeat';
+    return div;
+}; */
+
+fireLegend.onAdd = function (map) {
+    var src = 'https://sm.harvesterseasons.com/wms?service=WMS&request=GetLegendGraphic&version=1.3.0&sld_version=1.1.0&style=default&format=image%2Fpng&layer=fmi%3Akosteusmalli%3A10km%3Aforestfireindexlegend&WIDTH=65&HEIGHT=110';
+    var div = L.DomUtil.create('div', 'info legend');
+    div.style.width = '75px';
+    div.style.height = '120px';
     div.style['background-image'] = 'url(' + src + ')';
     div.style['background-size'] = 'contain';
     div.style['background-repeat'] = 'no-repeat';
@@ -842,7 +873,7 @@ map.on('overlayremove', function (e) {
             break;
         }
         case "Forest Fire Index": {
-            //map.removeLayer(forestfire1kmTimeLayer);
+            map.removeLayer(forestfire1kmTimeLayer);
             map.removeControl(fireLegend);
             break;
         }
@@ -885,7 +916,7 @@ map.on('overlayadd', function (e) {
             }
             else if (map.hasLayer(forestfireTimeLayer)) { 
                 map.removeLayer(forestfireTimeLayer);
-                //map.removeLayer(forestfire1kmTimeLayer);
+                map.removeLayer(forestfire1kmTimeLayer);
                 lcontrol._update();
             }
             else if (map.hasLayer(treecoverLayer)) { 
@@ -911,7 +942,7 @@ map.on('overlayadd', function (e) {
             }
             else if (map.hasLayer(forestfireTimeLayer)) { 
                 map.removeLayer(forestfireTimeLayer);
-                //map.removeLayer(forestfire1kmTimeLayer);
+                map.removeLayer(forestfire1kmTimeLayer);
                 lcontrol._update();
             }
             else if (map.hasLayer(treecoverLayer)) { 
@@ -937,7 +968,7 @@ map.on('overlayadd', function (e) {
             }
             else if (map.hasLayer(forestfireTimeLayer)) { 
                 map.removeLayer(forestfireTimeLayer);
-                //map.removeLayer(forestfire1kmTimeLayer);
+                map.removeLayer(forestfire1kmTimeLayer);
                 lcontrol._update();
             }
             else if (map.hasLayer(treecoverLayer)) { 
@@ -969,11 +1000,13 @@ map.on('overlayadd', function (e) {
                 map.removeLayer(treecoverLayer);
                 lcontrol._update();
             }
-            //forestfire1kmTimeLayer.addTo(map);
-            //if (!forestfireTimeLayer._currentLayer._map) {
+            forestfire1kmTimeLayer.addTo(map);
+            if (!forestfireTimeLayer._currentLayer._map) {
                 forestfireTimeLayer.setParams({});
-                //forestfire1kmTimeLayer.setParams({});
-            //}
+                forestfire1kmTimeLayer.setParams({});
+            }
+            // // When only one forest fire layer:
+            // forestfireTimeLayer.setParams({});
             fireLegend.addTo(this);
             break;
         }
@@ -997,7 +1030,7 @@ map.on('overlayadd', function (e) {
             }
             else if (map.hasLayer(forestfireTimeLayer)) { 
                 map.removeLayer(forestfireTimeLayer);
-                //map.removeLayer(forestfire1kmTimeLayer);
+                map.removeLayer(forestfire1kmTimeLayer);
                 lcontrol._update();
             }
             else if (map.hasLayer(harvLayer)) { map.removeLayer(harvLayer); idx = -1; }
@@ -1070,7 +1103,7 @@ map.on('zoomend', function(e) {
         }
         else if (map.hasLayer(forestfireTimeLayer)) {
             map.removeLayer(forestfireTimeLayer); 
-            //map.removeLayer(forestfire1kmTimeLayer); 
+            map.removeLayer(forestfire1kmTimeLayer); 
             forecast = 3; 
         }
 /*         else if (map.hasLayer(treecoverLayer)) {
@@ -1109,7 +1142,7 @@ map.on('zoomend', function(e) {
             snowthicknessTimeLayer.addTo(map);
         } else if (!map.hasLayer(forestfireTimeLayer) && forecast == 3) {
             forestfireTimeLayer.addTo(map);
-            //forestfire1kmTimeLayer.addTo(map);
+            forestfire1kmTimeLayer.addTo(map);
         } 
         else if (!map.hasLayer(treecoverLayer) && forecast == 4) {
             treecoverLayer.addTo(map);
@@ -1286,8 +1319,8 @@ for (i = 1; i <= perturbations; i = i + 1) {
     //labelstxt[label[i+2]]= { fillGraph: false };
     TGKensemble = TGKensemble + ",K2C{TSOIL-K:ECBSF::9:7:3:" + i + "}";
 }
-label[perturbations+2] = 'ST-FMI';
-labelstxt[label[perturbations+2]]= { fillGraph: false, strokeWidth: 3, color: 'red' };
+// label[perturbations+2] = 'ST-FMI';
+// labelstxt[label[perturbations+2]]= { fillGraph: false, strokeWidth: 3, color: 'red' };
 
 var dyGraphSTOptions = {
     legend: 'always',
@@ -1803,5 +1836,7 @@ function timeserieclick(e, x, points) {
 function altcolors() {
     urlpos=L.Permalink.getMapLocation();
     // location.href = "index_smartmet_era5l_altcolors.html";
-    location.href = "index_smartmet_era5l_altcolors.html#" + urlpos.center.lat + "," + urlpos.center.lng + "," + urlpos.zoom + "z";
+    if (isNaN(urlpos.center.lat)) {urlpos.center.lat = 64}
+    if (isNaN(urlpos.center.lng)) {urlpos.center.lng = 27}
+    location.href = "https://harvesterseasons.com/altcolors/#" + urlpos.center.lat + "," + urlpos.center.lng + "," + urlpos.zoom + "z";
 }

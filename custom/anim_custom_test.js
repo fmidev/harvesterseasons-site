@@ -1,3 +1,6 @@
+// import GeoTIFF, { fromUrl, fromUrls, fromArrayBuffer, fromBlob } from './geotiff.js';
+// import GeoTIFF, { fromUrl, fromUrls, fromArrayBuffer } from './node_modules/geotiff/dist-browser/geotiff.js';
+
 var now = new Date();
 
 var startYear = now.getUTCFullYear();
@@ -83,7 +86,7 @@ var perturbations = 50;
 var SHensemblelist = ["SD-M:ECBSF::1:0:1:0"];
 var SHensemble2 = "DIFF{SD-M:ECBSF::1:0:1:0;HSNOW-M:SMARTOBS:13:4}";
 var SHensemble2list = ["DIFF{SD-M:ECBSF::1:0:1:0;HSNOW-M:SMARTOBS:13:4}"];
-for (p = 1; p <= perturbations; p++) {
+for (var p = 1; p <= perturbations; p++) {
     SHensemblelist[p] = "SD-M:ECBSF::1:0:3:" + p ;
     SHensemble2 += ",DIFF{SD-M:ECBSF::1:0:3:" + p + ";HSNOW-M:SMARTOBS:13:4}";
     SHensemble2list[p] = "DIFF{SD-M:ECBSF::1:0:3:" + p + ";HSNOW-M:SMARTOBS:13:4}";
@@ -106,7 +109,10 @@ var dyGraphBOptions = {
     legend: 'always',
     // ylabel: "Trafficability",
     // labels: ["date", "Summer Forecast", "Winter Forecast", "Summer Observation", "Winter Observation"],
-    labels: ["date", "Summer Index", "Winter Index", "Summer 10 days", "Winter 10 days"],
+    // labels: ["date", "Summer Index", "Winter Index", "Summer 10 days", "Winter 10 days"],
+
+    // labels: ["date", "Index", "Index 10 days"],
+    labels: ["date", "Seasonal", "10 days"],
 
     //labels: ["date", "Summer Index", "Winter Index"],
 
@@ -122,18 +128,30 @@ var dyGraphBOptions = {
         "Winter Forecast": { fillGraph: true, color: 'rgb(0,0,150)' },
         "Summer Observation": { fillGraph: true, strokeWidth: 3, color: 'rgb(75,75,75)' },
         "Winter Observation": { fillGraph: true, strokeWidth: 3, color: 'rgb(150,0,0)' }, */
-        "Summer Index": { fillGraph: true, color: 'green' },
-        "Winter Index": { fillGraph: true, color: 'rgb(0,0,150)' },
-        "Summer 10 days": { fillGraph: true, strokeWidth: 3, color: 'rgb(75,75,75)' },
-        "Winter 10 days": { fillGraph: true, strokeWidth: 3, color: 'rgb(150,0,0)' },
+
+        // "Summer Index": { fillGraph: true, color: 'green' },
+        // "Winter Index": { fillGraph: true, color: 'rgb(0,0,150)' },
+        // "Summer 10 days": { fillGraph: true, strokeWidth: 3, color: 'rgb(75,75,75)' },
+        // "Winter 10 days": { fillGraph: true, strokeWidth: 3, color: 'rgb(150,0,0)' },
+
+        // "Index": { fillGraph: true, color: 'rgb(0,0,150)' },
+        // "Index 10 days": { fillGraph: true, strokeWidth: 3, color: 'rgb(150,0,0)' },
+        "Seasonal": { fillGraph: true, color: 'rgb(0,0,150)' },
+        "10 days": { fillGraph: true, strokeWidth: 3, color: 'rgb(150,0,0)' },
     },
     axes: {
         y: { 
-            valueRange: [-0.1, 2.1], 
+            // valueRange: [-0.1, 2.1], 
+            // valueRange: [-0.1, 1.1], 
+            valueRange: [-10, 110], 
             pixelsPerLabel: 20,
             axisLabelFormatter: function(y) {
-                if (y == 0) { return 'Bad'; }
-                if (y == 2) { return 'Good'; }
+                // if (y == 0) { return 'Bad'; }
+                // if (y == 2) { return 'Good'; }
+                // if (y == 0) { return '0 %'; }
+                // if (y == 1) { return '100 %'; }
+                if (y == 0) { return '0 %'; }
+                if (y == 100) { return '100 %'; }
             }
         },
         // x: { 
@@ -152,22 +170,36 @@ var dyGraphBOptions = {
 var dyGraphBOptions2 = {
     drawAxesAtZero: false,
     legend: 'always',
-    labels: ["date", "Summer Index", "Winter Index", "Summer 10 days", "Winter 10 days"],
+    // labels: ["date", "Summer Index", "Winter Index", "Summer 10 days", "Winter 10 days"],
+    // labels: ["date", "Index", "Index 10 days"],
+    labels: ["date", "Seasonal", "10 days"],
 
     connectSeparatedPoints: true,
     series: {
-        "Summer Index": { fillGraph: true, color: 'green' },
-        "Winter Index": { fillGraph: true, color: 'rgb(0,0,150)' },
-        "Summer 10 days": { fillGraph: true, strokeWidth: 3, color: 'rgb(75,75,75)' },
-        "Winter 10 days": { fillGraph: true, strokeWidth: 3, color: 'rgb(150,0,0)' },
-    },
+
+        // "Summer Index": { fillGraph: true, color: 'green' },
+        // "Winter Index": { fillGraph: true, color: 'rgb(0,0,150)' },
+        // "Summer 10 days": { fillGraph: true, strokeWidth: 3, color: 'rgb(75,75,75)' },
+        // "Winter 10 days": { fillGraph: true, strokeWidth: 3, color: 'rgb(150,0,0)' },
+
+        // "Index": { fillGraph: true, color: 'rgb(0,0,150)' },
+        // "Index 10 days": { fillGraph: true, strokeWidth: 3, color: 'rgb(150,0,0)' },
+        "Seasonal": { fillGraph: true, color: 'rgb(0,0,150)' },
+        "10 days": { fillGraph: true, strokeWidth: 3, color: 'rgb(150,0,0)' },
+        },
     axes: {
         y: { 
-            valueRange: [-0.1, 2.1], 
+            // valueRange: [-0.1, 2.1],
+            // valueRange: [-0.1, 1.1],  
+            valueRange: [-10, 110], 
             pixelsPerLabel: 25,
             axisLabelFormatter: function(y) {
-                if (y == 0) { return 'Bad'; }
-                if (y == 2) { return 'Good'; }
+                // if (y == 0) { return 'Bad'; }
+                // if (y == 2) { return 'Good'; }
+                // if (y == 0) { return '0 %'; }
+                // if (y == 1) { return '100 %'; }  
+                if (y == 0) { return '0 %'; }
+                if (y == 100) { return '100 %'; } 
             }
         },
         x: { 
@@ -210,13 +242,137 @@ var graphList = [];
 
 var graphIdx;
 
+// function scaleTheArray(arrayToScale, nTimes) {
+//     for (var idx = 0, i = 0, len = arrayToScale.length * nTimes; i < len; i++) {
+//       var elem = arrayToScale[idx];
+
+//       /* Insert the element into (idx + 1) */
+//       arrayToScale.splice(idx + 1, 0, elem);
+
+//       /* Add idx for the next elements */
+//       if ((i + 1) % nTimes === 0) {
+//         idx += nTimes + 1;
+//       }
+//     }
+//   };
+
+        // arr[3 + 1 * numrows] = 1; // col = 3, row = 1
+        // newArray.slice(i*nTimes,(i+1)*nTimes)=array[i];
+        // newArray.slice((i * nTimes) + (j * width), ((i+1) * nTimes) + (j * width)) = array[i];
+
+// function scaleTheArray(array, width, nTimes) {
+//     var newArray = new Uint8Array(array.length * nTimes * nTimes);
+//     for (var i = 0, len = array.length; i < len; i++) {
+//         for (var j = 0; j < nTimes; j++) {
+//             for (var k = 0; k < nTimes; k++) {
+//                 newArray[ (i * nTimes) + (j * width * nTimes) + k ] = array[i];
+//                 console.debug(i,j,k)
+//                 console.debug(newArray)
+//             }
+//         }
+//     }
+//     return newArray;
+// };
+
+function scaleTheArray(array, width, height, nTimes) {
+    var newArray = new Uint8Array(array.length * nTimes * nTimes);
+    for (var i = 0; i < height; i++) {
+        for (var j = 0; j < width; j++) {
+            for (var k = 0; k < nTimes; k++) {
+                for (var n = 0; n < nTimes; n++) {
+                    newArray[ (i * width * nTimes * nTimes) + (j * nTimes) + (k * width * nTimes) + n ] = array[(i * width) + j];
+                    // console.debug(i, j, k, n)
+                    // console.debug(newArray)
+                }
+            }
+        }
+    }
+    return newArray;
+};
+
+// // var arr=[0,1,2,3];
+// var arr=[1,2,3,4];
+// // console.debug(arr)
+// var newArr=scaleTheArray(arr,2,2,2);
+// // console.debug(newArr)
+
 
 //latlonPoint = "64.0,27.0";
 
+// var url = "https://harvesterseasons.com/custom/131468895_x.tif";
+
+// (async function() {
+//     const tiff = await GeoTIFF.fromUrl(url);
+//     const image = await tiff.getImage();
+//     const datatiff = await image.readRasters();
+
+
+//     const canvas = document.getElementById("canvas");
+
+//     const plot = new plotty.plot({
+//       canvas,
+//       data: datatiff[0],
+//       width: image.getWidth(),
+//       height: image.getHeight(),
+//     domain: [0, 6],
+//     colorScale: "blackbody",
+//     });
+//     plot.render();
+// })();
+
+// (async function() {
+//     const tiff = await GeoTIFF.fromUrl(url);
+//     const image = await tiff.getImage();
+//     const datatiff = await image.readRasters();
+
+//     var scale = 10;
+//     // console.debug(datatiff[0])
+
+//     const canvas = document.getElementById("canvas2");
+
+//     const plot = new plotty.plot({
+//       canvas,
+//     //   data: datatiff[0],
+//     //   width: image.getWidth(),
+//     //   height: image.getHeight(),
+//       data: scaleTheArray(datatiff[0],image.getWidth(),image.getHeight(),scale),
+//       width: image.getWidth()*scale,
+//       height: image.getHeight()*scale,
+//     //   domain: [0, 256],
+//     //   colorScale: "viridis"
+//     domain: [0, 6],
+//     colorScale: "blackbody",
+//     // applyDisplayRange: true,
+//     // displayRange: [0, 6],
+//     // useWebGL: false
+//     });
+//     plot.render();
+//     // console.debug(plot)
+// })();
 
 drawtimeseries();
 
+// function show (elem) {  
+//     elem.style.display="block";
+// }
+// function hide (elem) { 
+//     elem.style.display=""; 
+// }
+
 function drawtimeseries() {
+
+    plotty.addColorScale("traffcolors", 
+        ['#000000',
+        '#006100',
+        '#619900',
+        '#A0DB00',
+        '#FFFA00',
+        '#FF8400',
+        '#FF2600'], 
+        [0, 1/6, 2/6, 3/6, 4/6, 5/6, 1]);
+        // (identifier,
+        //  color_steps,
+        //  percentage_steps)
 
     while (timeseries.hasChildNodes()) {
         timeseries.removeChild(timeseries.firstChild);
@@ -226,7 +382,7 @@ function drawtimeseries() {
 
     graphIdx = 0;
 
-    dataLoad = $.getJSON("https://harvesterseasons.com/custom/labels.json",
+    var dataLoad = $.getJSON("https://harvesterseasons.com/custom/labels.json",
         function (data) {
             // console.debug(data.features[0].geometry.coordinates)
 
@@ -235,6 +391,7 @@ function drawtimeseries() {
 
             for (var n = 0; n < data.features.length; n++) {
             // for (var n = 0; n < 10; n++) {
+            // for (var n = 0; n < 1; n++) {
 
                 // console.debug(data.features[n].properties["Trade Cont"])
 
@@ -258,11 +415,72 @@ function drawtimeseries() {
                 var graph = document.createElement('div');
                 graph.id = "graphB" + graphIdx;
 
+                var plotcanvas = document.createElement('canvas');
+                plotcanvas.id = "plotB" + graphIdx;
+
+                // plotcanvas.onmouseover="show()";
+                // plotcanvas.onmouseout="hide()";
+
                 timeseries.appendChild(graphblock);
 
                 graphblock.appendChild(title);
                 graphblock.appendChild(labels);
                 graphblock.appendChild(graph);
+                graphblock.appendChild(plotcanvas);
+                // timeseries.appendChild(plotcanvas);
+
+                // var url = "https://harvesterseasons.com/custom/131468895_x.tif";
+                var url = "https://harvesterseasons.com/custom/" + sitename + "_x.tif";
+
+                // (async function() {
+                //     const tiff = await GeoTIFF.fromUrl(url);
+                //     const image = await tiff.getImage();
+                //     const datatiff = await image.readRasters();
+                
+                //     const canvas = document.getElementById("plotB" + graphIdx);
+                //     const plot = new plotty.plot({
+                //       canvas,
+                //       data: datatiff[0],
+                //       width: image.getWidth(),
+                //       height: image.getHeight(),
+                //     //   domain: [0, 256],
+                //     //   colorScale: "viridis"
+                //     // domain: [0, 6],
+                //     // colorScale: "blackbody",
+                //     // applyDisplayRange: true,
+                //     // displayRange: [0, 6],
+                //     // useWebGL: false
+                //     });
+                //     plot.render();
+                //     // console.debug(plot)
+                //   })();
+
+                var canvas = document.getElementById("plotB" + graphIdx);
+
+                // canvas.onmouseover="show()";
+                // canvas.onmouseout="hide()";
+
+                plottiff(canvas,url);
+                // title.onmouseover = function(){ plottiff(canvas,url) };
+                // title.addEventListener("mouseover", plottiff(canvas,url) ); 
+
+                // canvas.style.cssText = "position: absolute; display: none; margin-top: -85px; margin-left: 100px;"
+
+                if (n==0) {
+                    canvas.style.cssText = "position: absolute; display: none; margin-top: -170px; margin-left: 120px; z-index: 100;"
+                    // canvas.style.cssText = "float: right; padding-top: 3px; padding-right: 3%; display:none;"
+                } else {
+                    canvas.style.cssText = "position: absolute; display: none; margin-top: -86px; margin-left: 120px; z-index: 100;"
+                    // canvas.style.cssText = "float: right; padding-top: 3px; display:none;"
+                    // // canvas.style.cssText = "display: inline-block;"
+                    // // canvas.style.cssText = "display: inline-block; height: 86px; width: 80%; padding-left: 10px; margin-top: 0px; margin-bottom: 0px; text-align: center;"
+                }
+
+                // document.querySelector("#labels:hover + #canvas").style.display='block';
+
+                // document.getElementById("plotB" + graphIdx).style.cssText = "width: 500; height: 500;"
+
+                // document.getElementById("plotB" + graphIdx).style.cssText = "z-index: 0;"
 
                 // timeseries.appendChild(title);
                 // timeseries.appendChild(labels);
@@ -271,7 +489,12 @@ function drawtimeseries() {
                 // graphList[i] = "gB"+i;
                 // console.debug(graphList)
 
-                drawtimeseries_ecbsf(lat, lon, "titleB" + graphIdx, "labelsB" + graphIdx, "graphB" + graphIdx, "graphblock" + graphIdx, graphIdx, sitename);
+                // Read histogram file
+                var histUrl = "https://harvesterseasons.com/custom/" + sitename + "_x.tif.aux.xml";
+
+                drawtimeseries_histogram(lat, lon, "titleB" + graphIdx, "labelsB" + graphIdx, "graphB" + graphIdx, "graphblock" + graphIdx, graphIdx, sitename, "plotB" + graphIdx, histUrl);
+
+                // drawtimeseries_ecbsf(lat, lon, "titleB" + graphIdx, "labelsB" + graphIdx, "graphB" + graphIdx, "graphblock" + graphIdx, graphIdx, sitename, "plotB" + graphIdx);
 
                 graphIdx++;
 
@@ -289,7 +512,84 @@ function drawtimeseries() {
 // var graphLoad, graphTimer;
 // var graphLoad2, graphLoad3, graphLoad4;
 
-function drawtimeseries_ecbsf(lat, lon, titleID, labelsID, graphID, graphblockID, gB, sitename) {
+async function plottiff(canvas,url) {
+    const tiff = await GeoTIFF.fromUrl(url);
+    const image = await tiff.getImage();
+    const datatiff = await image.readRasters();
+    // const datatiff = await image.readRasters({ height: 100 });
+    // const datatiff = await image.readRasters({ width: 40, height: 40, resampleMethod: 'bilinear' });
+
+    // var scale = 2;
+
+    if (image.getWidth() < 10 || image.getHeight() < 10) {
+        var scale = 20;
+    } else if (image.getWidth() < 50 && image.getHeight() < 50) {
+        var scale = 5;
+    } else if (image.getWidth() < 80 && image.getHeight() < 80) {
+        var scale = 3;
+    } else if (image.getWidth() < 80 || image.getHeight() < 80) {
+        var scale = 2;
+    } else {
+        var scale = 1;
+    }
+
+    // console.debug(datatiff[0])
+    // console.debug(image)
+
+    // const canvas = document.getElementById("plotB" + graphIdx);
+
+    const plot = new plotty.plot({
+        canvas,
+        //   data: datatiff[0],
+        //   width: image.getWidth(),
+        //   height: image.getHeight(),
+        data: scaleTheArray(datatiff[0], image.getWidth(), image.getHeight(), scale),
+        width: image.getWidth() * scale,
+        height: image.getHeight() * scale,
+        //   domain: [0, 256],
+        //   colorScale: "viridis"
+        domain: [0, 6],
+        colorScale: "traffcolors",
+        // colorScale: "blackbody",
+        // applyDisplayRange: true,
+        // displayRange: [0, 6],
+        // useWebGL: false
+    });
+    plot.render();
+    // console.debug(plot)
+
+};
+
+function drawtimeseries_histogram(lat, lon, titleID, labelsID, graphID, graphblockID, gB, sitename, plotID, histUrl) {
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            // Typical action to be performed when the document is ready:
+            // console.debug(xhttp.responseXML.getElementsByTagName("HistCounts"));
+            // console.debug(xhttp.responseXML.getElementsByTagName("HistCounts")[0].childNodes[0].nodeValue);
+
+            var histVec = [];
+            var hist = xhttp.responseXML.getElementsByTagName("HistCounts")[0].childNodes[0].nodeValue;
+            // console.debug(hist.split("|")))
+            for (var p = 1; p < 7; p++) {
+                // console.debug(Number(hist.split("|")[p]))
+                histVec[p-1] = Number(hist.split("|")[p]);
+            }
+            // console.debug(histVec)
+            // console.debug(histVec.reduce((a, b) => a + b, 0))
+
+            drawtimeseries_ecbsf(lat, lon, titleID, labelsID, graphID, graphblockID, gB, sitename, plotID, histVec);
+
+        }
+    };
+    xhttp.open("GET", histUrl, true);
+    xhttp.send();
+    // console.debug(histUrl)
+
+};
+
+function drawtimeseries_ecbsf(lat, lon, titleID, labelsID, graphID, graphblockID, gB, sitename, plotID, histVec) {
 
     // document.getElementById(titleID).style.cssText = document.getElementById("titleB0").style.cssText;
     // document.getElementById(labelsID).style.cssText = document.getElementById("labelsB0").style.cssText;
@@ -311,10 +611,24 @@ function drawtimeseries_ecbsf(lat, lon, titleID, labelsID, graphID, graphblockID
     document.getElementById(labelsID).style.cssText = "float: left; width: 88px; font-size: 11px; height: 92px; padding-top: 26px; text-align: left;"
     document.getElementById(graphID).style.cssText = "display: inline-block; height: 86px; width: 90%; padding-left: 10px; margin-top: 0px; margin-bottom: 0px; text-align: center;"
 
+    // document.getElementById(labelsID).onmouseover = function () { plottiff(document.getElementById(plotID), url); };
+ 
+    document.getElementById(titleID).onmouseover = function () { document.getElementById(plotID).style.display = "block"; };
+    document.getElementById(titleID).onmouseout = function () { document.getElementById(plotID).style.display = "none"; };
+
+    document.getElementById(labelsID).onmouseover = function () { document.getElementById(plotID).style.display = "block"; };
+    document.getElementById(labelsID).onmouseout = function () { document.getElementById(plotID).style.display = "none"; };
+
+
+    // document.querySelector(document.getElementById(labelsID) + ":hover + " + document.getElementById(plotID)).style.display='block';
+
+
     var graphCssText2 = "display: inline-block; height: 80px; width: 90%; padding-left: 10px; margin-top: 0px; margin-bottom: 0px; text-align: center;";
 
     // var graphCssText3 = "position: fixed; bottom: 0; display: inline-block; height: 100px; width: " + document.getElementById(graphID).offsetWidth + "px; padding-left: 10px; margin-top: 0px; margin-bottom: 60px; text-align: center; background-color: white;"
     // var graphCssText3 = "position: fixed; bottom: 0; display: inline-block; height: 100px; width: " + document.getElementById(graphID).offsetWidth + "px; padding-left: 10px; margin-top: 0px; margin-bottom: 60px; text-align: center;"
+
+    // gB = 0
     var graphCssText3 = "display: inline-block; height: 100px; width: " + document.getElementById(graphID).offsetWidth + "px; padding-left: 10px; margin-top: 0px; text-align: center;"
     var graphCssText4 = "float: left; width: 88px; font-size: 11px; height: 92px; padding-top: 26px; margin-bottom: 20px; text-align: left;"
 
@@ -356,8 +670,9 @@ function drawtimeseries_ecbsf(lat, lon, titleID, labelsID, graphID, graphblockID
                     if (data[i][param5] !== null) { summer2 = data[i][param5]; }
                     else { summer2 = 'nan'; }
 
-                    // 10 day forecast winter index                        
-                    if (data[i][param6] !== null || data[i][param7] !== null) { winter2 = Math.max(data[i][param6], data[i][param7]); }
+                    // // 10 day forecast winter index                        
+                    // if (data[i][param6] !== null || data[i][param7] !== null) { winter2 = Math.max(data[i][param6], data[i][param7]); }
+                    if (data[i][param7] !== null) { winter2 = data[i][param7]; }
                     else { winter2 = 'nan'; }
 
                     if (summer1 !== 'nan' || winter1 !== 'nan' || summer2 !== 'nan' || winter2 !== 'nan') {
@@ -396,9 +711,9 @@ function drawtimeseries_ecbsf(lat, lon, titleID, labelsID, graphID, graphblockID
                         document.getElementById(graphblockID).appendChild(footer);
 
                     }
-                    if (graphList.length > 1) {
-                        var sync = Dygraph.synchronize(graphList);
-                    }
+                    // if (graphList.length > 1) {
+                    //     var sync = Dygraph.synchronize(graphList);
+                    // }
                     document.getElementById(graphID).style.lineHeight = "1";
                 } else {
                     document.getElementById(graphID).innerHTML = "Error loading data";
@@ -442,14 +757,44 @@ function drawtimeseries_ecbsf(lat, lon, titleID, labelsID, graphID, graphblockID
                         if (data[i][param5] !== null) { summer2 = data[i][param5]; }
                         else { summer2 = 'nan'; }
 
-                        // 10 day forecast winter index                        
-                        if (data[i][param6] !== null || data[i][param7] !== null) { winter2 = Math.max(data[i][param6], data[i][param7]); }
+                        // // 10 day forecast winter index                        
+                        // if (data[i][param6] !== null || data[i][param7] !== null) { winter2 = Math.max(data[i][param6], data[i][param7]); }
+                        if (data[i][param7] !== null) { winter2 = data[i][param7]; }
                         else { winter2 = 'nan'; }
 
-                        if (summer1 !== 'nan' || winter1 !== 'nan' || summer2 !== 'nan' || winter2 !== 'nan') {
-                            graphdata[k] = [new Date(data[i][param1]), summer1, winter1, summer2, winter2];
-                            k++;
+                        // if (summer1 !== 'nan' || winter1 !== 'nan' || summer2 !== 'nan' || winter2 !== 'nan') {
+                        //     graphdata[k] = [new Date(data[i][param1]), summer1, winter1, summer2, winter2];
+                        //     k++;
+                        // }
+
+                        // Hist based graph 
+                        var hist1, hist2;
+                        var histSum = histVec.reduce((a, b) => a + b, 0);
+
+                        if (histSum > 0) {
+                            if (summer1 !== 'nan' || winter1 !== 'nan') {
+                                if (winter1 == 2) { hist1 = 1 }
+                                else if (summer1 == 2) { hist1 = (histSum - histVec[5]) / histSum }
+                                else { hist1 = histVec[0] / histSum }
+                            }
+                            else { hist1 = NaN; }
+
+                            if (summer2 !== 'nan' || winter2 !== 'nan') {
+                                if (winter2 == 2) { hist2 = 1 }
+                                else if (summer2 == 2) { hist2 = (histSum - histVec[5]) / histSum }
+                                else { hist2 = histVec[0] / histSum }
+                            }
+                            else { hist2 = NaN; }
                         }
+                        else { hist1 = NaN; hist2 = NaN; }
+
+                        // hist1 = hist1 * 2;
+                        // hist2 = hist2 * 2;
+                        hist1 = hist1 * 100;
+                        hist2 = hist2 * 100;
+
+                        graphdata[k] = [new Date(data[i][param1]), hist1, hist2];
+                        k++;
                     }
 
                     if (graphdata.length > 0) {
@@ -482,9 +827,9 @@ function drawtimeseries_ecbsf(lat, lon, titleID, labelsID, graphID, graphblockID
                             document.getElementById(graphblockID).appendChild(footer);
 
                         }
-                        if (graphList.length > 1) {
-                            var sync = Dygraph.synchronize(graphList);
-                        }
+                        // if (graphList.length > 1) {
+                        //     var sync = Dygraph.synchronize(graphList);
+                        // }
                         document.getElementById(graphID).style.lineHeight = "1";
                     } else {
                         document.getElementById(graphID).innerHTML = "Error loading data";
