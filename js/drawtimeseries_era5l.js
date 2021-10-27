@@ -129,6 +129,9 @@ function drawtimeseries() {
         // Inside Finland, seasonal snow depth combined and scaled with SMARTOBS observations
         var dataUrl2 = "https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + SHensemble2 + "&starttime=" + dateString_smartobs + "T000000Z&timesteps=1&format=json&precision=full";
         $.getJSON(dataUrl2, function (data2) {
+        // // Temporary fix for missing HSNOW-M:SMARTOBS data
+        // var dataUrl2 = "https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + SHensemble2 + "&starttime=20210914T000000Z&timesteps=1&format=json&precision=full";
+        // $.getJSON(dataUrl2, function (data2) {
 
             // Scale seasonal snow forecast using observations
             var SHensemble3 = "DIFF{SD-M:ECBSF::1:0:1:0;" + data2[0][SHensemble2list[0]] + "}";
