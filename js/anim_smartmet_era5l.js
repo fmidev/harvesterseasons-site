@@ -1891,3 +1891,30 @@ function altcolors() {
     if (isNaN(urlpos.center.lng)) {urlpos.center.lng = 27}
     location.href = "https://harvesterseasons.com/altcolors/#" + urlpos.center.lat + "," + urlpos.center.lng + "," + urlpos.zoom + "z";
 }
+
+function showtext1()
+{
+    if (document.getElementById('carbontext1').style.display == "none") {
+       $("#carbontext1").show();
+    } else {
+        $("#carbontext1").hide();
+    }
+}
+
+function showtext2()
+{
+    if (document.getElementById('carbontext2').style.display == "none") {
+       $("#carbontext2").show();
+    } else {
+        $("#carbontext2").hide();
+    }
+}
+
+function showtext3()
+{
+    if (document.getElementById('carbontext3').style.display == "none") {
+       $("#carbontext3").show();
+    } else {
+        $("#carbontext3").hide();
+    }
+}
