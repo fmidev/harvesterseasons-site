@@ -1,4 +1,0 @@
-AuthType Basic 
-AuthName "Enter password" 
-AuthUserFile /home/smartmet/.htpasswd 
-require valid-user
