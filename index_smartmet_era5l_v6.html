@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Harvester Seasons</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="icon" href="img/favicon-16x16.png" type="image/png" sizes="16x16"/>
+    <link rel="icon" href="img/favicon-32x32.png" type="image/png" sizes="32x32"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="js/L.Control.Locate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.1/leaflet.css" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.4.2/Control.FullScreen.min.css" />
+    <link rel="stylesheet" href="js/leaflet.timedimension.control.min.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1 style="color: darkred">Harvester Seasons</h1>
+            <details>
+ 
+                <summary>Click for information</summary>
+
+                <h3>Overview</h3>
+                <p>Forestry operations depend on good trafficability of terrain and dirt roads on location. <a href="https://www.metsakeskus.fi/en/">The Finnish Forest Centre</a>
+                    has produced trafficability maps based on high resolution laser scanning of most parts of Finland. These maps call
+                    for dry or winter coditions for many forests in Finland to be trafficable. Our app gives a <span style="white-space: nowrap;">6 month</span> foresight
+                    identifying good or bad conditions within the <span style="white-space: nowrap;">6 classes</span> of the trafficability map.</p>
+ 
+                <iframe id="ytplayer" type="text/html" width="100%" height="360" style="max-width:640px"
+                    src="https://www.youtube-nocookie.com/embed/zk-Lq4O_ZJI?cc_load_policy=1&cc_lang_pref=en&origin=https://harvesterseasons.com"
+                    frameborder="0"></iframe>
+
+                <h3>How to use</h3>                
+                <p>When you open the page it can use your location information to zoom in on the surrounding area
+                    and show the <span style="white-space: nowrap;">6 month</span> forecast for it in a graph with summer and winter
+                    condition analysis. The blue circle indicates
+                    the area where the graph information is valid. You can navigate the date on the map below with a slider, back and
+                    forward buttons or play to go through all dates.</p>
+                
+                <h3>Send feedback</h3>
+                <form action="feedback.php" method="post" target="_blank"
+                    onsubmit="submitFunc(); $('.feedbackButton').attr('disabled', true);">
+                    <b>E-mail address or phone number:</b><br>
+                    <input type="text" name="email" maxlength="50" style="max-width:230px; width:100%"><br><br>
+                    <b>Feedback:</b><br>
+                    <textarea id="feedback" name="feedback" maxlength="2000"
+                        style="height:100px; max-width:500px; width:100%"></textarea><br><br>
+                    <input class="feedbackButton" type="submit" value="Submit" disabled><br><br>
+                    <input id="userlatlon_en" name="userlatlon_en" type="hidden" />
+                    <input id="mapviewlatlon_en" name="mapviewlatlon_en" type="hidden" />
+                    <input id="zoomlevel_en" name="zoomlevel_en" type="hidden" />
+                    <input id="userIP_en" name="userIP_en" type="hidden" />
+                    <input id="date_en" name="date_en" type="hidden" />
+                </form>
+
+                <h3>Description</h3>
+                <p>Each date map translates the forecasted indexes into changes to trafficability classes on the map for that day. Good
+                    winter conditions allow forest machines in all terrains, good summer conditions leave out winter classes. Bad
+                    conditions are identified for areas that need dry or winter conditions and these are not predicted. Seasonal
+                    forecasts are far from certain, so we also have situations where we can't predict conditions.</p>
+                
+                <p>Below the map three graphs go into detail explaining the conditions background. The predictions use 
+                    <a href="https://climate.copernicus.eu/seasonal-forecasts">EU Copernicus climate change service seasonal forecasts</a>
+                    using the <a href="https://cds.climate.copernicus.eu/">Copernicus climate data store</a>, which are a tool
+                    combining climatology and large scale weather pattern
+                    teleconnections to indicate directions of future climate. So graphs are not daily weather forecasts, but a range of
+                    possibilities for each day and our analysis is based on <span style="white-space: nowrap;">90% of</span> these to
+                    concure on a good or bad condition. The
+                    graphs show all <span style="white-space: nowrap;">51 members</span> of the bias-adjusted and post processed
+                    prediction ensemble interpolated to the location
+                    on the map. It represents many square kilometres, not one spot as the resolution of the models used ranges from
+                    <span style="white-space: nowrap;">5 to</span>
+                    <span style="white-space: nowrap;">100 kilometers.</span>
+
+                    The red lines represent short term weather forecasts by FMI. The soil moisture forecast is for a deeper layer 
+                    than in seasonal predictions and thus shows smaller values.
+                </p>
+
+                <p>Summer good/dry conditions are based on soil wetness below <span style="white-space: nowrap;">10 cm</span> ground
+                    being under <span style="white-space: nowrap;">40% with</span> <span style="white-space: nowrap;">90% of</span>
+                    prediction
+                    members. Winter good conditions are either based on soil temperature at <span style="white-space: nowrap;">20
+                        cm</span> below ground being under <span style="white-space: nowrap;">0 °C</span> or snow
+                    depth being more than <span style="white-space: nowrap;">40 cm.</span> Again <span style="white-space: nowrap;">90%
+                        of</span> the prediction members have to agree.
+
+                    Past dates and the coming first <span style="white-space: nowrap;">10 days</span> are using short term weather forecast instead of seasonal
+                    prediction, and also <span style="white-space: nowrap;">20% limit</span> for soil moisture because of a different
+                    soil layer depth.
+                </p>
+
+                <p>The app allows browsing the map and clicking for analysis graphs all over Northern Europe, but trafficability
+                    analysis is available only in Finland with over <span style="white-space: nowrap;">80% of</span> land area covered. In areas without trafficability analysis
+                    the map shows average soil wetness, temperature and snow depth predictions, but the information is intended to be
+                    coarse as this information should not be considered precise, it is estimating future climatology of the variable.
+                    Also good and bad trafficability is analyzed in the graphs, but it can't be translated for particular parcels on the
+                    map.</p>
+
+                <p>The service is developed with EU support and it allows this service to be available for free
+                    for a one year trial phase. You can send feedback using the form above. Enjoy!</p>
+
+                <p><a href="HarvesterSeasons_Description2pager_v2.pdf">View infosheet (PDF)</a></p>
+
+                <p>Forest Fire Index is provided by <a href="https://effis.jrc.ec.europa.eu/">Copernicus Emergency Management Service</a>.
+                </p>
+
+                <p>Tree Cover Density is for year 2018 and provided by <a href="https://land.copernicus.eu/pan-european/high-resolution-layers/forests/">Copernicus Land Monitoring Service</a>.
+                </p>
+
+<!--                 <p><a href="https://en.ilmatieteenlaitos.fi/forest-fire-index">Information about Forest Fire Index</a></p>
+ -->
+                <h3>Press releases and articles</h3>
+
+                <p><a href="https://climate.copernicus.eu/harvester-seasons">Harvester Season as Copernicus C3S service</a></p>
+                <p><a href="https://www.copernicus.eu/en/news/news/observer-data-action-inside-three-sectoral-services-built-using-c3s-data">Data in action at Copernicus Observer</a></p>
+
+                <h3>Project partners</h3>
+                <div style="width:170px; vertical-align: top; display: inline-block">
+                    <b>Service producer</b>
+                    <br>
+                    <a href="https://www.fmi.fi"><img src="img/fmi.png" width="120" style="margin-top:5px; margin-bottom:10px" alt="Finnish Meteorological Institute"></a>
+                </div>
+                <div style="width:220px; vertical-align: top; display: inline-block">
+                    <b>Subcontractor</b>
+                    <br>
+                    <a href="https://www.metsateho.fi"><img src="img/metsateho.JPG" width="200" style="margin-top:4px; margin-left:-10px" alt="Metsäteho"></a>
+                </div>
+                <div style="vertical-align: top; display: inline-block">
+                    <b>Test user</b>
+                    <br>
+                    <a href="https://www.metsagroup.com/en/Pages/default.aspx"><img src="img/metsagroup.JPG" width="150" alt="Metsä Group"></a>
+                </div>
+
+                <h3>Acknowledgement</h3>
+                <p>Harvester Seasons is implemented and using computing facilities of DIAS platform WEkEO.</p>
+
+                <dl>
+                <dt>This service is funded by</dt>
+                    <dd>- ECMWF as a use case by the <a href="https://www.copernicus.eu/en/use-cases">Copernicus Programme's Climate Change Service (C3S)</a></dd>
+                    <dd>- <a href="https://e-shape.eu">E-Shape EuroGEO Showcases project</a></dd>
+                </dl>
+
+                <div style="width:170px; vertical-align: top; display: inline-block">
+                    <a href="https://www.wekeo.eu/"><img src="img/wekeo_logo.png" alt="WEkEO-logo"></a>
+                </div>
+                <div style="width:230px; vertical-align: top; display: inline-block">
+                    <a href="https://www.copernicus.eu/en/use-cases"><img src="img/c3s-logo.png" width="210" style="margin-top:10px;" alt="Copernicus-logo"></a>
+                </div>
+                <div style="vertical-align: top; display: inline-block">
+                    <a href="https://e-shape.eu"><img src="img/e-shape-name.png" width="120" alt="E-Shape-logo"></a>
+                </div>
+
+                <div>
+                    <i>This service was funded as a use case by the Copernicus Programme's Climate Change Service (C3S) contract under
+                        framework agreement ECMWF/COPERNICUS/2019/C3S_428g_FMI.<br>
+                        The E-Shape project has received funding from the European Union’s Horizon 2020 research and innovation
+                        programme under grant agreement 820852.</i>
+                </div>
+
+            </details>
+            <details>
+
+                <summary>Lisätietoja suomeksi</summary>
+
+                <h3>Esittely</h3>
+<!--                 <p>Onko korjuukelpoisuuskartta tuttu? <a href="https://www.metsakeskus.fi/">Metsäkeskuksen</a> tarjoama analyysi kattaa yli <span style="white-space: nowrap;">80 %</span> Suomen metsämaista. Kuivaa kesää tai
+                hyviä talviolosuhteita tarvitaan suuressa osassa Suomen metsiä korjuiden järjestämiseen. Uusi palvelumme antaa <span style="white-space: nowrap;">6
+                kuukauden</span> ennusteen hyvistä ja huonoista olosuhteissa <span style="white-space: nowrap;">6 korjuukelpoisuusluokan</span> kannalta.</p>
+ -->
+                <p>Jo muutaman vuoden saatavilla olleet <a href="https://www.metsakeskus.fi/">Metsäkeskuksen</a> tarjoamat korjuukelpoisuuskartat kattavat yli <span style="white-space: nowrap;">80 %</span> Suomen
+                metsämaasta. Uusi Harvester <span style="white-space: nowrap;">Seasons -palvelumme</span> antaa kuuden kuukauden ennusteen hyvistä ja huonoista korjuuolosuhteista
+                kuuden korjuukelpoisuusluokan kannalta. Toisin sanoen, korjuukelpoisuuskarttojen esittämään tietoa täydennetään
+                sää- ja ilmastotiedoilla, jolloin korjuukelpoisuuskarttojen esittämästä korjuukelpoisuudesta saadaan ajankohtaan paremmin osuva.</p>
+
+                <iframe id="ytplayer" type="text/html" width="100%" height="360" style="max-width:640px"
+                    src="https://www.youtube-nocookie.com/embed/zk-Lq4O_ZJI?cc_lang_pref=fi&origin=https://harvesterseasons.com"
+                    frameborder="0"></iframe>
+
+<!--                 <h3>Käyttö</h3>                
+                <p>Kun avaat tämän sivuston, sivu voi avautua kuvaamaan sijaintisi ympäristöä. Korjuukelpoisuus (eli
+                trafficability) seuraavalle <span style="white-space: nowrap;">6 kuukaudelle</span> arvioidaan kuvaajassa kesä- ja talvitilanteiden kannalta. Kuvaajan tieto pätee
+                sinisen ympyrän sisällä. Voit ohjata alla olevan kartan päivämäärää liukukytkimellä, eteen-, taakse- tai play-napeilla.</p>
+ -->
+                <h3>Käyttöohje</h3>
+                <ol>
+                    <li><p>
+                        Kun avaat Harvester <span style="white-space: nowrap;">Seasons -sivuston,</span> sivusto kysyy mahdollisuutta
+                        käyttää sijaintiasi. Voit hyväksyä sijainnin
+                        käytön, jolloin kartta kohdentuu sijaintiisi käyttäessäsi ohjelmaa älylaitteella, tai itse kohdentaa haluamaasi
+                        paikkaan kartalla.
+                    </p></li>
+                    <li><p>
+                        Tarkenna kartta haluamaasi maastonkohtaan ja klikkaa hiirellä tai kosketa sormella sininen osoitinmerkki
+                        alueelle. Tällöin ohjelman tekee laskelman (kestää hetken) maaperän kosteudesta, roudasta ja lumen syvyydestä
+                        alueelle.
+                        </p>
+                        <img src="img/ohje2.png">
+                    </li>
+                    <ol type="a">
+                        <li><p>
+                            Laskelma tehdään sinisen ympyrän alueen sää- ja ilmastotietojen perusteella (zoomaa leimikkotasolta kauemmaksi, jotta
+                            näet sinisen ympyrän.)
+                            </p>
+                            <img src="img/ohje2a.png">
+                        </li>
+                        <li><p>
+                            Karttaikkunan oikeasta yläkulmassa olevasta valikosta voit valita karttatasoja maaperän kosteuden,
+                            maaperän lämpötilan, lumen paksuuden ja metsäpaloindeksin tarkastelemiseksi. Karttatasot toimivat vain
+                            riittävän isolla mittakaavalla tarkasteltaessa.
+                        </p></li>
+                    </ol>
+                    <li><p>
+                        Zoomaa takaisin lähelle sinistä osoitinmerkkiä. Leimikkotasolla näkyvässä perustilanteessa on esillä
+                        <b>perinteisen korjuukelpoisuuskartan</b> esittämä tieto alueen korjuukelpoisuudesta.
+                    </p></li>
+                    <li><p>
+                        Kun laitat ruksin Trafficability <span style="white-space: nowrap;">forecast -kohtaan</span> kartan ylälaidassa, Play-toiminto aktivoituu ja voit
+                        tarkastella karttaruudun aikajanalla kelaten korjuukelpoisuusarviota eteenpäin seuraavalle kuudelle kuukaudelle
+                        <u>sää- ja ilmasto-olosuhteet huomioiden</u>. Voit ohjata kartan päivämäärää myös liukukytkimellä sekä eteen- ja taaksepäin
+                        painikkeilla.
+                        </p>
+                        <img src="img/ohje4.png" style="margin-top:-10px;">
+                    </li>
+                    <li><p>
+                        Kartan yläpuolella kuvaajassa on kaksi indeksiä (Summer Index ja Winter Index), jotka kuvaavat kohteen
+                        korjuukelpoisuutta kesä- ja talvitilanteiden kannalta asteikolla hyvä, epävarma (keskellä asteikkoa) ja huono.
+                    </p></li>
+                    <ol type="a">
+                        <li><p>
+                            Summer Index muodostetaan maan pintakerroksen <span style="white-space: nowrap;">(0 – 28 cm)</span> kosteuden perusteella. Arvo on Hyvä, jos
+                            maaperän kosteusprosentti on pienempi kuin <span style="white-space: nowrap;">40 %.</span>
+
+                            Menneet päivämäärät sekä tulevat ensimmäiset <span style="white-space: nowrap;">10 päivää</span> perustuvat vuodenaikaisennusteen sijaan lyhyemmän aikavälin sääennusteeseen, ja johtuen ennusteiden erosta maakerroksen syvyydessä,
+                            käytössä on tällöin maankosteuden osalta <span style="white-space: nowrap;">20 % raja-arvo</span>.
+                        </p></li>
+                        <li><p>
+                            Winter Index muodostetaan lumikerroksen paksuuden ja maaperän lämpötilan perusteella. Arvo on Hyvä, jos
+                            lunta on yli <span style="white-space: nowrap;">40 cm</span> tai routaa <span style="white-space: nowrap;">20 cm.</span>
+                        </p></li>
+                    </ol>
+                </ol>
+                <img src="img/ohje5b.png">
+                <p>Korjuukelpoisuusluokituksen muuttuminen säätiedon perusteella.</p>
+                <img src="img/korjuukelpoisuus.png">
+
+                <h3>Lähetä palautetta</h3>
+                <form action="feedback.php" id="feedbackform" method="post" target="_blank" 
+                onsubmit="submitFunc(); $('.palauteButton').attr('disabled', true);">
+                    <b>Sähköpostiosoite tai puhelinnumero:</b><br>
+                    <input type="text" name="sposti" maxlength="50" style="max-width:250px; width:100%"><br><br>
+                    <b>Palaute:</b><br>
+                    <textarea id="palaute" name="palaute" maxlength="2000" style="height:100px; max-width:500px; width:100%"></textarea><br><br>  
+                    <input class="palauteButton" type="submit" value="Lähetä" disabled><br><br>       
+                    <input id="userlatlon_fi" name="userlatlon_fi" type="hidden" />  
+                    <input id="mapviewlatlon_fi" name="mapviewlatlon_fi" type="hidden" />  
+                    <input id="zoomlevel_fi" name="zoomlevel_fi" type="hidden" />  
+                    <input id="userIP_fi" name="userIP_fi" type="hidden" />     
+                    <input id="date_fi" name="date_fi" type="hidden" />     
+                </form>
+
+                <h3>Kuvaus</h3>                
+                <p>Jokaisen päivän kartalla ennustetut indexit vaihtavat korjuukelpoisuus luokitusta hyväksi tai huonoksi. Hyvät
+                talviolosuhteet sallivat korjuun kaikialla, hyvät kuivat kesätilanteet sallivat korjuun muualla kuin talviluokissa.
+                Huonoja olosuhteita esitetään kuivuutta tai talviolosuhteita edellyttävissä paikoissa, jos olosuhteita ei ennusteta.
+                Vuodenaikaisennusteet eivät ole luotettavia kuten sääennusteet, siksi on myös tilanteita, joissa emme tohdi ennustaa
+                olosuhteita.</p>
+                
+                <p>Kartan alla kolme kuvaajaa selittää olosuhde-ennusteiden taustaa. Ennusteet perustuvat <a href="https://climate.copernicus.eu/seasonal-forecasts">EU:n Copernicus 
+                ilmastonmuutospalveluiden vuodenaikaisennusteisiin</a>, jotka ovat saatavilla <a href="https://cds.climate.copernicus.eu/">Copernicus ilmastodatapalvelusta</a>.
+                Vuodenaikaisennusteet ovat väline, joka yhdistää ilmastotietoa ja suursään
+                kaukokulkeutumisyhteyksiä kuvaamaan tulevaa ilmastoa. Kuvaajat eivät siis ole päivittäisiä sääennusteita, vaan jakauma
+                mahdollisuuksia kullekin päivälle. Meidän ennuste perustuu tilanteisiin, joissa <span style="white-space: nowrap;">90 %</span> jakauman jäsenistä puoltavat hyviä
+                tai huonoja olosuhteita. Kuvaajissa näkyy kaikki <span style="white-space: nowrap;">51 arvoa</span> biaskorjattuja ja jatkojalostettuja ennusteen parven jäsentä
+                interpoloituna kohteeseen. Tieto edustaa useiden neliökilometrien alueellista tilannetta, eivät pientä paikkaa kartalla,
+                koska käytettyjen mallien erotuskyvyt liikkuvat <span style="white-space: nowrap;">5 ja</span> <span style="white-space: nowrap;">100 kilometrin</span> välillä.
+
+                Punaiset viivat edustavat Ilmatieteen laitoksen sääennustetta. Maankosteuden ennuste edustaa syvempää kerrosta kuin vuodenaikaisennusteessa, mistä syystä se myös näyttää pienempiä arvoja. 
+                </p>
+                
+                <p>Kesän hyvät/kuivat olosuhteet perustuvat maaperän kosteuteen <span style="white-space: nowrap;">10 cm</span> syvyyden alapuolella. Vettä on oltava alle <span style="white-space: nowrap;">40 %</span>
+                maaperän tilavuudesta ja vähintään <span style="white-space: nowrap;">90 %</span> ennusteparven jäsenistä on ennustettava niin. Talven hyvät olosuhteet perustuvat
+                joko routaan, jolloin <span style="white-space: nowrap;">20 cm</span> syvyydellä maaperän lämpötila on pakkasella tai lumensyvyyteen, jonka on oltava yli <span style="white-space: nowrap;">40 cm.</span>
+                Ja siis <span style="white-space: nowrap;">90 %</span> parven ennusteista on oltava samaa mieltä.
+            
+                Menneet päivämäärät sekä tulevat ensimmäiset <span style="white-space: nowrap;">10 päivää</span> perustuvat vuodenaikaisennusteen sijaan lyhyemmän aikavälin sääennusteeseen, ja johtuen ennusteiden erosta maakerroksen syvyydessä,
+                käytössä on tällöin maankosteuden osalta <span style="white-space: nowrap;">20 % raja-arvo</span>.
+                </p>
+                
+                <p>Sovellus sallii kartan selaamisen ja analyysin laskemisen Pohjoismaissa, mutta korjuukelpoisuus analyysia on vain
+                Suomessa (yli <span style="white-space: nowrap;">80 %</span> metsämaista on kartoitettu). Alueilla ilman korjuukelpoisuuskartta ja zoomaamalla suuria alueita voi
+                tarkastella ennusteparven keskimääräistä maaperän kosteutta, lämpötilaa tai lumikerroksen paksuutta. Tieto on
+                tarkoituksella epämääräistä, koska kyseessä on muuttujan tulevan ilmaston arvio. Kuvaajiin analysoidaan myös hyvät ja
+                huonot korjuukelpoisuudet, mutta niitä ei voi esittää kartalla maastoa huomioiden.</p>
+                
+                <p>Palvelu on kehitetty EU:n tukemana ja tämä tarjoaa mahdolisuuden käyttää palvelua ilmaiseksi
+                aina vuoden kestävän koekauden ajan. Voit lähettää palautetta yllä olevan lomakkeen avulla. Tervetuloa!</p>
+
+                <p>Metsäpaloindeksin (Forest Fire Index) tuottaa <a href="https://effis.jrc.ec.europa.eu/">Copernicus Emergency Management Service</a>.
+                </p>
+
+                <p>Latvuspeittävyys (Tree Cover Density) on vuodelle 2018 ja sen tuottaa <a href="https://land.copernicus.eu/pan-european/high-resolution-layers/forests/">Copernicus Land Monitoring Service</a>.
+                </p>
+
+<!--                 <p><a href="https://www.ilmatieteenlaitos.fi/metsapaloindeksi">Lisätietoa metsäpaloindeksistä (Forest Fire Index)</a></p>
+ -->
+                <h3>Projektin osapuolet</h3>
+                <div style="width:170px; vertical-align: top; display: inline-block">
+                    <b>Palveluntuottaja</b>
+                    <br>
+                    <a href="https://www.fmi.fi"><img src="img/fmi.png" width="120" style="margin-top:5px; margin-bottom:10px" alt="Ilmatieteen laitos"></a>
+                </div>
+                <div style="width:220px; vertical-align: top; display: inline-block">
+                    <b>Alihankkija</b>
+                    <br>
+                    <a href="https://www.metsateho.fi"><img src="img/metsateho.JPG" width="200" style="margin-top:4px; margin-left:-10px" alt="Metsäteho"></a>
+                </div>
+                <div style="vertical-align: top; display: inline-block">
+                    <b>Testiasiakas</b>
+                    <br>
+                    <a href="https://www.metsagroup.com/fi/Pages/default.aspx"><img src="img/metsagroup.JPG" width="150" alt="Metsä Group"></a>
+                </div>
+
+                <h3>Kiitämme</h3>
+                <p>Harvester Seasons on toteutettu hyödyntäen WEkEO-laskentapalveluita.</p>
+
+                <dl>
+                <dt>Tätä palvelua rahoittaa</dt>
+                    <dd>- ECMWF osana <a href="https://www.copernicus.eu/en/use-cases">Copernicus Climate Change Service (C3S) Use Case</a> -ohjelmaa</dd>
+                    <dd>- <a href="https://e-shape.eu">E-Shape EuroGEO Showcases</a> -projekti</dd>
+                </dl>
+
+                <div style="width:170px; vertical-align: top; display: inline-block">
+                    <a href="https://www.wekeo.eu/"><img src="img/wekeo_logo.png" alt="WEkEO-logo"></a>
+                </div>
+                <div style="width:230px; vertical-align: top; display: inline-block">
+                    <a href="https://www.copernicus.eu/en/use-cases"><img src="img/c3s-logo.png" width="210" style="margin-top:10px;"
+                            alt="Copernicus-logo"></a>
+                </div>
+                <div style="vertical-align: top; display: inline-block">
+                    <a href="https://e-shape.eu"><img src="img/e-shape-name.png" width="120" alt="E-Shape-logo"></a>
+                </div>
+                
+                <div>
+                    <i>Tämä palvelu rahoitettiin Copernicus Climate Change Service (C3S) Use Case palvelusopimuksella osana
+                        puitesopimusta ECMWF/COPERNICUS/2019/C3S_428g_FMI.<br>
+                        E-Shape projekti on saanut rahoitusta Euroopan Unionin Horisontti 2020 tutkimus- ja innovaatio-ohjelmasta
+                        sopimusnumerolla 820852.</i>
+                </div>
+            </details>
+        </header>
+        <div id="titleB"></div>
+        <div id="labelsB"></div>
+        <div id="graphB"></div>
+        <div id="set-date">
+            <div id="dynamic-control">
+                <label id="dynamic">
+                    Trafficability forecast
+                    <input type="checkbox" id="dynamic-checkbox" onchange="changedynamic()">
+                </label>
+            </div>
+            <div id="date-control">
+                <input id="test" type="button" value="<<"  
+                    onmousedown="datebackscrollfast()" onmouseup="datestopscrollfast()" onmouseleave="datestopscrollfast()" 
+                    ontouchstart="datebackscrollfast()" ontouchend="datestopscrollfast()" ontouchcancel="datestopscrollfast()">
+                <input type="button" value="<" onclick="dateback()" 
+                    onmousedown="datebackscroll()" onmouseup="datestop()" onmouseleave="datestop()" 
+                    ontouchstart="datebackscroll()" ontouchend="datestop()" ontouchcancel="datestop()">
+                <input type="range" min="0" max="180" value="0" id="date-range" class="slider">
+                <input type="button" value=">" onclick="dateforward()" 
+                    onmousedown="dateforwardscroll()" onmouseup="datestop()" onmouseleave="datestop()" 
+                    ontouchstart="dateforwardscroll()" ontouchend="datestop()" ontouchcancel="datestop()">
+                <input type="button" value=">>"  
+                    onmousedown="dateforwardscrollfast()" onmouseup="datestopscrollfast()" onmouseleave="datestopscrollfast()" 
+                    ontouchstart="dateforwardscrollfast()" ontouchend="datestopscrollfast()" ontouchcancel="datestopscrollfast()">
+            </div>
+            <div id="date-value-control">            
+                <div id="date-value" style="text-align:center; vertical-align:middle; min-width: 100px; display: inline-block;"></div>
+                <div id="play-button" style="text-align:center; vertical-align:middle; width: 50px; display: inline-block;">
+                    <input id="playbutton" type="button" value="Play" onclick="playbuttonfunc()">
+                </div>
+            </div>
+        </div>
+        <div id="map" class="map">
+            <p id="param"></p>
+        </div>
+        <div id="harvestability-legend">
+            <ul class="legend">
+                <li><span class="frostheave"></span> Frost heave (kelirikko, GOOD)</li>
+                <li><span class="normalsummermineral"></span> Normal summer, mineral soil</li>
+                <li><span class="drysummermineral"></span> Dry summer, mineral soil</li>
+                <li><span class="normalsummerpeat"></span> Normal summer, peat soil</li>
+                <li><span class="drysummerpeat"></span> Dry summer, peat soil</li>
+                <li><span class="winter"></span> Winter (BAD)</li>
+            </ul>
+        </div>
+        <div id="set-opacity" style="padding-left: 15%;">
+            <div id="opacity">
+                Opacity:
+            </div>
+            <div id="opacity-slider">
+                <input type="range" min="0" max="100" value="70" id="opacity-range">
+            </div>
+            <div id="opacity-value" style="width: 45px;">
+                <!-- <div id="opacity-value"> -->
+            </div>
+            <!-- <div id="altcolors" style="margin-bottom: 15px; padding-right: 15px; float: right;"> -->
+                <div id="altcolors">
+                    <input type="button" value="Alternative Colors" onclick="altcolors()">
+            </div>
+        </div>
+        <div id="labels"></div>
+        <div id="graphsw"></div>
+        <div id="graphst"></div>
+        <div id="graphsh"></div>
+        <div id="footer">
+            <div style="float: left; width: 28%;">
+                <a href="https://harvesterseasons.com/">Harvester Seasons</a>
+            </div>
+            <div style="float: left; text-align: center; width: 37%; padding-left: 5px; padding-right: 5px;">
+                <a href="https://twitter.com/HarvesterSeaso1" target="_blank">
+                    <img src="img/logo-twitter.svg" width="20" alt="Twitter-logo" style="vertical-align:middle; margin-top:-3px;">
+                    Follow us on Twitter
+                </a>
+            </div>
+            <div style="float: right; width: 35%; text-align: right;">
+                <a href="../privacy-policy/" target="_blank">
+                    Privacy Policy / Terms <span style="white-space: nowrap;">of Use</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-9509467-58"></script>
+    <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","UA-9509467-58")</script>    <script type="text/javascript" src="js/leaflet.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.4.2/Control.FullScreen.min.js"></script>
+    <script src="js/georaster.browser.bundle.min.js"></script>
+    <script src="js/proj4-src.js"></script>
+    <script src="js/georaster-layer-for-leaflet.browserify.min.js"></script>
+    <script type="text/javascript" src="js/dygraph-combined.js"></script>
+    <script type="text/javascript" src="js/iso8601.min.js"></script>
+    <script type="text/javascript" src="js/leaflet.timedimension.js"></script>
+    <script type="text/javascript" src="js/leaflet.timedimension.util.js"></script>
+    <script type="text/javascript" src="js/leaflet.timedimension.layer.js"></script>
+    <script type="text/javascript" src="js/leaflet.timedimension.layer.wms.js"></script>
+    <script type="text/javascript" src="js/leaflet.timedimension.layer.geojson.js"></script>
+    <script type="text/javascript" src="js/leaflet.timedimension.player.js"></script>
+    <script type="text/javascript" src="js/leaflet.timedimension.control.js"></script>
+    <script type="text/javascript" src="js/synchronizer.js"></script>
+    <script type="text/javascript" src="js/L.Control.Locate.min.js"
+        charset="utf-8"></script>
+    <script type="text/javascript" src="js/leaflet.permalink.js"></script>
+    <script type="text/javascript" src="js/plotgeotiff_era5l.js"></script>
+    <script type="text/javascript" src="js/drawtimeseries_era5l.js"></script>
+    <script type="text/javascript" src="js/anim_smartmet_era5l.js"></script>
+</body>
+
+</html>

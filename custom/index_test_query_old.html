@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Harvester Seasons</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="icon" href="../img/favicon-16x16.png" type="image/png" sizes="16x16"/>
+    <link rel="icon" href="../img/favicon-32x32.png" type="image/png" sizes="32x32"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css" />
+    <link rel="stylesheet" href="../custom/styles_custom_test_query.css" />
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1 style="color: darkred">Harvester Seasons</h1>
+        </header>
+
+        <!-- <div id="titleB"></div> -->
+
+<!--         <h2 style="color: darkred">Coordinates</h2>
+ -->
+        <!-- <table>
+            <tr>
+                <td>
+                    <label for="latitude">Latitude:</label>
+                </td>
+                <td>
+                    <input type="number" id="latitude" name="latitude" min="0" max="90" value="64.00" step="0.01"
+                        size="6">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="longitude">Longitude:</label>
+                </td>
+                <td>
+                    <input type="number" id="longitude" name="longitude" min="0" max="180" value="27.00" step="0.01" size="6">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align:center">
+                    <input type="button" value="Update" onclick="drawtimeseries()">
+                </td>
+            </tr>
+        </table> -->
+
+
+<!--         <div style="text-align:center">
+            <textarea id="coordinates" name="coordinates" cols=15 rows=5></textarea>
+        </div>
+        <div style="text-align:center">
+            <input type="button" value="Update" onclick="drawtimeseries()">
+        </div> -->
+
+
+
+
+        <h2 style="margin-bottom: 10px; color: darkred">Trafficability</h2>
+
+<!--         <h3 style="color: darkred">Observation (ERA5)</h3>
+        <div id="labelsB_era5"></div>
+        <div id="graphB_era5"></div>
+ -->
+
+        <!-- <h3 style="color: darkred">Seasonal forecast with ERA5-Land bias correction (ECBSF)</h3> -->
+
+        <!-- <div id="timeseries">
+            <div id="titleB0"></div>
+            <div id="labelsB0"></div>
+            <div id="graphB0"></div>
+        </div> -->
+
+        <!-- <canvas id="canvas" width=500 height=500></canvas> -->
+
+        <!-- <canvas id="canvas2" width=500 height=500></canvas> -->
+<!--         <h3 style="color: darkred">FMI forecast (SMARTMET)</h3>
+        <div id="labelsB_fmi"></div>
+        <div id="graphB_fmi"></div>        
+
+        <h3 style="color: darkred">Seasonal forecast with ERA5 bias correction (ECB2SF)</h3>
+        <div id="labelsB_ecb2sf"></div>
+        <div id="graphB_ecb2sf"></div>
+
+        <h3 style="color: darkred">Seasonal forecast (ECSF)</h3>
+        <div id="labelsB_ecsf"></div>
+        <div id="graphB_ecsf"></div>
+ -->
+<!--         <div id="labels"></div>
+        <div id="graphsw"></div>
+        <div id="graphst"></div>
+        <div id="graphsh"></div> -->
+
+        
+        <!-- <div id="footer">
+            <a href="https://harvesterseasons.com/">Harvester Seasons</a>
+            <a href="../privacy-policy/" target="_blank" style="float: right;">Privacy Policy / Terms of Use</a>
+        </div> -->
+
+
+
+        <!-- <div id="timeseries"></div> -->
+
+        <div id="query">
+            Alku: <input type="date" id="sdate" name="sdate">
+            <p>
+                Loppu: <input type="date" id="edate" name="edate">
+            <p>
+                Hakkuutapa:
+                <select id="hakkuutapa" name="hakkuutapa">
+                    <option value="Uudistus">Uudistus</option>
+                    <option value="Harvennus">Harvennus</option>
+                    <option value="Ensiharvennus">Ensiharvennus</option>
+                    <option value="Kaikki">Kaikki</option>
+                </select>
+            <p>
+                Kelvollisia pikseleitä vähintään:
+                <input type="number" id="pixmin" name="pixmin" value=70 min=0 max=100 step=5 size=2> %
+            <p>
+                Kelvollisia päiviä vähintään:
+                <input type="number" id="daymin" name="daymin" value=1 min=0 size=2>
+            <p>
+                <!-- <input type="button" id="ibutton" name="ibutton" value="Päivitä" onclick="ifunction()"> -->
+                <input type="button" id="ibutton" name="ibutton" value="Päivitä">
+        </div>
+
+        <!-- <div id="results"></div> -->
+        <table id="results"></table>
+
+    </div>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-9509467-58"></script>
+    <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","UA-9509467-58")</script>
+    <!-- <script type="text/javascript" src="js/leaflet.js"></script> -->
+    <script type="text/javascript" src="../js/dygraph-combined.js"></script>
+    <script type="text/javascript" src="../js/synchronizer.js"></script>
+    <script type="text/javascript" src="../js/iso8601.min.js"></script>
+    <!-- <script type="text/javascript" src="js/anim_timeseries_fast.js"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/geotiff"></script> -->
+    <!-- <script async src="https://cdn.jsdelivr.net/npm/geotiff"></script> -->
+    <!-- <script>
+        console.log(GeoTIFF);
+        // Note: GeoTIFF.Pool will not work
+      </script> -->
+    <script type="text/javascript" src="plotty.min.js"></script>
+    <script src="./node_modules/geotiff/dist-browser/geotiff.js"></script>
+    <script type="module" src="../custom/anim_custom_test_query.js"></script>
+</body>
+
+</html>

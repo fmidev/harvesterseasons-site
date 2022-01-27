@@ -7,3 +7,4 @@ custom/*json
 custom/*.tif
 custom/*.tif.aux.xml
 *.old*
+*.pdf
