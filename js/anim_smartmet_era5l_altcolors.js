@@ -1914,3 +1914,12 @@ function showtext3()
         $("#carbontext3").hide();
     }
 }
+
+function showtext4()
+{
+    if (document.getElementById('carbontext4').style.display == "none") {
+       $("#carbontext4").show();
+    } else {
+        $("#carbontext4").hide();
+    }
+}
