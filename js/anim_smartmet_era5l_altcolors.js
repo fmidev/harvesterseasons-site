@@ -474,8 +474,12 @@ function changedynamic() {
 
 
 const param1="utctime";
-const param2="HARVIDX{0.4;SOILWET1-M:ECBSF::9:7:3:1-50;SOILWET1-M:ECBSF::9:7:1:0}";
-const param3="HARVIDX{273;TSOIL-K:ECBSF::9:7:3:1-50;TSOIL-K:ECBSF::9:7:1:0}";
+// const param2="HARVIDX{0.4;SOILWET-M3M3:ECBSF::9:7:3:1-50;SOILWET-M3M3:ECBSF::9:7:1:0}";
+// const param3="HARVIDX{273;TSOIL-K:ECBSF::9:7:3:1-50;TSOIL-K:ECBSF::9:7:1:0}";
+
+const param2="HARVIDX{0.4;SOILWET-M3M3:ECBSF:::7:3:1-50;SOILWET-M3M3:ECBSF:::7:1:0}";
+const param3="HARVIDX{273;TSOIL-K:ECBSF:::7:3:1-50;TSOIL-K:ECBSF:::7:1:0}";
+
 const param4="ensover{0.4;0.9;SD-M:ECBSF::1:0:3:1-50;SD-M:ECBSF::1:0:1:0}";
 
 const param5 = "HARVIDX{0.2;SWVL2-M3M3:SMARTMET:5015}";
@@ -619,7 +623,7 @@ var temperatureTimeLayer = L.timeDimension.layer.wms(temperatureLayer, {cache: 1
 var soilwetnessLayerOptions = {
     crs: L.CRS.EPSG4326,
     version: '1.3.0',
-    layers: 'harvester:ecbsf:SOILWET1-M',
+    layers: 'harvester:ecbsf:SOILWET-M3M3',
     format: 'image/png',
     transparent: 'true',
     styles: 'default',
@@ -780,7 +784,7 @@ snowLegend.onAdd = function (map) {
 };
 
 soilwetLegend.onAdd = function (map) {
-    var src = 'https://sm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:SOILWET1-M&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
+    var src = 'https://sm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:SOILWET-M3M3&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
     var div = L.DomUtil.create('div', 'info legend');
     if (screen.width < 425) {
         // div.style.width = '65px';
@@ -1395,7 +1399,8 @@ for (i = 1; i <= perturbations; i = i + 1) {
     labelstxt[label[i+1]]= { fillGraph: false };
 /*     label[i+2] = 'SW-' + i ;
     labelstxt[label[i+2]]= { fillGraph: false }; */
-    SWensemble += ",SOILWET1-M:ECBSF::9:7:3:" + i ;
+    // SWensemble += ",SOILWET-M3M3:ECBSF::9:7:3:" + i ;
+    SWensemble += ",SOILWET-M3M3:ECBSF:::7:3:" + i ;
 }
 label[perturbations+2] = 'SW-FMI';
 labelstxt[label[perturbations+2]]= { fillGraph: false, strokeWidth: 3, color: 'red' };
@@ -1442,7 +1447,8 @@ for (i = 1; i <= perturbations; i = i + 1) {
     labelstxt[label[i+1]]= { fillGraph: false };
     //label[i+2] = 'ST-' + i ;
     //labelstxt[label[i+2]]= { fillGraph: false };
-    TGKensemble = TGKensemble + ",K2C{TSOIL-K:ECBSF::9:7:3:" + i + "}";
+    // TGKensemble = TGKensemble + ",K2C{TSOIL-K:ECBSF::9:7:3:" + i + "}";
+    TGKensemble = TGKensemble + ",K2C{TSOIL-K:ECBSF:::7:3:" + i + "}";
 }
 // label[perturbations+2] = 'ST-FMI';
 // labelstxt[label[perturbations+2]]= { fillGraph: false, strokeWidth: 3, color: 'red' };
