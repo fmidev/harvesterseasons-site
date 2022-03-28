@@ -129,22 +129,40 @@ function drawtimeseries() {
             });
     } else {
         // Inside Finland, seasonal snow depth combined and scaled with SMARTOBS observations
-        var dataUrl2 = "https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + SHensemble2 + "&starttime=" + dateString_smartobs + "T000000Z&timesteps=1&format=json&precision=full";
+        // var dataUrl2 = "https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + SHensemble2 + "&starttime=" + dateString_smartobs + "T000000Z&timesteps=1&format=json&precision=full";
+        var dataUrl2 = "https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + SHensemble2 + "&starttime=" + dateString_smartobs + "T000000Z&endtime=" + dateString_origintime +  "&timestep=1440&format=json&precision=full&tz=utc&timeformat=xml";
         $.getJSON(dataUrl2, function (data2) {
         // // Temporary fix for missing HSNOW-M:SMARTOBS data
         // var dataUrl2 = "https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + SHensemble2 + "&starttime=20210914T000000Z&timesteps=1&format=json&precision=full";
         // $.getJSON(dataUrl2, function (data2) {
 
-            // Scale seasonal snow forecast using observations
-            var SHensemble3 = "DIFF{SD-M:ECBSF::1:0:1:0;" + data2[0][SHensemble2list[0]] + "}";
-            var SHensemble3ensover = "DIFF{SD-M:ECBSF::1:0:1:0;" + data2[0][SHensemble2list[0]] + "}";
-            var SHensemble3list = ["DIFF{SD-M:ECBSF::1:0:1:0;" + data2[0][SHensemble2list[0]] + "}"];
-            for (i = 1; i <= perturbations; i = i + 1) {
-                SHensemble3 += ",DIFF{SD-M:ECBSF::1:0:3:" + i + ";" + data2[0][SHensemble2list[i]] + "}";
-                SHensemble3list[i] = "DIFF{SD-M:ECBSF::1:0:3:" + i + ";" + data2[0][SHensemble2list[i]] + "}";
-                SHensemble3ensover += ";DIFF{SD-M:ECBSF::1:0:3:" + i + ";" + data2[0][SHensemble2list[i]] + "}";
+            // Find the latest SMARTOBS value
+            let smartobsIdx = -1;
+            while (data2[smartobsIdx + 1][SHensemble2list[0]] !== null) {
+                smartobsIdx++;
             }
 
+            let smartobsDate = new Date(data2[smartobsIdx]["utctime"]);
+
+            // // Scale seasonal snow forecast using observations
+            // var SHensemble3 = "DIFF{SD-M:ECBSF::1:0:1:0;" + data2[0][SHensemble2list[0]] + "}";
+            // var SHensemble3ensover = "DIFF{SD-M:ECBSF::1:0:1:0;" + data2[0][SHensemble2list[0]] + "}";
+            // var SHensemble3list = ["DIFF{SD-M:ECBSF::1:0:1:0;" + data2[0][SHensemble2list[0]] + "}"];
+            // for (i = 1; i <= perturbations; i = i + 1) {
+            //     SHensemble3 += ",DIFF{SD-M:ECBSF::1:0:3:" + i + ";" + data2[0][SHensemble2list[i]] + "}";
+            //     SHensemble3list[i] = "DIFF{SD-M:ECBSF::1:0:3:" + i + ";" + data2[0][SHensemble2list[i]] + "}";
+            //     SHensemble3ensover += ";DIFF{SD-M:ECBSF::1:0:3:" + i + ";" + data2[0][SHensemble2list[i]] + "}";
+            // }
+            
+            // Scale seasonal snow forecast using observations
+            var SHensemble3 = "DIFF{SD-M:ECBSF::1:0:1:0;" + data2[smartobsIdx][SHensemble2list[0]] + "}";
+            var SHensemble3ensover = "DIFF{SD-M:ECBSF::1:0:1:0;" + data2[smartobsIdx][SHensemble2list[0]] + "}";
+            var SHensemble3list = ["DIFF{SD-M:ECBSF::1:0:1:0;" + data2[smartobsIdx][SHensemble2list[0]] + "}"];
+            for (i = 1; i <= perturbations; i = i + 1) {
+                SHensemble3 += ",DIFF{SD-M:ECBSF::1:0:3:" + i + ";" + data2[smartobsIdx][SHensemble2list[i]] + "}";
+                SHensemble3list[i] = "DIFF{SD-M:ECBSF::1:0:3:" + i + ";" + data2[smartobsIdx][SHensemble2list[i]] + "}";
+                SHensemble3ensover += ";DIFF{SD-M:ECBSF::1:0:3:" + i + ";" + data2[smartobsIdx][SHensemble2list[i]] + "}";
+            }
             var param4ensemble="ensover{0.4;0.9;" + SHensemble3ensover + "}";
 
 
@@ -267,8 +285,10 @@ function drawtimeseries() {
                                     data3[k] = [];
                                     data3[k][0] = new Date(data[k]["utctime"]);
                                     for (i = 1; i <= perturbations + 1; i = i + 1) {
-                                        if (data3[k][0] < startDate_smartobs - 24 * 60 * 60000) {
-                                            // Remove seasonal forecast before startDate_smartobs-1day
+                                        // if (data3[k][0] < startDate_smartobs - 24 * 60 * 60000) {
+                                        //     // Remove seasonal forecast before startDate_smartobs-1day
+                                        if (data3[k][0] < smartobsDate) {
+                                            // Remove seasonal forecast before smartobsDate
                                             data3[k][i] = "nan";
                                         } else if (data[k][SHensemblelist[i]] == 0 || data[k][SHensemble3list[i]] < 0) {
                                             // Set SD to 0 if non-scaled SD is 0 or scaled < 0

@@ -492,11 +492,12 @@ var harvLayer, harvStaticLayer;
 
 
 var startDate_smartobs = new Date();
-if (startDate_smartobs.getUTCHours() >= 4) {
-    startDate_smartobs.setDate(startDate_smartobs.getUTCDate() - 1);
-} else {
-    startDate_smartobs.setDate(startDate_smartobs.getUTCDate() - 2);
-}
+// if (startDate_smartobs.getUTCHours() >= 4) {
+//     startDate_smartobs.setDate(startDate_smartobs.getUTCDate() - 1);
+// } else {
+//     startDate_smartobs.setDate(startDate_smartobs.getUTCDate() - 2);
+// }
+startDate_smartobs.setDate(startDate_smartobs.getUTCDate() - 10);
 var startMonth_smartobs = startDate_smartobs.getUTCMonth() + 1;
 if (startMonth_smartobs < 10) {
     startMonth_smartobs = '0' + startMonth_smartobs;
