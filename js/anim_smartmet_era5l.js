@@ -563,7 +563,11 @@ var startMonth_smartobs = startDate_smartobs.getUTCMonth() + 1;
 if (startMonth_smartobs < 10) {
     startMonth_smartobs = '0' + startMonth_smartobs;
 }
-var dateString_smartobs = startDate_smartobs.getUTCFullYear().toString() + startMonth_smartobs + startDate_smartobs.getUTCDate();
+var startDay_smartobs = startDate_smartobs.getUTCDate();
+if (startDay_smartobs < 10) {
+    startDay_smartobs = '0' + startDay_smartobs;
+}
+var dateString_smartobs = startDate_smartobs.getUTCFullYear().toString() + startMonth_smartobs + startDay_smartobs;
 
 
 var perturbations = 50;
@@ -1846,7 +1850,6 @@ if (startMonth_timeseries < 10) {
     startMonth_timeseries = '0' + startMonth_timeseries;
 }
 var dateString_timeseries = startDate_timeseries.getUTCFullYear().toString() + startMonth_timeseries + '020000';
-
 
 
 
