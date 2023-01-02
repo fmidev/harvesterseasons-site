@@ -59,7 +59,7 @@ const param2="HARVIDX{0.4;SOILWET1-M:ECB2SF::9:7:3:1-50;SOILWET1-M:ECB2SF::9:7:1
 const param3="HARVIDX{273;TSOIL-K:ECB2SF::9:7:3:1-50;TSOIL-K:ECB2SF::9:7:1:0}";
 const param4="ensover{0.4;0.9;SD-M:ECB2SF::1:0:3:1-50;SD-M:ECB2SF::1:0:1:0}";
 
-const param5 = "HARVIDX{0.2;SWVL2-M3M3:SMARTMET:5015}";
+const param5 = "HARVIDX{0.4;SWVL2-M3M3:SMARTMET:5015}";
 const param6 = "HARVIDX{-0.7;TG-K:SMARTMET}";
 const param7 = "ensover{0.4;0.9;SD-M:SMARTMET:5027}";
 

@@ -473,7 +473,7 @@ function changedynamic() {
 //param4="ensover{0.9;0.4;SD-M:ECBSF:5022:1:0:3:1-50;SD-M:ECBSF:5022:1:0:1:0}";
 
 param1="utctime";
-param2="HARVIDX{0.2;SWVL2-M3M3:SMARTMET:5015}";
+param2="HARVIDX{0.4;SWVL2-M3M3:SMARTMET:5015}";
 param3="HARVIDX{-1;TG-K:SMARTMET}";
 //param4="ensover{0.9;0.4;SD-M:ECBSF:5022:1:0:3:1-50;SD-M:ECBSF:5022:1:0:1:0}";
 

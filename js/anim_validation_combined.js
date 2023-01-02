@@ -691,7 +691,7 @@ function drawtimeseries_fmi() {
     document.getElementById("graphB_fmi").style = "line-height: 120px;";
 
     const param1 = "utctime";
-    const param2="HARVIDX{0.2;SWVL2-M3M3:SMARTMET:5015}";
+    const param2="HARVIDX{0.4;SWVL2-M3M3:SMARTMET:5015}";
     const param3="HARVIDX{-0.7;TG-K:SMARTMET}";
     const param4 = "ensover{0.4;0.9;SD-M:SMARTMET}";
 

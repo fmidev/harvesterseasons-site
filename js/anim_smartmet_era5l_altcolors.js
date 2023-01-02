@@ -30,10 +30,16 @@ else {
 
 var currentDate = new Date(Date.UTC(startYear, startMonth-1, startDay));
 
+var startDateYear = startDate.getUTCFullYear();
+var startDateMonth = startDate.getUTCMonth() + 1;
+if (startDateMonth < 10) {
+    startDateMonth = '0' + startDateMonth;
+}
+var dateString = startDateYear + '-' + startDateMonth + '-02/P7M';
 
-//var dateString = startYear + '-' + startMonth + '-' + startDay + 'T00:00:00Z/P7M';
+// var dateString = startYear + '-' + startMonth + '-' + startDay + 'T00:00:00Z/P7M';
 // var dateString = startYear + '-' + startMonth + '-' + startDay + '/P7M';
-var dateString = startYear + '-' + startMonth2 + '-02/P7M';
+// var dateString = startYear + '-' + startMonth2 + '-02/P7M';
 
 var dateString_origintime = startYear.toString() + startMonth + startDay + '0000';
 

@@ -21,14 +21,25 @@ if (startMonth2 < 10) {
 
 // var startDate = new Date(Date.UTC(startYear, startMonth-1, startDay));
 
-var startDate = new Date(Date.UTC(startYear, startMonth2-1, 2));
+if (now.getUTCDate() < 15) {
+    var startDate = new Date(Date.UTC(startYear, startMonth2 - 1, 2));
+}
+else {
+    var startDate = new Date(Date.UTC(startYear, startMonth2, 2));
+}
 
 var currentDate = new Date(Date.UTC(startYear, startMonth-1, startDay));
 
+var startDateYear = startDate.getUTCFullYear();
+var startDateMonth = startDate.getUTCMonth() + 1;
+if (startDateMonth < 10) {
+    startDateMonth = '0' + startDateMonth;
+}
+var dateString = startDateYear + '-' + startDateMonth + '-02/P7M';
 
-//var dateString = startYear + '-' + startMonth + '-' + startDay + 'T00:00:00Z/P7M';
+// var dateString = startYear + '-' + startMonth + '-' + startDay + 'T00:00:00Z/P7M';
 // var dateString = startYear + '-' + startMonth + '-' + startDay + '/P7M';
-var dateString = startYear + '-' + startMonth2 + '-02/P7M';
+// var dateString = startYear + '-' + startMonth2 + '-02/P7M';
 
 var dateString_origintime = startYear.toString() + startMonth + startDay + '0000';
 
@@ -531,7 +542,7 @@ const param3="HARVIDX{273;TSOIL-K:ECBSF:::7:3:1-50;TSOIL-K:ECBSF:::7:1:0}";
 
 const param4="ensover{0.4;0.9;SD-M:ECBSF::1:0:3:1-50;SD-M:ECBSF::1:0:1:0}";
 
-const param5 = "HARVIDX{0.2;SWVL2-M3M3:SMARTMET:5015}";
+const param5 = "HARVIDX{0.4;SWVL2-M3M3:SMARTMET:5015}";
 const param6 = "HARVIDX{-0.7;TG-K:SMARTMET}";
 const param7 = "ensover{0.4;0.9;SD-M:SMARTMET:5027}";
 
@@ -962,6 +973,11 @@ if (screen.width < 425) {
 } else {
     var lcontrol = L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
 }
+
+// var lcontrol = L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+// lcontrol.expand()
+// lcontrol.collapse()
 
 
 //var soilwetControl = lcontrol._overlaysList.children[0].control;
