@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 
@@ -11,7 +10,7 @@
     <link rel="icon" href="../img/favicon-32x32.png" type="image/png" sizes="32x32"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css" />
-    <link rel="stylesheet" href="../custom/styles_custom_test_query.css" />
+    <link rel="stylesheet" href="../custom/styles_custom_test.css" />
 </head>
 
 <body>
@@ -78,6 +77,9 @@
         <!-- <canvas id="canvas" width=500 height=500></canvas> -->
 
         <!-- <canvas id="canvas2" width=500 height=500></canvas> -->
+
+        <div id="timeseries"></div>
+
 <!--         <h3 style="color: darkred">FMI forecast (SMARTMET)</h3>
         <div id="labelsB_fmi"></div>
         <div id="graphB_fmi"></div>        
@@ -100,37 +102,6 @@
             <a href="https://harvesterseasons.com/">Harvester Seasons</a>
             <a href="../privacy-policy/" target="_blank" style="float: right;">Privacy Policy / Terms of Use</a>
         </div> -->
-
-
-
-        <!-- <div id="timeseries"></div> -->
-
-        <div id="query">
-            Alku: <input type="date" id="sdate" name="sdate">
-            <p>
-                Loppu: <input type="date" id="edate" name="edate">
-            <p>
-                Hakkuutapa:
-                <select id="hakkuutapa" name="hakkuutapa">
-                    <option value="Uudistus">Uudistus</option>
-                    <option value="Harvennus">Harvennus</option>
-                    <option value="Ensiharvennus">Ensiharvennus</option>
-                    <option value="Kaikki">Kaikki</option>
-                </select>
-            <p>
-                Kelvollisia pikseleitä vähintään:
-                <input type="number" id="pixmin" name="pixmin" value=70 min=0 max=100 step=5 size=2> %
-            <p>
-                Kelvollisia päiviä vähintään:
-                <input type="number" id="daymin" name="daymin" value=1 min=0 size=2>
-            <p>
-                <!-- <input type="button" id="ibutton" name="ibutton" value="Päivitä" onclick="ifunction()"> -->
-                <input type="button" id="ibutton" name="ibutton" value="Päivitä">
-        </div>
-
-        <!-- <div id="results"></div> -->
-        <table id="results"></table>
-
     </div>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-9509467-58"></script>
@@ -148,7 +119,7 @@
       </script> -->
     <script type="text/javascript" src="plotty.min.js"></script>
     <script src="./node_modules/geotiff/dist-browser/geotiff.js"></script>
-    <script type="module" src="../custom/anim_custom_test_query.js"></script>
+    <script type="module" src="../custom/anim_custom_new.js"></script>
 </body>
 
 </html>
