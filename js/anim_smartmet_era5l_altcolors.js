@@ -548,19 +548,32 @@ const param8 = "ensover{0.4;0.9;HSNOW-M:SMARTOBS:13:4}";
 
 var harvLayer, harvStaticLayer;
 
-
 var startDate_smartobs = new Date();
 // if (startDate_smartobs.getUTCHours() >= 4) {
 //     startDate_smartobs.setDate(startDate_smartobs.getUTCDate() - 1);
 // } else {
 //     startDate_smartobs.setDate(startDate_smartobs.getUTCDate() - 2);
 // }
+// if (startDate_smartobs.getUTCHours() >= 4) {
+//     startDate_smartobs.setDate(startDate_smartobs.getUTCDate() - 3);
+// } else {
+//     startDate_smartobs.setDate(startDate_smartobs.getUTCDate() - 4);
+// }
+
 startDate_smartobs.setDate(startDate_smartobs.getUTCDate() - 10);
-var startMonth_smartobs = startDate_smartobs.getUTCMonth() + 1;
+
+// // 21.2.2023 Quick fix for missing HSNOW-M:SMARTOBS data
+var startMonth_smartobs = startDate_smartobs.getUTCMonth();
+
+// var startMonth_smartobs = startDate_smartobs.getUTCMonth() + 1;
 if (startMonth_smartobs < 10) {
     startMonth_smartobs = '0' + startMonth_smartobs;
 }
-var dateString_smartobs = startDate_smartobs.getUTCFullYear().toString() + startMonth_smartobs + startDate_smartobs.getUTCDate();
+var startDay_smartobs = startDate_smartobs.getUTCDate();
+if (startDay_smartobs < 10) {
+    startDay_smartobs = '0' + startDay_smartobs;
+}
+var dateString_smartobs = startDate_smartobs.getUTCFullYear().toString() + startMonth_smartobs + startDay_smartobs;
 
 
 var perturbations = 50;

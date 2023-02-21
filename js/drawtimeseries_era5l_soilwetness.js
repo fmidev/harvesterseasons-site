@@ -27,7 +27,8 @@ function drawtimeseries() {
         //     smartmetIdx++;
         // }
 
-        while (dataSW[smartmetIdx + 1][SWensemble2list[0]] !== null) {
+        // // 21.2.2023 Quick fix for missing data
+        while (dataSW[smartmetIdx + 1][SWensemble2list[2]] !== null) {
             smartmetIdx++;
         }
 

@@ -601,11 +601,18 @@ var startDate_smartobs = new Date();
 
 startDate_smartobs.setDate(startDate_smartobs.getUTCDate() - 10);
 
-var startMonth_smartobs = startDate_smartobs.getUTCMonth() + 1;
+// // 21.2.2023 Quick fix for missing HSNOW-M:SMARTOBS data
+var startMonth_smartobs = startDate_smartobs.getUTCMonth();
+
+// var startMonth_smartobs = startDate_smartobs.getUTCMonth() + 1;
 if (startMonth_smartobs < 10) {
     startMonth_smartobs = '0' + startMonth_smartobs;
 }
-var dateString_smartobs = startDate_smartobs.getUTCFullYear().toString() + startMonth_smartobs + startDate_smartobs.getUTCDate();
+var startDay_smartobs = startDate_smartobs.getUTCDate();
+if (startDay_smartobs < 10) {
+    startDay_smartobs = '0' + startDay_smartobs;
+}
+var dateString_smartobs = startDate_smartobs.getUTCFullYear().toString() + startMonth_smartobs + startDay_smartobs;
 
 
 var perturbations = 50;
