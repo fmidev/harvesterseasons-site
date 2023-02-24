@@ -23,14 +23,33 @@ function drawtimeseries() {
         // console.debug(dataSW[smartmetIdx + 1][SWensemble2list[0]] !== null )
         // console.debug(dataSW[smartmetIdx + 1][SWensemble2list[0]] == null )
 
+        for (let i = 0; i < dataSW.length; i++) {
+            if (dataSW[i][SWensemble2list[0]] !== null) {
+                smartmetIdx = i;
+            }
+        }
         // while (dataSW[smartmetIdx + 1][SWensemble2list[0]] !== null) {
         //     smartmetIdx++;
         // }
 
-        // // 21.2.2023 Quick fix for missing data
-        while (dataSW[smartmetIdx + 1][SWensemble2list[2]] !== null) {
-            smartmetIdx++;
+        // // Fix soilwetnessDay for the WMS-layers using smartmetIdx
+
+        // let smartmetIdxDateString = dataSW[smartmetIdx]["utctime"];
+        let smartmetIdxDateYear = dataSW[smartmetIdx]["utctime"].substr(0,4);
+        let smartmetIdxDateMonth = dataSW[smartmetIdx]["utctime"].substr(5,2);
+        let smartmetIdxDateDay = dataSW[smartmetIdx]["utctime"].substr(8,2);
+
+        let smartmetIdxDate = new Date(Date.UTC(smartmetIdxDateYear, smartmetIdxDateMonth - 1, smartmetIdxDateDay));
+
+        if (smartmetIdxDate.getTime()!==soilwetnessDate.getTime()) {
+            soilwetnessDate = smartmetIdxDate;
         }
+
+
+        // // // 21.2.2023 Quick fix for missing data
+        // while (dataSW[smartmetIdx + 1][SWensemble2list[2]] !== null) {
+        //     smartmetIdx++;
+        // }
 
         // console.debug(smartmetIdx)
 
@@ -62,9 +81,16 @@ function drawtimeseries() {
 
                 // Find the latest SMARTOBS value
                 let smartobsIdx = -1;
-                while (data2[smartobsIdx + 1][SHensemble2list[0]] !== null) {
-                    smartobsIdx++;
+
+                for (let i = 0; i < data2.length; i++) {
+                    if (data2[i][SHensemble2list[0]] !== null) {
+                        smartobsIdx = i;
+                    }
                 }
+                // while (data2[smartobsIdx + 1][SHensemble2list[0]] !== null) {
+                //     smartobsIdx++;
+                //     // console.debug(smartobsIdx)
+                // }
 
                 let smartobsDate = new Date(data2[smartobsIdx]["utctime"]);
 
@@ -213,7 +239,7 @@ function drawtimeseries() {
                                                 dataSW2[k][perturbations + 2] = data[k]["SWVL2-M3M3:SMARTMET:5015"];
                                             }
 
-                                            console.debug(dataSW2)
+                                            // console.debug(dataSW2)
 
 
                                             gsw = new Dygraph(

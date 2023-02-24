@@ -539,6 +539,8 @@ const param1="utctime";
 // const param3="HARVIDX{273;TSOIL-K:ECBSF::9:7:3:1-50;TSOIL-K:ECBSF::9:7:1:0}";
 
 const param2="HARVIDX{0.4;SOILWET-M3M3:ECBSF:::7:3:1-50;SOILWET-M3M3:ECBSF:::7:1:0}";
+// const param2="HARVIDX{0.4;SOILWET-M3M3:ECBSF::9:::0-50}";
+
 const param3="HARVIDX{273;TSOIL-K:ECBSF:::7:3:1-50;TSOIL-K:ECBSF:::7:1:0}";
 
 const param4="ensover{0.4;0.9;SD-M:ECBSF::1:0:3:1-50;SD-M:ECBSF::1:0:1:0}";
@@ -567,9 +569,9 @@ var startDate_smartobs = new Date();
 startDate_smartobs.setDate(startDate_smartobs.getUTCDate() - 10);
 
 // // 21.2.2023 Quick fix for missing HSNOW-M:SMARTOBS data
-var startMonth_smartobs = startDate_smartobs.getUTCMonth();
+// var startMonth_smartobs = startDate_smartobs.getUTCMonth() - 1;
 
-// var startMonth_smartobs = startDate_smartobs.getUTCMonth() + 1;
+var startMonth_smartobs = startDate_smartobs.getUTCMonth() + 1;
 if (startMonth_smartobs < 10) {
     startMonth_smartobs = '0' + startMonth_smartobs;
 }
@@ -1690,6 +1692,7 @@ for (i = 1; i <= perturbations; i = i + 1) {
     labelstxt[label[i+2]]= { fillGraph: false }; */
     // SWensemble += ",SOILWET-M3M3:ECBSF::9:7:3:" + i ;
     SWensemble += ",SOILWET-M3M3:ECBSF:::7:3:" + i ;
+    // SWensemble += ",SOILWET-M3M3:ECBSF::9:::" + i ;
 }
 label[perturbations+2] = 'SW-FMI';
 labelstxt[label[perturbations+2]]= { fillGraph: false, strokeWidth: 3, color: 'red' };

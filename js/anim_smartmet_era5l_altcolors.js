@@ -563,7 +563,7 @@ var startDate_smartobs = new Date();
 startDate_smartobs.setDate(startDate_smartobs.getUTCDate() - 10);
 
 // // 21.2.2023 Quick fix for missing HSNOW-M:SMARTOBS data
-var startMonth_smartobs = startDate_smartobs.getUTCMonth();
+var startMonth_smartobs = startDate_smartobs.getUTCMonth() - 1;
 
 // var startMonth_smartobs = startDate_smartobs.getUTCMonth() + 1;
 if (startMonth_smartobs < 10) {
