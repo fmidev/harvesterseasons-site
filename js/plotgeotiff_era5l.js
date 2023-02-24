@@ -25,25 +25,25 @@ function plotgeotiff() {
 
         if (typeof geotiffSmartobsDate == 'undefined') {
 
-        // // Find the latest SMARTOBS value
-        let smartobsUrl = "https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,HSNOW-M:SMARTOBS:13:4&starttime=" + dateString_smartobs + "T000000Z&endtime=" + dateString_origintime + "&timestep=1440&format=json&precision=full&tz=utc&timeformat=xml";
-        $.getJSON(smartobsUrl, function (smartobsData) {
+            // // Find the latest SMARTOBS value
+            let smartobsUrl = "https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,HSNOW-M:SMARTOBS:13:4&starttime=" + dateString_smartobs + "T000000Z&endtime=" + dateString_origintime + "&timestep=1440&format=json&precision=full&tz=utc&timeformat=xml";
+            $.getJSON(smartobsUrl, function (smartobsData) {
 
-            // Find the latest SMARTOBS value
-            let geotiffSmartobsIdx = -1;
+                // Find the latest SMARTOBS value
+                let geotiffSmartobsIdx = -1;
 
-            for (let i = 0; i < smartobsData.length; i++) {
-                if (smartobsData[i]["HSNOW-M:SMARTOBS:13:4"] !== null) {
-                    geotiffSmartobsIdx = i;
+                for (let i = 0; i < smartobsData.length; i++) {
+                    if (smartobsData[i]["HSNOW-M:SMARTOBS:13:4"] !== null) {
+                        geotiffSmartobsIdx = i;
+                    }
                 }
-            }
 
-            geotiffSmartobsDate = smartobsData[geotiffSmartobsIdx]["utctime"].substr(0,10).replace(/-/g,"");
+                geotiffSmartobsDate = smartobsData[geotiffSmartobsIdx]["utctime"].substr(0, 10).replace(/-/g, "");
 
-            // console.debug(geotiffSmartobsDate)
+                // console.debug(geotiffSmartobsDate)
 
-            plotgeotiff_scaling();
-        });
+                plotgeotiff_scaling();
+            });
         } else {
             plotgeotiff_scaling();
         }
@@ -149,6 +149,8 @@ function plotgeotiff_scaling() {
 
         // // SMARTOBS scaling 
         var dataUrl2 = "https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + param1 + "," + param2 + "," + param3 + "," + param4ensemble + "," + param5 + "," + param6 + "," + param7 + "&starttime=" + dataYear + dataMonth + dataDay + "T000000Z&timesteps=1&format=json";
+
+        // console.debug(dataUrl2)
 
         // const param2="HARVIDX{0.4;SOILWET-M3M3:ECBSF:::7:3:1-50;SOILWET-M3M3:ECBSF:::7:1:0}";
         // const param3 = "HARVIDX{273;TSOIL-K:ECBSF:::7:3:1-50;TSOIL-K:ECBSF:::7:1:0}";

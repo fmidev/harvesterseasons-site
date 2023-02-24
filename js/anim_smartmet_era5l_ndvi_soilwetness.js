@@ -67,6 +67,9 @@ let soilwetnessDate = new Date(Date.UTC(startYear, startMonth-1, soilwetnessDay)
 // console.debug(smartmetDate)
 // console.debug(dateString_smartmet)
 
+// console.debug(soilwetnessDay)
+// console.debug(soilwetnessDate)
+
 
 let ndviDate, ndviEndDate;
 
@@ -211,6 +214,7 @@ const rasterUrl = "https://pta.data.lit.fmi.fi/geo/harvestability/KKL_SMK_Suomi_
 
 var georastercache;
 
+var geotiffSmartmetDate;
 var geotiffSmartobsDate;
 
 parseGeoraster(rasterUrl).then(georaster => {
@@ -1262,7 +1266,7 @@ map.on('overlayadd', function (e) {
                 lcontrol._update();
             }
             
-            plotsoiltemperature();
+            // plotsoiltemperature();
 
             if (!temperatureTimeLayer._currentLayer._map) {
                 temperatureTimeLayer.setParams({});
