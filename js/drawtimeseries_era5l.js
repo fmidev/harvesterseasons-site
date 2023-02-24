@@ -21,7 +21,8 @@ function drawtimeseries() {
 
                     // // 10 day forecast winter index                        
                     // if (data[i][param6] !== null || data[i][param7] !== null) { winter2 = Math.max(data[i][param6], data[i][param7]); }
-                    if (data[i][param7] !== null) { winter2 = data[i][param7]; }
+                    // if (data[i][param7] !== null) { winter2 = data[i][param7]; }
+                    if (data[i][param7] !== null) { winter2 = Math.max(data[i][param3], data[i][param7]); }
                     else { winter2 = 'nan'; }
 
                     if (summer1 !== 'nan' || winter1 !== 'nan' || summer2 !== 'nan' || winter2 !== 'nan') {
@@ -197,7 +198,8 @@ function drawtimeseries() {
 
                         // // 10 day forecast winter index                        
                         // if (data[i][param6] !== null || data[i][param7] !== null) { winter2 = Math.max(data[i][param6], data[i][param7]); }
-                        if (data[i][param7] !== null) { winter2 = data[i][param7]; }
+                        // if (data[i][param7] !== null) { winter2 = data[i][param7]; }
+                        if (data[i][param7] !== null) { winter2 = Math.max(data[i][param3], data[i][param7]); }
                         else { winter2 = 'nan'; }
 
                         if (summer1 !== 'nan' || winter1 !== 'nan' || summer2 !== 'nan' || winter2 !== 'nan') {

@@ -187,6 +187,7 @@ if (mappos.center[0] == 64 && mappos.center[1] == 27) {
 const rasterUrl = "https://pta.data.lit.fmi.fi/geo/harvestability/KKL_SMK_Suomi_2021_06_01-UTM35.tif";
 
 var georastercache;
+var geotiffSmartobsDate;
 
 parseGeoraster(rasterUrl).then(georaster => {
     georastercache = georaster;

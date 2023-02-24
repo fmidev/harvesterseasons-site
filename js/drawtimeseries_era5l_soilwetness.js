@@ -19,10 +19,6 @@ function drawtimeseries() {
         // Find the latest SMARTMET value
         let smartmetIdx = -1;
 
-        // console.debug(dataSW[smartmetIdx + 1][SWensemble2list[0]])
-        // console.debug(dataSW[smartmetIdx + 1][SWensemble2list[0]] !== null )
-        // console.debug(dataSW[smartmetIdx + 1][SWensemble2list[0]] == null )
-
         for (let i = 0; i < dataSW.length; i++) {
             if (dataSW[i][SWensemble2list[0]] !== null) {
                 smartmetIdx = i;
@@ -34,24 +30,15 @@ function drawtimeseries() {
 
         // // Fix soilwetnessDay for the WMS-layers using smartmetIdx
 
-        // let smartmetIdxDateString = dataSW[smartmetIdx]["utctime"];
         let smartmetIdxDateYear = dataSW[smartmetIdx]["utctime"].substr(0,4);
         let smartmetIdxDateMonth = dataSW[smartmetIdx]["utctime"].substr(5,2);
         let smartmetIdxDateDay = dataSW[smartmetIdx]["utctime"].substr(8,2);
 
         let smartmetIdxDate = new Date(Date.UTC(smartmetIdxDateYear, smartmetIdxDateMonth - 1, smartmetIdxDateDay));
 
-        if (smartmetIdxDate.getTime()!==soilwetnessDate.getTime()) {
+        if (smartmetIdxDate.getTime() !== soilwetnessDate.getTime()) {
             soilwetnessDate = smartmetIdxDate;
         }
-
-
-        // // // 21.2.2023 Quick fix for missing data
-        // while (dataSW[smartmetIdx + 1][SWensemble2list[2]] !== null) {
-        //     smartmetIdx++;
-        // }
-
-        // console.debug(smartmetIdx)
 
         if (smartmetIdx == -1) { 
             drawOutsideFinland() 
@@ -94,16 +81,6 @@ function drawtimeseries() {
 
                 let smartobsDate = new Date(data2[smartobsIdx]["utctime"]);
 
-                // // Scale seasonal snow forecast using observations
-                // var SHensemble3 = "DIFF{SD-M:ECBSF::1:0:1:0;" + data2[0][SHensemble2list[0]] + "}";
-                // var SHensemble3ensover = "DIFF{SD-M:ECBSF::1:0:1:0;" + data2[0][SHensemble2list[0]] + "}";
-                // var SHensemble3list = ["DIFF{SD-M:ECBSF::1:0:1:0;" + data2[0][SHensemble2list[0]] + "}"];
-                // for (i = 1; i <= perturbations; i = i + 1) {
-                //     SHensemble3 += ",DIFF{SD-M:ECBSF::1:0:3:" + i + ";" + data2[0][SHensemble2list[i]] + "}";
-                //     SHensemble3list[i] = "DIFF{SD-M:ECBSF::1:0:3:" + i + ";" + data2[0][SHensemble2list[i]] + "}";
-                //     SHensemble3ensover += ";DIFF{SD-M:ECBSF::1:0:3:" + i + ";" + data2[0][SHensemble2list[i]] + "}";
-                // }
-
                 // Scale seasonal snow forecast using observations
                 var SHensemble3 = "DIFF{SD-M:ECBSF::1:0:1:0;" + data2[smartobsIdx][SHensemble2list[0]] + "}";
                 var SHensemble3ensover = "DIFF{SD-M:ECBSF::1:0:1:0;" + data2[smartobsIdx][SHensemble2list[0]] + "}";
@@ -125,7 +102,8 @@ function drawtimeseries() {
 
                         // // harvidx(0.4)
                         for (k = 0; k < dataSWensemble.length; k++) {
-                            if (dataSWensemble[k]["SWVL2-M3M3:SMARTMET:5015"] !== null) {
+                            if (dataSWensemble[k]["SWVL2-M3M3:SMARTMET:5015"] !== null 
+                                || dataSWensemble[k][SWensemble3list[0]] == null) {
                                 summer1series[k] = 'nan';
                                 // console.debug(dataSWensemble[k]["SWVL2-M3M3:SMARTMET:5015"])
 
@@ -147,6 +125,13 @@ function drawtimeseries() {
 
                         // console.debug(summer1series)
 
+                        // const param2="HARVIDX{0.4;SOILWET-M3M3:ECBSF:::7:3:1-50;SOILWET-M3M3:ECBSF:::7:1:0}";
+                        // const param3 = "HARVIDX{273;TSOIL-K:ECBSF:::7:3:1-50;TSOIL-K:ECBSF:::7:1:0}";
+                        // const param4 = "ensover{0.4;0.9;SD-M:ECBSF::1:0:3:1-50;SD-M:ECBSF::1:0:1:0}";
+                        // const param5 = "HARVIDX{0.4;SWVL2-M3M3:SMARTMET:5015}";
+                        // const param6 = "HARVIDX{-0.7;STL1-K:SMARTMET}";
+                        // const param7 = "ensover{0.4;0.9;SD-M:SMARTMET:5027}";
+                        // const param8 = "ensover{0.4;0.9;HSNOW-M:SMARTOBS:13:4}";
 
                         graphLoad = $.getJSON("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + param1 + "," + param2 + "," + param3 + "," + param4ensemble + "," + param5 + "," + param6 + "," + param7 + "," + param8 + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc",
                             function (data) {
@@ -154,26 +139,27 @@ function drawtimeseries() {
                                 for (i = 0, k = 0; i < data.length; i++) {
                                     var summer1, summer2, winter1, winter2;
 
-                                    // // Seasonal summer index
+                                    // // Seasonal summer index (SOILWET-M3M3:ECBSF)
                                     // if (data[i][param2] !== null) { summer1 = data[i][param2]; }
                                     // else { summer1 = 'nan'; }
 
-                                    // Seasonal summer index scaled with observations
+                                    // Seasonal summer index scaled with observations (SOILWET-M3M3:ECBSF & SWVL2-M3M3:SMARTMET)
                                     if (summer1series.length == data.length) { summer1 = summer1series[i]; }
                                     else { summer1 = 'nan'; }
 
-                                    // Seasonal winter index, combined and scaled with observations                      
+                                    // Seasonal winter index, combined and scaled with observations (SD-M:ECBSF & HSNOW-M:SMARTOBS, TSOIL-K:ECBSF)                     
                                     if (data[i][param8] !== null) { winter1 = Math.max(data[i][param3], data[i][param8]); }
                                     else if (data[i][param3] !== null || data[i][param4ensemble] !== null) { winter1 = Math.max(data[i][param3], data[i][param4ensemble]); }
                                     else { winter1 = 'nan'; }
 
-                                    // 10 day forecast summer index                        
+                                    // 10 day forecast summer index (SWVL2-M3M3:SMARTMET)                      
                                     if (data[i][param5] !== null) { summer2 = data[i][param5]; }
                                     else { summer2 = 'nan'; }
 
-                                    // // 10 day forecast winter index                        
+                                    // // 10 day forecast winter index (SD-M:SMARTMET, TSOIL-K:ECBSF)                       
                                     // if (data[i][param6] !== null || data[i][param7] !== null) { winter2 = Math.max(data[i][param6], data[i][param7]); }
-                                    if (data[i][param7] !== null) { winter2 = data[i][param7]; }
+                                    // if (data[i][param7] !== null) { winter2 = data[i][param7]; }
+                                    if (data[i][param7] !== null) { winter2 = Math.max(data[i][param3], data[i][param7]); }
                                     else { winter2 = 'nan'; }
 
                                     if (summer1 !== 'nan' || winter1 !== 'nan' || summer2 !== 'nan' || winter2 !== 'nan') {
@@ -365,7 +351,8 @@ function drawOutsideFinland() {
 
                 // // 10 day forecast winter index                        
                 // if (data[i][param6] !== null || data[i][param7] !== null) { winter2 = Math.max(data[i][param6], data[i][param7]); }
-                if (data[i][param7] !== null) { winter2 = data[i][param7]; }
+                // if (data[i][param7] !== null) { winter2 = data[i][param7]; }
+                if (data[i][param7] !== null) { winter2 = Math.max(data[i][param3], data[i][param7]); }
                 else { winter2 = 'nan'; }
 
                 if (summer1 !== 'nan' || winter1 !== 'nan' || summer2 !== 'nan' || winter2 !== 'nan') {

@@ -184,6 +184,8 @@ if (mappos.center[0] == 64 && mappos.center[1] == 27) {
 const rasterUrl = "https://pta.data.lit.fmi.fi/geo/harvestability/KKL_SMK_Suomi_2021_06_01-UTM35.tif";
 
 var georastercache;
+var geotiffSmartobsDate;
+
 
 parseGeoraster(rasterUrl).then(georaster => {
     georastercache = georaster;
@@ -562,10 +564,10 @@ var startDate_smartobs = new Date();
 
 startDate_smartobs.setDate(startDate_smartobs.getUTCDate() - 10);
 
-// // 21.2.2023 Quick fix for missing HSNOW-M:SMARTOBS data
-var startMonth_smartobs = startDate_smartobs.getUTCMonth() - 1;
+// // // 21.2.2023 Quick fix for missing HSNOW-M:SMARTOBS data
+// var startMonth_smartobs = startDate_smartobs.getUTCMonth() - 1;
 
-// var startMonth_smartobs = startDate_smartobs.getUTCMonth() + 1;
+var startMonth_smartobs = startDate_smartobs.getUTCMonth() + 1;
 if (startMonth_smartobs < 10) {
     startMonth_smartobs = '0' + startMonth_smartobs;
 }
