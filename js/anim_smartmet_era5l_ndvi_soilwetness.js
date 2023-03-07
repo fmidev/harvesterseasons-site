@@ -581,7 +581,9 @@ const param1="utctime";
 // const param2="HARVIDX{0.4;SOILWET-M3M3:ECBSF::9:7:3:1-50;SOILWET-M3M3:ECBSF::9:7:1:0}";
 // const param3="HARVIDX{273;TSOIL-K:ECBSF::9:7:3:1-50;TSOIL-K:ECBSF::9:7:1:0}";
 
-const param2="HARVIDX{0.4;SOILWET-M3M3:ECBSF:::7:3:1-50;SOILWET-M3M3:ECBSF:::7:1:0}";
+// const param2="HARVIDX{0.4;SOILWET-M3M3:ECBSF:::7:3:1-50;SOILWET-M3M3:ECBSF:::7:1:0}";
+const param2="HARVIDX{0.4;VSW-M3M3:ECBSF:5022:9:7:0:1-50;VSW-M3M3:ECBSF:5022:9:7:0:0}";
+
 const param3="HARVIDX{273;TSOIL-K:ECBSF:::7:3:1-50;TSOIL-K:ECBSF:::7:1:0}";
 
 const param4="ensover{0.4;0.9;SD-M:ECBSF::1:0:3:1-50;SD-M:ECBSF::1:0:1:0}";
@@ -623,15 +625,23 @@ var dateString_smartobs = startDate_smartobs.getUTCFullYear().toString() + start
 
 var perturbations = 50;
 
-var SWensemblelist = ["SOILWET-M3M3:ECBSF:::7:1:0"];
-var SWensemble2 = "DIFF{SOILWET-M3M3:ECBSF:::7:1:0;SWVL2-M3M3:SMARTMET:5015}";
-var SWensemble2list = ["DIFF{SOILWET-M3M3:ECBSF:::7:1:0;SWVL2-M3M3:SMARTMET:5015}"];
-for (i = 1; i <= perturbations; i = i + 1) {
-    SWensemblelist[i] = "SOILWET-M3M3:ECBSF:::7:3:" + i ;
-    SWensemble2 += ",DIFF{SOILWET-M3M3:ECBSF:::7:3:" + i + ";SWVL2-M3M3:SMARTMET:5015}";
-    SWensemble2list[i] = "DIFF{SOILWET-M3M3:ECBSF:::7:3:" + i + ";SWVL2-M3M3:SMARTMET:5015}";
-}
+// var SWensemblelist = ["SOILWET-M3M3:ECBSF:::7:1:0"];
+// var SWensemble2 = "DIFF{SOILWET-M3M3:ECBSF:::7:1:0;SWVL2-M3M3:SMARTMET:5015}";
+// var SWensemble2list = ["DIFF{SOILWET-M3M3:ECBSF:::7:1:0;SWVL2-M3M3:SMARTMET:5015}"];
+// for (i = 1; i <= perturbations; i = i + 1) {
+//     SWensemblelist[i] = "SOILWET-M3M3:ECBSF:::7:3:" + i ;
+//     SWensemble2 += ",DIFF{SOILWET-M3M3:ECBSF:::7:3:" + i + ";SWVL2-M3M3:SMARTMET:5015}";
+//     SWensemble2list[i] = "DIFF{SOILWET-M3M3:ECBSF:::7:3:" + i + ";SWVL2-M3M3:SMARTMET:5015}";
+// }
 
+var SWensemblelist = ["VSW-M3M3:ECBSF:5022:9:7:0:0"];
+var SWensemble2 = "DIFF{VSW-M3M3:ECBSF:5022:9:7:0:0;SWVL2-M3M3:SMARTMET:5015}";
+var SWensemble2list = ["DIFF{VSW-M3M3:ECBSF:5022:9:7:0:0;SWVL2-M3M3:SMARTMET:5015}"];
+for (i = 1; i <= perturbations; i = i + 1) {
+    SWensemblelist[i] = "VSW-M3M3:ECBSF:5022:9:7:0:" + i ;
+    SWensemble2 += ",DIFF{VSW-M3M3:ECBSF:5022:9:7:0:" + i + ";SWVL2-M3M3:SMARTMET:5015}";
+    SWensemble2list[i] = "DIFF{VSW-M3M3:ECBSF:5022:9:7:0:" + i + ";SWVL2-M3M3:SMARTMET:5015}";
+}
 
 var SHensemblelist = ["SD-M:ECBSF::1:0:1:0"];
 var SHensemble2 = "DIFF{SD-M:ECBSF::1:0:1:0;HSNOW-M:SMARTOBS:13:4}";
@@ -1808,7 +1818,8 @@ for (i = 1; i <= perturbations; i = i + 1) {
 /*     label[i+2] = 'SW-' + i ;
     labelstxt[label[i+2]]= { fillGraph: false }; */
     // SWensemble += ",SOILWET-M3M3:ECBSF::9:7:3:" + i ;
-    SWensemble += ",SOILWET-M3M3:ECBSF:::7:3:" + i ;
+    // SWensemble += ",SOILWET-M3M3:ECBSF:::7:3:" + i ;
+    SWensemble += ",VSW-M3M3:ECBSF:5022:9:7:0:" + i ;
 }
 label[perturbations+2] = 'SW-FMI';
 labelstxt[label[perturbations+2]]= { fillGraph: false, strokeWidth: 3, color: 'red' };

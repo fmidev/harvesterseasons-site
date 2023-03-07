@@ -48,17 +48,28 @@ function drawtimeseries() {
             // console.debug(smartmetDate)
             // console.debug(dataSW)
 
+            // // Scale seasonal soil wetness using observations
+            // let SWensemble3 = "DIFF{SOILWET-M3M3:ECBSF:::7:1:0;" + dataSW[smartmetIdx][SWensemble2list[0]] + "}";
+            // // var SWensemble3harvidx = "DIFF{SOILWET-M3M3:ECBSF:::7:1:0;" + dataSW[smartmetIdx][SWensemble2list[0]] + "}";
+            // let SWensemble3list = ["DIFF{SOILWET-M3M3:ECBSF:::7:1:0;" + dataSW[smartmetIdx][SWensemble2list[0]] + "}"];
+            // for (i = 1; i <= perturbations; i = i + 1) {
+            //     SWensemble3 += ",DIFF{SOILWET-M3M3:ECBSF:::7:3:" + i + ";" + dataSW[smartmetIdx][SWensemble2list[i]] + "}";
+            //     SWensemble3list[i] = "DIFF{SOILWET-M3M3:ECBSF:::7:3:" + i + ";" + dataSW[smartmetIdx][SWensemble2list[i]] + "}";
+            //     // SWensemble3harvidx += ";DIFF{SOILWET-M3M3:ECBSF:::7:3:" + i + ";" + dataSW[smartmetIdx][SWensemble2list[i]] + "}";
+            // }
+            // // var param2ensemble = "HARVIDX{0.4;" + SWensemble3harvidx + "}";
+
             // Scale seasonal soil wetness using observations
-            let SWensemble3 = "DIFF{SOILWET-M3M3:ECBSF:::7:1:0;" + dataSW[smartmetIdx][SWensemble2list[0]] + "}";
+            let SWensemble3 = "DIFF{VSW-M3M3:ECBSF:5022:9:7:0:0;" + dataSW[smartmetIdx][SWensemble2list[0]] + "}";
             // var SWensemble3harvidx = "DIFF{SOILWET-M3M3:ECBSF:::7:1:0;" + dataSW[smartmetIdx][SWensemble2list[0]] + "}";
-            let SWensemble3list = ["DIFF{SOILWET-M3M3:ECBSF:::7:1:0;" + dataSW[smartmetIdx][SWensemble2list[0]] + "}"];
+            let SWensemble3list = ["DIFF{VSW-M3M3:ECBSF:5022:9:7:0:0;" + dataSW[smartmetIdx][SWensemble2list[0]] + "}"];
             for (i = 1; i <= perturbations; i = i + 1) {
-                SWensemble3 += ",DIFF{SOILWET-M3M3:ECBSF:::7:3:" + i + ";" + dataSW[smartmetIdx][SWensemble2list[i]] + "}";
-                SWensemble3list[i] = "DIFF{SOILWET-M3M3:ECBSF:::7:3:" + i + ";" + dataSW[smartmetIdx][SWensemble2list[i]] + "}";
+                SWensemble3 += ",DIFF{VSW-M3M3:ECBSF:5022:9:7:0:" + i + ";" + dataSW[smartmetIdx][SWensemble2list[i]] + "}";
+                SWensemble3list[i] = "DIFF{VSW-M3M3:ECBSF:5022:9:7:0:" + i + ";" + dataSW[smartmetIdx][SWensemble2list[i]] + "}";
                 // SWensemble3harvidx += ";DIFF{SOILWET-M3M3:ECBSF:::7:3:" + i + ";" + dataSW[smartmetIdx][SWensemble2list[i]] + "}";
             }
-            // var param2ensemble = "HARVIDX{0.4;" + SWensemble3harvidx + "}";
-
+                        // var param2ensemble = "HARVIDX{0.4;" + SWensemble3harvidx + "}";
+            
 
             var dataUrl2 = "https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + SHensemble2 + "&starttime=" + dateString_smartobs + "T000000Z&endtime=" + dateString_origintime + "&timestep=1440&format=json&precision=full&tz=utc&timeformat=xml";
             $.getJSON(dataUrl2, function (data2) {
@@ -102,6 +113,9 @@ function drawtimeseries() {
 
                         // // harvidx(0.4)
                         for (k = 0; k < dataSWensemble.length; k++) {
+                            // console.debug(dataSWensemble[k]["SWVL2-M3M3:SMARTMET:5015"])
+                            // console.debug(dataSWensemble[k][SWensemble3list[0]])
+
                             if (dataSWensemble[k]["SWVL2-M3M3:SMARTMET:5015"] !== null 
                                 || dataSWensemble[k][SWensemble3list[0]] == null) {
                                 summer1series[k] = 'nan';
@@ -125,7 +139,8 @@ function drawtimeseries() {
 
                         // console.debug(summer1series)
 
-                        // const param2="HARVIDX{0.4;SOILWET-M3M3:ECBSF:::7:3:1-50;SOILWET-M3M3:ECBSF:::7:1:0}";
+                        // // const param2="HARVIDX{0.4;SOILWET-M3M3:ECBSF:::7:3:1-50;SOILWET-M3M3:ECBSF:::7:1:0}";
+                        // const param2="HARVIDX{0.4;VSW-M3M3:ECBSF:5022:9:7:0:1-50;VSW-M3M3:ECBSF:5022:9:7:0:0}";
                         // const param3 = "HARVIDX{273;TSOIL-K:ECBSF:::7:3:1-50;TSOIL-K:ECBSF:::7:1:0}";
                         // const param4 = "ensover{0.4;0.9;SD-M:ECBSF::1:0:3:1-50;SD-M:ECBSF::1:0:1:0}";
                         // const param5 = "HARVIDX{0.4;SWVL2-M3M3:SMARTMET:5015}";
@@ -195,7 +210,8 @@ function drawtimeseries() {
                                 }
 
                                 // graphLoad3 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SOILWET1-M:ECBSF::9:7:1:0" + SWensemble + ",SWVL2-M3M3:SMARTMET:5015&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
-                                graphLoad3 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SOILWET-M3M3:ECBSF:::7:1:0" + SWensemble + "," + SWensemble3 + ",SWVL2-M3M3:SMARTMET:5015&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc&format=json",
+                                // graphLoad3 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SOILWET-M3M3:ECBSF:::7:1:0" + SWensemble + "," + SWensemble3 + ",SWVL2-M3M3:SMARTMET:5015&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc&format=json",
+                                graphLoad3 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,VSW-M3M3:ECBSF:5022:9:7:0:0" + SWensemble + "," + SWensemble3 + ",SWVL2-M3M3:SMARTMET:5015&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc&format=json",
                                     function (data) {
                                         if (data.length > 0) {
 
@@ -388,7 +404,8 @@ function drawOutsideFinland() {
             }
 
             // graphLoad3 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SOILWET1-M:ECBSF::9:7:1:0" + SWensemble + ",SWVL2-M3M3:SMARTMET:5015&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
-            graphLoad3 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SOILWET-M3M3:ECBSF:::7:1:0" + SWensemble + ",SWVL2-M3M3:SMARTMET:5015&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
+            // graphLoad3 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SOILWET-M3M3:ECBSF:::7:1:0" + SWensemble + ",SWVL2-M3M3:SMARTMET:5015&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
+            graphLoad3 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,VSW-M3M3:ECBSF:5022:9:7:0:0" + SWensemble + ",SWVL2-M3M3:SMARTMET:5015&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
                 function (data) {
                     if (data.length > 0) {
                         gsw = new Dygraph(
