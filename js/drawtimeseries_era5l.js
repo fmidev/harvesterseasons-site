@@ -28,21 +28,21 @@ function drawtimeseries() {
         //     smartmetIdx++;
         // }
 
-        // // Fix soilwetnessDay for the WMS-layers using smartmetIdx
-
-        let smartmetIdxDateYear = dataSW[smartmetIdx]["utctime"].substr(0,4);
-        let smartmetIdxDateMonth = dataSW[smartmetIdx]["utctime"].substr(5,2);
-        let smartmetIdxDateDay = dataSW[smartmetIdx]["utctime"].substr(8,2);
-
-        let smartmetIdxDate = new Date(Date.UTC(smartmetIdxDateYear, smartmetIdxDateMonth - 1, smartmetIdxDateDay));
-
-        if (smartmetIdxDate.getTime() !== soilwetnessDate.getTime()) {
-            soilwetnessDate = smartmetIdxDate;
-        }
-
         if (smartmetIdx == -1) { 
             drawOutsideFinland() 
         } else {
+
+            // // Fix soilwetnessDay for the WMS-layers using smartmetIdx
+
+            let smartmetIdxDateYear = dataSW[smartmetIdx]["utctime"].substr(0, 4);
+            let smartmetIdxDateMonth = dataSW[smartmetIdx]["utctime"].substr(5, 2);
+            let smartmetIdxDateDay = dataSW[smartmetIdx]["utctime"].substr(8, 2);
+
+            let smartmetIdxDate = new Date(Date.UTC(smartmetIdxDateYear, smartmetIdxDateMonth - 1, smartmetIdxDateDay));
+
+            if (smartmetIdxDate.getTime() !== soilwetnessDate.getTime()) {
+                soilwetnessDate = smartmetIdxDate;
+            }
 
             let smartmetDate = new Date(dataSW[smartmetIdx]["utctime"]);
             // console.debug(smartmetDate)
