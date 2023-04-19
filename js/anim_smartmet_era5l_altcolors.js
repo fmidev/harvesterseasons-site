@@ -969,7 +969,7 @@ tempLegend.onAdd = function (map) {
     div.style.width = '48px';
     if (screen.width < 425) {
         //div.style.width = '48px';
-        //div.style.height = '345px';
+        //div.style.height = '345px'
         // div.style.height = '325px';
         div.style.height = '285px';
     } else {
@@ -978,7 +978,8 @@ tempLegend.onAdd = function (map) {
         div.style.height = '320px';
     }
     div.style['background-image'] = 'url(' + src + ')';
-    div.style['background-size'] = 'contain';
+    // div.style['background-size'] = 'contain';
+    div.style['background-size'] = 'cover';
     div.style['background-repeat'] = 'no-repeat';
     return div;
 };
@@ -996,7 +997,8 @@ snowLegend.onAdd = function (map) {
         div.style.height = '320px';
     }
     div.style['background-image'] = 'url(' + src + ')';
-    div.style['background-size'] = 'contain';
+    // div.style['background-size'] = 'contain';
+    div.style['background-size'] = 'cover';
     div.style['background-repeat'] = 'no-repeat';
     return div;
 };
@@ -1015,7 +1017,8 @@ soilwetLegend.onAdd = function (map) {
         div.style.height = '320px';
     }
     div.style['background-image'] = 'url(' + src + ')';
-    div.style['background-size'] = 'contain';
+    // div.style['background-size'] = 'contain';
+    div.style['background-size'] = 'cover';
     div.style['background-repeat'] = 'no-repeat';
     return div;
 };
@@ -1040,7 +1043,8 @@ fireLegend.onAdd = function (map) {
     div.style.width = '75px';
     div.style.height = '120px';
     div.style['background-image'] = 'url(' + src + ')';
-    div.style['background-size'] = 'contain';
+    // div.style['background-size'] = 'contain';
+    div.style['background-size'] = 'cover';
     div.style['background-repeat'] = 'no-repeat';
     return div;
 };
@@ -1058,7 +1062,8 @@ treecoverLegend.onAdd = function (map) {
         div.style.height = '320px';
     }
     div.style['background-image'] = 'url(' + src + ')';
-    div.style['background-size'] = 'contain';
+    // div.style['background-size'] = 'contain';
+    div.style['background-size'] = 'cover';
     div.style['background-repeat'] = 'no-repeat';
     return div;
 };
@@ -1069,7 +1074,8 @@ ndviLegend.onAdd = function (map) {
     div.style.width = '85px';
     div.style.height = '185px';
     div.style['background-image'] = 'url(' + src + ')';
-    div.style['background-size'] = 'contain';
+    // div.style['background-size'] = 'contain';
+    div.style['background-size'] = 'cover';
     div.style['background-repeat'] = 'no-repeat';
     return div;
 };
