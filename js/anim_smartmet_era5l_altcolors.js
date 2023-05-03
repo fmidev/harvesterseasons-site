@@ -73,7 +73,7 @@ let soilwetnessDate = new Date(Date.UTC(startYear, startMonth-1, soilwetnessDay)
 
 let ndviDate, ndviEndDate;
 
-$.get('https://sm.harvesterseasons.com/wms?&service=WMS&request=GetCapabilities', function (data) {
+$.get('https://desm.harvesterseasons.com/wms?&service=WMS&request=GetCapabilities', function (data) {
 
     let layerlist = data.getElementsByTagName("Layer");
     let ndviDateList;
@@ -752,7 +752,7 @@ var opacity = slider.value;
 // function plotgeotiffstatic() {
 // }
 
-var smartWMS = 'https://sm.harvesterseasons.com/wms?';
+var smartWMS = 'https://desm.harvesterseasons.com/wms?';
 
 var temperatureLayerOptions = {
     crs: L.CRS.EPSG4326,

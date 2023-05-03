@@ -1,12 +1,12 @@
 function drawtimeseries() {
     // Inside Finland, seasonal snow depth combined and scaled with SMARTOBS observations
-    // var dataUrl2 = "https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + SHensemble2 + "&starttime=" + dateString_smartobs + "T000000Z&timesteps=1&format=json&precision=full";
+    // var dataUrl2 = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + SHensemble2 + "&starttime=" + dateString_smartobs + "T000000Z&timesteps=1&format=json&precision=full";
 
     var dataUrlSW = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + SWensemble2 + "&starttime=" + dateString_smartobs + "T000000Z&endtime=" + dateString_smartmet + "&timestep=1440&format=json&precision=full&tz=utc&timeformat=xml";
 
     // console.debug(dataUrl3)
 
-    // var dataUrl2 = "https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + SHensemble2 + "&starttime=" + dateString_smartobs + "T000000Z&endtime=" + dateString_origintime + "&timestep=1440&format=json&precision=full&tz=utc&timeformat=xml";
+    // var dataUrl2 = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + SHensemble2 + "&starttime=" + dateString_smartobs + "T000000Z&endtime=" + dateString_origintime + "&timestep=1440&format=json&precision=full&tz=utc&timeformat=xml";
     // console.debug(dataUrl2)
 
     // console.debug(dataUrlSW)
@@ -74,7 +74,7 @@ function drawtimeseries() {
             var dataUrl2 = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + SHensemble2 + "&starttime=" + dateString_smartobs + "T000000Z&endtime=" + dateString_origintime + "&timestep=1440&format=json&precision=full&tz=utc&timeformat=xml";
             $.getJSON(dataUrl2, function (data2) {
                 // // Temporary fix for missing HSNOW-M:SMARTOBS data
-                // var dataUrl2 = "https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + SHensemble2 + "&starttime=20210914T000000Z&timesteps=1&format=json&precision=full";
+                // var dataUrl2 = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + SHensemble2 + "&starttime=20210914T000000Z&timesteps=1&format=json&precision=full";
                 // $.getJSON(dataUrl2, function (data2) {
 
                 // Find the latest SMARTOBS value
@@ -92,17 +92,28 @@ function drawtimeseries() {
 
                 let smartobsDate = new Date(data2[smartobsIdx]["utctime"]);
 
+                // // Scale seasonal snow forecast using observations
+                // let SHensemble3 = "DIFF{SD-M:ECBSF::1:0:1:0;" + data2[smartobsIdx][SHensemble2list[0]] + "}";
+                // let SHensemble3ensover = "DIFF{SD-M:ECBSF::1:0:1:0;" + data2[smartobsIdx][SHensemble2list[0]] + "}";
+                // let SHensemble3list = ["DIFF{SD-M:ECBSF::1:0:1:0;" + data2[smartobsIdx][SHensemble2list[0]] + "}"];
+                // for (i = 1; i <= perturbations; i = i + 1) {
+                //     SHensemble3 += ",DIFF{SD-M:ECBSF::1:0:3:" + i + ";" + data2[smartobsIdx][SHensemble2list[i]] + "}";
+                //     SHensemble3list[i] = "DIFF{SD-M:ECBSF::1:0:3:" + i + ";" + data2[smartobsIdx][SHensemble2list[i]] + "}";
+                //     SHensemble3ensover += ";DIFF{SD-M:ECBSF::1:0:3:" + i + ";" + data2[smartobsIdx][SHensemble2list[i]] + "}";
+                // }
+                // let param4ensemble = "ensover{0.4;0.9;" + SHensemble3ensover + "}";
+
                 // Scale seasonal snow forecast using observations
-                let SHensemble3 = "DIFF{SD-M:ECBSF::1:0:1:0;" + data2[smartobsIdx][SHensemble2list[0]] + "}";
-                let SHensemble3ensover = "DIFF{SD-M:ECBSF::1:0:1:0;" + data2[smartobsIdx][SHensemble2list[0]] + "}";
-                let SHensemble3list = ["DIFF{SD-M:ECBSF::1:0:1:0;" + data2[smartobsIdx][SHensemble2list[0]] + "}"];
+                let SHensemble3 = "DIFF{HSNOW-M:ECBSF::1:0:1:0;" + data2[smartobsIdx][SHensemble2list[0]] + "}";
+                let SHensemble3ensover = "DIFF{HSNOW-M:ECBSF::1:0:1:0;" + data2[smartobsIdx][SHensemble2list[0]] + "}";
+                let SHensemble3list = ["DIFF{HSNOW-M:ECBSF::1:0:1:0;" + data2[smartobsIdx][SHensemble2list[0]] + "}"];
                 for (i = 1; i <= perturbations; i = i + 1) {
-                    SHensemble3 += ",DIFF{SD-M:ECBSF::1:0:3:" + i + ";" + data2[smartobsIdx][SHensemble2list[i]] + "}";
-                    SHensemble3list[i] = "DIFF{SD-M:ECBSF::1:0:3:" + i + ";" + data2[smartobsIdx][SHensemble2list[i]] + "}";
-                    SHensemble3ensover += ";DIFF{SD-M:ECBSF::1:0:3:" + i + ";" + data2[smartobsIdx][SHensemble2list[i]] + "}";
+                    SHensemble3 += ",DIFF{HSNOW-M:ECBSF::1:0:3:" + i + ";" + data2[smartobsIdx][SHensemble2list[i]] + "}";
+                    SHensemble3list[i] = "DIFF{HSNOW-M:ECBSF::1:0:3:" + i + ";" + data2[smartobsIdx][SHensemble2list[i]] + "}";
+                    SHensemble3ensover += ";DIFF{HSNOW-M:ECBSF::1:0:3:" + i + ";" + data2[smartobsIdx][SHensemble2list[i]] + "}";
                 }
                 let param4ensemble = "ensover{0.4;0.9;" + SHensemble3ensover + "}";
-
+                
                 graphLoad = $.getJSON("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWVL2-M3M3:SMARTMET:5015," + SWensemble3 + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&precision=full&source=grid&timeformat=xml&tz=utc",
                     function (dataSWensemble) {
 
@@ -206,8 +217,8 @@ function drawtimeseries() {
                                     document.getElementById("graphB").innerHTML = "Error loading data";
                                 }
 
-                                // graphLoad3 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SOILWET1-M:ECBSF::9:7:1:0" + SWensemble + ",SWVL2-M3M3:SMARTMET:5015&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
-                                // graphLoad3 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SOILWET-M3M3:ECBSF:::7:1:0" + SWensemble + "," + SWensemble3 + ",SWVL2-M3M3:SMARTMET:5015&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc&format=json",
+                                // graphLoad3 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SOILWET1-M:ECBSF::9:7:1:0" + SWensemble + ",SWVL2-M3M3:SMARTMET:5015&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
+                                // graphLoad3 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SOILWET-M3M3:ECBSF:::7:1:0" + SWensemble + "," + SWensemble3 + ",SWVL2-M3M3:SMARTMET:5015&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc&format=json",
                                 graphLoad3 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,VSW-M3M3:ECBSF:5022:9:7:0:0" + SWensemble + "," + SWensemble3 + ",SWVL2-M3M3:SMARTMET:5015&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc&format=json",
                                     function (data) {
                                         if (data.length > 0) {
@@ -261,10 +272,10 @@ function drawtimeseries() {
                                         }
                                     });
 
-                                // graphLoad4 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,K2C{TSOIL-K:ECBSF::9:7:1:0}" + TGKensemble + ",TG-K:SMARTMET&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc&origintime=" + dateString_origintime,
-                                // graphLoad4 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,K2C{TSOIL-K:ECBSF::9:7:1:0}" + TGKensemble + ",TG-K:SMARTMET&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
-                                // graphLoad4 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,K2C{TSOIL-K:ECBSF::9:7:1:0}" + TGKensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
-                                // graphLoad4 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,K2C{TSOIL-K:ECBSF:::7:1:0}" + TGKensemble + ",STL1-K:SMARTMET&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
+                                // graphLoad4 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,K2C{TSOIL-K:ECBSF::9:7:1:0}" + TGKensemble + ",TG-K:SMARTMET&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc&origintime=" + dateString_origintime,
+                                // graphLoad4 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,K2C{TSOIL-K:ECBSF::9:7:1:0}" + TGKensemble + ",TG-K:SMARTMET&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
+                                // graphLoad4 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,K2C{TSOIL-K:ECBSF::9:7:1:0}" + TGKensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
+                                // graphLoad4 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,K2C{TSOIL-K:ECBSF:::7:1:0}" + TGKensemble + ",STL1-K:SMARTMET&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
                                 graphLoad4 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,K2C{TSOIL-K:ECBSF:::7:1:0}" + TGKensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
                                 function (data) {
                                         if (data.length > 0) {
@@ -290,7 +301,7 @@ function drawtimeseries() {
 
 
                                 // Version json
-                                // graphLoad2 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + SHensemble + "," + SHensemble3 + ",HSNOW-M:SMARTOBS:13:4&starttime=" + dateString_timeseries + "&endtime=202105310000&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
+                                // graphLoad2 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + SHensemble + "," + SHensemble3 + ",HSNOW-M:SMARTOBS:13:4&starttime=" + dateString_timeseries + "&endtime=202105310000&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
                                 graphLoad2 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + SHensemble + "," + SHensemble3 + ",HSNOW-M:SMARTOBS:13:4&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=xml&precision=full&source=grid&tz=utc&format=json",
                                     function (data) {
                                         if (data.length > 0) {
@@ -400,8 +411,8 @@ function drawOutsideFinland() {
                 document.getElementById("graphB").innerHTML = "Error loading data";
             }
 
-            // graphLoad3 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SOILWET1-M:ECBSF::9:7:1:0" + SWensemble + ",SWVL2-M3M3:SMARTMET:5015&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
-            // graphLoad3 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SOILWET-M3M3:ECBSF:::7:1:0" + SWensemble + ",SWVL2-M3M3:SMARTMET:5015&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
+            // graphLoad3 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SOILWET1-M:ECBSF::9:7:1:0" + SWensemble + ",SWVL2-M3M3:SMARTMET:5015&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
+            // graphLoad3 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SOILWET-M3M3:ECBSF:::7:1:0" + SWensemble + ",SWVL2-M3M3:SMARTMET:5015&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
             graphLoad3 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,VSW-M3M3:ECBSF:5022:9:7:0:0" + SWensemble + ",SWVL2-M3M3:SMARTMET:5015&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
                 function (data) {
                     if (data.length > 0) {
@@ -425,8 +436,8 @@ function drawOutsideFinland() {
                     }
                 })
 
-            // graphLoad4 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,K2C{TSOIL-K:ECBSF::9:7:1:0}" + TGKensemble + ",TG-K:SMARTMET&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
-            // graphLoad4 = $.get("https://sm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,K2C{TSOIL-K:ECBSF::9:7:1:0}" + TGKensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
+            // graphLoad4 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,K2C{TSOIL-K:ECBSF::9:7:1:0}" + TGKensemble + ",TG-K:SMARTMET&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
+            // graphLoad4 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,K2C{TSOIL-K:ECBSF::9:7:1:0}" + TGKensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
             graphLoad4 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,K2C{TSOIL-K:ECBSF:::7:1:0}" + TGKensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
                 function (data) {
                     if (data.length > 0) {

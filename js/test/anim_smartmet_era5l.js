@@ -646,14 +646,24 @@ for (i = 1; i <= perturbations; i = i + 1) {
     SWensemble2list[i] = "DIFF{VSW-M3M3:ECBSF:5022:9:7:0:" + i + ";SWVL2-M3M3:SMARTMET:5015}";
 }
 
-var SHensemblelist = ["SD-M:ECBSF::1:0:1:0"];
-var SHensemble2 = "DIFF{SD-M:ECBSF::1:0:1:0;HSNOW-M:SMARTOBS:13:4}";
-var SHensemble2list = ["DIFF{SD-M:ECBSF::1:0:1:0;HSNOW-M:SMARTOBS:13:4}"];
+// var SHensemblelist = ["SD-M:ECBSF::1:0:1:0"];
+// var SHensemble2 = "DIFF{SD-M:ECBSF::1:0:1:0;HSNOW-M:SMARTOBS:13:4}";
+// var SHensemble2list = ["DIFF{SD-M:ECBSF::1:0:1:0;HSNOW-M:SMARTOBS:13:4}"];
+// for (i = 1; i <= perturbations; i = i + 1) {
+//     SHensemblelist[i] = "SD-M:ECBSF::1:0:3:" + i ;
+//     SHensemble2 += ",DIFF{SD-M:ECBSF::1:0:3:" + i + ";HSNOW-M:SMARTOBS:13:4}";
+//     SHensemble2list[i] = "DIFF{SD-M:ECBSF::1:0:3:" + i + ";HSNOW-M:SMARTOBS:13:4}";
+// }
+
+var SHensemblelist = ["HSNOW-M:ECBSF::1:0:1:0"];
+var SHensemble2 = "DIFF{HSNOW-M:ECBSF::1:0:1:0;HSNOW-M:SMARTOBS:13:4}";
+var SHensemble2list = ["DIFF{HSNOW-M:ECBSF::1:0:1:0;HSNOW-M:SMARTOBS:13:4}"];
 for (i = 1; i <= perturbations; i = i + 1) {
-    SHensemblelist[i] = "SD-M:ECBSF::1:0:3:" + i ;
-    SHensemble2 += ",DIFF{SD-M:ECBSF::1:0:3:" + i + ";HSNOW-M:SMARTOBS:13:4}";
-    SHensemble2list[i] = "DIFF{SD-M:ECBSF::1:0:3:" + i + ";HSNOW-M:SMARTOBS:13:4}";
+    SHensemblelist[i] = "HSNOW-M:ECBSF::1:0:3:" + i ;
+    SHensemble2 += ",DIFF{HSNOW-M:ECBSF::1:0:3:" + i + ";HSNOW-M:SMARTOBS:13:4}";
+    SHensemble2list[i] = "DIFF{HSNOW-M:ECBSF::1:0:3:" + i + ";HSNOW-M:SMARTOBS:13:4}";
 }
+
 
 // Default colormap
 const colorFrost = [0, 97, 0];
@@ -821,7 +831,8 @@ var soilwetnessTimeLayer2 = L.timeDimension.layer.wms(soilwetnessLayer2, {cache:
 var snowthicknessLayerOptions = {
     crs: L.CRS.EPSG4326,
     version: '1.3.0',
-    layers: 'harvester:ecbsf:SD-M',
+    // layers: 'harvester:ecbsf:SD-M',
+    layers: 'harvester:ecbsf:HSNOW-M',
     format: 'image/png',
     transparent: 'true',
     styles: 'default',
@@ -1896,13 +1907,15 @@ var dyGraphSTOptions = {
 }
 
 // var SHensemble = "";
-var SHensemble = "SD-M:ECBSF::1:0:1:0";
+// var SHensemble = "SD-M:ECBSF::1:0:1:0";
+var SHensemble = "HSNOW-M:ECBSF::1:0:1:0";
 var label = ["date", "SH-0"];
 var labelstxt = {'SH-0': { fillGraph: false }};
 for (i = 1; i <= perturbations; i = i + 1) {
     label[i+1] = 'SH-' + i ;
     labelstxt[label[i+1]]= { fillGraph: false };
-    SHensemble += ",SD-M:ECBSF::1:0:3:" + i ;
+    // SHensemble += ",SD-M:ECBSF::1:0:3:" + i ;
+    SHensemble += ",HSNOW-M:ECBSF::1:0:3:" + i ;
 }
 label[perturbations+2] = 'SH-FMI';
 labelstxt[label[perturbations+2]]= { fillGraph: false, strokeWidth: 3, color: 'red' };

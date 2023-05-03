@@ -170,12 +170,18 @@ function plotgeotiff_scaling() {
         let dataUrl3 = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + SHensemble2 + "&starttime=" + geotiffSmartobsDate + "T000000Z&timesteps=1&format=json&precision=full";
         $.getJSON(dataUrl3, function (data2) {
 
-            // Scale seasonal snow forecast using SMARTOBS observations
-            let SHensemble3ensover = "DIFF{SD-M:ECBSF::1:0:1:0;" + data2[0][SHensemble2list[0]] + "}";
-            for (i = 1; i <= perturbations; i = i + 1) {
-                SHensemble3ensover += ";DIFF{SD-M:ECBSF::1:0:3:" + i + ";" + data2[0][SHensemble2list[i]] + "}";
-            }
+            // // Scale seasonal snow forecast using SMARTOBS observations
+            // let SHensemble3ensover = "DIFF{SD-M:ECBSF::1:0:1:0;" + data2[0][SHensemble2list[0]] + "}";
+            // for (i = 1; i <= perturbations; i = i + 1) {
+            //     SHensemble3ensover += ";DIFF{SD-M:ECBSF::1:0:3:" + i + ";" + data2[0][SHensemble2list[i]] + "}";
+            // }
+            // let param4ensemble = "ensover{0.4;0.9;" + SHensemble3ensover + "}";
 
+            // Scale seasonal snow forecast using SMARTOBS observations
+            let SHensemble3ensover = "DIFF{HSNOW-M:ECBSF::1:0:1:0;" + data2[0][SHensemble2list[0]] + "}";
+            for (i = 1; i <= perturbations; i = i + 1) {
+                SHensemble3ensover += ";DIFF{HSNOW-M:ECBSF::1:0:3:" + i + ";" + data2[0][SHensemble2list[i]] + "}";
+            }
             let param4ensemble = "ensover{0.4;0.9;" + SHensemble3ensover + "}";
 
             // Soil wetness at the current time (sliderDate)
@@ -255,13 +261,14 @@ function plotgeotiff_scaling() {
 
 
                         // console.debug(idxSummer, idxWinter)
+                        // console.debug(idxWinter,idxSummer)
 
                         //console.debug(idx)
                         //console.debug(idx2)
                         //console.debug(harvDynamicState)
 
                         //console.debug(latlon)
-                        //console.debug(idx2)
+                        // console.debug(idx2)
 
                         /*
                         Logic:
