@@ -93,13 +93,13 @@ function drawtimeseries() {
                 let smartobsDate = new Date(data2[smartobsIdx]["utctime"]);
 
                 // Scale seasonal snow forecast using observations
-                let SHensemble3 = "DIFF{SD-M:ECBSF::1:0:1:0;" + data2[smartobsIdx][SHensemble2list[0]] + "}";
-                let SHensemble3ensover = "DIFF{SD-M:ECBSF::1:0:1:0;" + data2[smartobsIdx][SHensemble2list[0]] + "}";
-                let SHensemble3list = ["DIFF{SD-M:ECBSF::1:0:1:0;" + data2[smartobsIdx][SHensemble2list[0]] + "}"];
+                let SHensemble3 = "DIFF{HSNOW-M:ECBSF::1:0:1:0;" + data2[smartobsIdx][SHensemble2list[0]] + "}";
+                let SHensemble3ensover = "DIFF{HSNOW-M:ECBSF::1:0:1:0;" + data2[smartobsIdx][SHensemble2list[0]] + "}";
+                let SHensemble3list = ["DIFF{HSNOW-M:ECBSF::1:0:1:0;" + data2[smartobsIdx][SHensemble2list[0]] + "}"];
                 for (i = 1; i <= perturbations; i = i + 1) {
-                    SHensemble3 += ",DIFF{SD-M:ECBSF::1:0:3:" + i + ";" + data2[smartobsIdx][SHensemble2list[i]] + "}";
-                    SHensemble3list[i] = "DIFF{SD-M:ECBSF::1:0:3:" + i + ";" + data2[smartobsIdx][SHensemble2list[i]] + "}";
-                    SHensemble3ensover += ";DIFF{SD-M:ECBSF::1:0:3:" + i + ";" + data2[smartobsIdx][SHensemble2list[i]] + "}";
+                    SHensemble3 += ",DIFF{HSNOW-M:ECBSF::1:0:3:" + i + ";" + data2[smartobsIdx][SHensemble2list[i]] + "}";
+                    SHensemble3list[i] = "DIFF{HSNOW-M:ECBSF::1:0:3:" + i + ";" + data2[smartobsIdx][SHensemble2list[i]] + "}";
+                    SHensemble3ensover += ";DIFF{HSNOW-M:ECBSF::1:0:3:" + i + ";" + data2[smartobsIdx][SHensemble2list[i]] + "}";
                 }
                 let param4ensemble = "ensover{0.4;0.9;" + SHensemble3ensover + "}";
 
@@ -139,7 +139,7 @@ function drawtimeseries() {
                         // // const param2="HARVIDX{0.4;SOILWET-M3M3:ECBSF:::7:3:1-50;SOILWET-M3M3:ECBSF:::7:1:0}";
                         // const param2="HARVIDX{0.4;VSW-M3M3:ECBSF:5022:9:7:0:1-50;VSW-M3M3:ECBSF:5022:9:7:0:0}";
                         // const param3 = "HARVIDX{273;TSOIL-K:ECBSF:::7:3:1-50;TSOIL-K:ECBSF:::7:1:0}";
-                        // const param4 = "ensover{0.4;0.9;SD-M:ECBSF::1:0:3:1-50;SD-M:ECBSF::1:0:1:0}";
+                        // const param4 = "ensover{0.4;0.9;HSNOW-M:ECBSF::1:0:3:1-50;HSNOW-M:ECBSF::1:0:1:0}";
                         // const param5 = "HARVIDX{0.4;SWVL2-M3M3:SMARTMET:5015}";
                         // const param6 = "HARVIDX{-0.7;STL1-K:SMARTMET}";
                         // const param7 = "ensover{0.4;0.9;SD-M:SMARTMET:5027}";
@@ -159,7 +159,7 @@ function drawtimeseries() {
                                     if (summer1series.length == data.length) { summer1 = summer1series[i]; }
                                     else { summer1 = 'nan'; }
 
-                                    // Seasonal winter index, combined and scaled with observations (SD-M:ECBSF & HSNOW-M:SMARTOBS, TSOIL-K:ECBSF)                     
+                                    // Seasonal winter index, combined and scaled with observations (HSNOW-M:ECBSF & HSNOW-M:SMARTOBS, TSOIL-K:ECBSF)                     
                                     if (data[i][param8] !== null) { winter1 = Math.max(data[i][param3], data[i][param8]); }
                                     else if (data[i][param3] !== null || data[i][param4ensemble] !== null) { winter1 = Math.max(data[i][param3], data[i][param4ensemble]); }
                                     else { winter1 = 'nan'; }
