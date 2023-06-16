@@ -1832,7 +1832,7 @@ var labelstxt = {'SW-0': { fillGraph: false }};
 /* var label = ["date", "SW-FMI", "SW-0"];
 var labelstxt = {'SW-FMI': { fillGraph: false, strokeWidth: 3, color: 'rgb(75,75,75)' },
                 'SW-0': { fillGraph: false }}; */
-for (i = 1; i <= perturbations; i = i + 1) {
+for (i = 0; i <= perturbations; i = i + 1) {
     label[i+1] = 'SW-' + i ;
     labelstxt[label[i+1]]= { fillGraph: false };
 /*     label[i+2] = 'SW-' + i ;

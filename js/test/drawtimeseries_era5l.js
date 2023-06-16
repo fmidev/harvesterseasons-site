@@ -2,15 +2,10 @@ function drawtimeseries() {
     // Inside Finland, seasonal snow depth combined and scaled with SMARTOBS observations
     // var dataUrl2 = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + SHensemble2 + "&starttime=" + dateString_smartobs + "T000000Z&timesteps=1&format=json&precision=full";
 
-    var dataUrlSW = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + SWensemble2 + "&starttime=" + dateString_smartobs + "T000000Z&endtime=" + dateString_smartmet + "&timestep=1440&format=json&precision=full&tz=utc&timeformat=xml";
 
-    // console.debug(dataUrl3)
+    var dataUrlSW = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWVL2-M3M3:SMARTMET:5015" + SWensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&precision=full&source=grid&timeformat=sql&tz=utc";
 
-    // var dataUrl2 = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + SHensemble2 + "&starttime=" + dateString_smartobs + "T000000Z&endtime=" + dateString_origintime + "&timestep=1440&format=json&precision=full&tz=utc&timeformat=xml";
-    // console.debug(dataUrl2)
-
-    // console.debug(dataUrlSW)
-
+ 
     $.getJSON(dataUrlSW, function (dataSW) {
 
         // console.debug(dataUrlSW)
@@ -20,13 +15,14 @@ function drawtimeseries() {
         let smartmetIdx = -1;
 
         for (let i = 0; i < dataSW.length; i++) {
-            if (dataSW[i][SWensemble2list[0]] !== null) {
+            if (dataSW[i]["SWVL2-M3M3:SMARTMET:5015"] !== null) {
                 smartmetIdx = i;
             }
         }
-        // while (dataSW[smartmetIdx + 1][SWensemble2list[0]] !== null) {
-        //     smartmetIdx++;
-        // }
+
+        // console.debug(smartmetIdx)
+        // console.debug(dataSW[smartmetIdx]["SWVL2-M3M3:SMARTMET:5015"])
+
 
         if (smartmetIdx == -1) { 
             drawOutsideFinland() 
@@ -48,16 +44,6 @@ function drawtimeseries() {
             // console.debug(smartmetDate)
             // console.debug(dataSW)
 
-            // // Scale seasonal soil wetness using observations
-            // let SWensemble3 = "DIFF{SOILWET-M3M3:ECBSF:::7:1:0;" + dataSW[smartmetIdx][SWensemble2list[0]] + "}";
-            // // var SWensemble3harvidx = "DIFF{SOILWET-M3M3:ECBSF:::7:1:0;" + dataSW[smartmetIdx][SWensemble2list[0]] + "}";
-            // let SWensemble3list = ["DIFF{SOILWET-M3M3:ECBSF:::7:1:0;" + dataSW[smartmetIdx][SWensemble2list[0]] + "}"];
-            // for (i = 1; i <= perturbations; i = i + 1) {
-            //     SWensemble3 += ",DIFF{SOILWET-M3M3:ECBSF:::7:3:" + i + ";" + dataSW[smartmetIdx][SWensemble2list[i]] + "}";
-            //     SWensemble3list[i] = "DIFF{SOILWET-M3M3:ECBSF:::7:3:" + i + ";" + dataSW[smartmetIdx][SWensemble2list[i]] + "}";
-            //     // SWensemble3harvidx += ";DIFF{SOILWET-M3M3:ECBSF:::7:3:" + i + ";" + dataSW[smartmetIdx][SWensemble2list[i]] + "}";
-            // }
-            // // var param2ensemble = "HARVIDX{0.4;" + SWensemble3harvidx + "}";
 
             // Scale seasonal soil wetness using observations
             let SWensemble3 = "DIFF{VSW-M3M3:ECBSF:5022:9:7:0:0;" + dataSW[smartmetIdx][SWensemble2list[0]] + "}";
@@ -70,6 +56,21 @@ function drawtimeseries() {
             }
                         // var param2ensemble = "HARVIDX{0.4;" + SWensemble3harvidx + "}";
             
+            // Scale seasonal soil wetness using observations
+
+            let dataSWscaled = [];
+  
+            for (let i = 0; i < dataSW.length; i++) {
+                dataSWscaled[i] = [];
+                dataSWscaled[i]["utctime"] = dataSW[i]["utctime"];
+                for (let j = 0; j <= perturbations; j++) {
+                    if (dataSW[i][SWensemblelist[j]] !== null) {
+                        dataSWscaled[i][SWensemblelist[j]] = dataSW[i][SWensemblelist[j]] - (dataSW[smartmetIdx][SWensemblelist[j]] - dataSW[smartmetIdx]["SWVL2-M3M3:SMARTMET:5015"]);
+                    } else {
+                        dataSWscaled[i][SWensemblelist[j]] = null;
+                    }
+                }
+            }
 
             var dataUrl2 = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + SHensemble2 + "&starttime=" + dateString_smartobs + "T000000Z&endtime=" + dateString_origintime + "&timestep=1440&format=json&precision=full&tz=utc&timeformat=xml";
             $.getJSON(dataUrl2, function (data2) {
@@ -227,26 +228,26 @@ function drawtimeseries() {
                                             // console.debug(new Date(data[0]["utctime"].replace(/-/g, "/")))
 
                                             var dataSW2 = [];
-                                            for (k = 0; k < data.length; k++) {
+                                            for (k = 0; k < dataSWscaled.length; k++) {
                                                 // console.debug(data[k]["utctime"])
                                                 dataSW2[k] = [];
                                                 // dataSW2[k][0] = new Date(data[k]["utctime"]);
                                                 // // Date format that works also in mobile safari
-                                                dataSW2[k][0] = new Date(data[k]["utctime"].replace(/-/g, "/"));
+                                                dataSW2[k][0] = new Date(dataSWscaled[k]["utctime"].replace(/-/g, "/"));
                                                 for (i = 1; i <= perturbations + 1; i = i + 1) {
                                                     // if (data3[k][0] < startDate_smartobs - 24 * 60 * 60000) {
                                                     //     // Remove seasonal forecast before startDate_smartobs-1day
                                                     if (dataSW2[k][0] < smartmetDate) {
                                                         // Remove seasonal forecast before smartobsDate
                                                         dataSW2[k][i] = "nan";
-                                                    } else if (data[k][SWensemblelist[i]] == 0 || data[k][SWensemble3list[i]] < 0) {
-                                                        // Set SD to 0 if non-scaled SD is 0 or scaled < 0
+                                                    } else if (dataSW[k][SWensemblelist[i]] == 0 || dataSWscaled[k][SWensemblelist[i]] < 0) {
+                                                        // Set SW to 0 if non-scaled SW is 0 or scaled < 0
                                                         dataSW2[k][i] = 0;
                                                     } else {
-                                                        dataSW2[k][i] = data[k][SWensemble3list[i]];
+                                                        dataSW2[k][i] = dataSWscaled[k][SWensemblelist[i]];
                                                     }
                                                 }
-                                                dataSW2[k][perturbations + 2] = data[k]["SWVL2-M3M3:SMARTMET:5015"];
+                                                dataSW2[k][perturbations + 2] = dataSW[k]["SWVL2-M3M3:SMARTMET:5015"];
                                             }
 
                                             // console.debug(dataSW2)
