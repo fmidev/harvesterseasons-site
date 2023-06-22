@@ -81,7 +81,8 @@ $.get('https://desm.harvesterseasons.com/wms?&service=WMS&request=GetCapabilitie
         if (layerlist[i].childNodes[1].firstChild.nodeValue === 'harvester:s3sy:NDVI') {
             // console.debug(layerlist[i].childNodes[1].firstChild.nodeValue)
             // console.debug(layerlist[i].childNodes[41].firstChild.nodeValue)
-            ndviDateList = layerlist[i].childNodes[41].firstChild.nodeValue.split(",");
+            // ndviDateList = layerlist[i].childNodes[41].firstChild.nodeValue.split(",");
+            ndviDateList = layerlist[i].childNodes[29].firstChild.nodeValue.split(",");
             break;
         }
     }
@@ -590,8 +591,8 @@ const param4="ensover{0.4;0.9;HSNOW-M:ECBSF::1:0:3:1-50;HSNOW-M:ECBSF::1:0:1:0}"
 
 const param5 = "HARVIDX{0.4;SWVL2-M3M3:SMARTMET:5015}";
 // const param6 = "HARVIDX{-0.7;TG-K:SMARTMET}";
-const param6 = "HARVIDX{-0.7;STL1-K:SMARTMET}";
-const param7 = "ensover{0.4;0.9;SD-M:SMARTMET:5027}";
+// const param6 = "HARVIDX{-0.7;STL1-K:SMARTMET}";
+const param7 = "ensover{0.4;0.9;HSNOW-M:SMARTMET:5027}";
 
 const param8 = "ensover{0.4;0.9;HSNOW-M:SMARTOBS:13:4}";
 
@@ -1821,7 +1822,7 @@ var labelstxt = {'SW-0': { fillGraph: false }};
 /* var label = ["date", "SW-FMI", "SW-0"];
 var labelstxt = {'SW-FMI': { fillGraph: false, strokeWidth: 3, color: 'rgb(75,75,75)' },
                 'SW-0': { fillGraph: false }}; */
-for (i = 1; i <= perturbations; i = i + 1) {
+for (i = 0; i <= perturbations; i = i + 1) {
     label[i+1] = 'SW-' + i ;
     labelstxt[label[i+1]]= { fillGraph: false };
 /*     label[i+2] = 'SW-' + i ;
