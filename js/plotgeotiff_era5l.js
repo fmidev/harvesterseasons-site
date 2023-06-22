@@ -215,8 +215,11 @@ function plotgeotiff_scaling() {
                     // // SMARTOBS scaling 
                     // let dataUrl2 = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + param1 + "," + param2 + "," + param3 + "," + param4ensemble + "," + param5 + "," + param6 + "," + param7 + "&starttime=" + dataYear + dataMonth + dataDay + "T000000Z&timesteps=1&format=json";
 
-                    // HSNOW-M:SMARTOBS (param8) instead of SD-M:SMARTMET (param7)
-                    let dataUrl2 = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + param1 + "," + param2 + "," + param3 + "," + param4ensemble + "," + param5 + "," + param6 + "," + param8 + "&starttime=" + dataYear + dataMonth + dataDay + "T000000Z&timesteps=1&format=json";
+                    // // HSNOW-M:SMARTOBS (param8) instead of SD-M:SMARTMET (param7)
+                    // let dataUrl2 = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + param1 + "," + param2 + "," + param3 + "," + param4ensemble + "," + param5 + "," + param6 + "," + param8 + "&starttime=" + dataYear + dataMonth + dataDay + "T000000Z&timesteps=1&format=json";
+
+                    // HSNOW-M:SMARTOBS (param8) and HSNOW-M:SMARTMET (param7)
+                    let dataUrl2 = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + param1 + "," + param2 + "," + param3 + "," + param4ensemble + "," + param5 + "," + param7 + "," + param8 + "&starttime=" + dataYear + dataMonth + dataDay + "T000000Z&timesteps=1&format=json";
 
                     // // const param2="HARVIDX{0.4;SOILWET-M3M3:ECBSF:::7:3:1-50;SOILWET-M3M3:ECBSF:::7:1:0}";
                     // const param2="HARVIDX{0.4;VSW-M3M3:ECBSF:5022:9:7:0:1-50;VSW-M3M3:ECBSF:5022:9:7:0:0}";
@@ -224,7 +227,7 @@ function plotgeotiff_scaling() {
                     // const param4 = "ensover{0.4;0.9;HSNOW-M:ECBSF::1:0:3:1-50;HSNOW-M:ECBSF::1:0:1:0}";
                     // const param5 = "HARVIDX{0.4;SWVL2-M3M3:SMARTMET:5015}";
                     // const param6 = "HARVIDX{-0.7;STL1-K:SMARTMET}";
-                    // const param7 = "ensover{0.4;0.9;SD-M:SMARTMET:5027}";
+                    // const param7 = "ensover{0.4;0.9;HSNOW-M:SMARTMET:5027}";
                     // const param8 = "ensover{0.4;0.9;HSNOW-M:SMARTOBS:13:4}";
 
                     $.getJSON(dataUrl2, function (data) {
@@ -241,12 +244,23 @@ function plotgeotiff_scaling() {
                         // if (data[0][param7] !== null) {
                         //     // idxWinter = data[0][param7];
                         //     idxWinter = Math.max(data[0][param3], data[0][param7]);
-                        // // Use SMARTOBS (param8) instead of SMARTMET (param7) to match time series (when SMARTMET is not available)
+
+                        // // // Use SMARTOBS (param8) instead of SMARTMET (param7) to match time series (when SMARTMET is not available)
+                        // if (data[0][param8] !== null) {
+                        //     idxWinter = Math.max(data[0][param3], data[0][param8]);
+                        // } else {
+                        //     idxWinter = Math.max(data[0][param3], data[0][param4ensemble]);
+                        // }
+
+                        // // Use SMARTOBS (param8) and SMARTMET (param7)
                         if (data[0][param8] !== null) {
                             idxWinter = Math.max(data[0][param3], data[0][param8]);
+                        } else if (data[0][param7] !== null) {
+                            idxWinter = Math.max(data[0][param3], data[0][param7]);
                         } else {
                             idxWinter = Math.max(data[0][param3], data[0][param4ensemble]);
                         }
+
 
                         if (idxWinter == 2) { idx2 = 3 }
                         else if (idxSummer == 2) { idx2 = 2 }
