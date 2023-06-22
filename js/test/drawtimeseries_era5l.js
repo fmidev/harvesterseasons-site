@@ -84,7 +84,7 @@ function drawtimeseries() {
                             if (summer1series.length == data.length) { summer1 = summer1series[i]; }
                             else { summer1 = 'nan'; }
 
-                            // Seasonal winter index, combined and scaled with observations (SD-M:ECBSF & HSNOW-M:SMARTOBS, TSOIL-K:ECBSF)                     
+                            // Seasonal winter index, combined and scaled with observations (HSNOW-M:ECBSF & HSNOW-M:SMARTOBS, TSOIL-K:ECBSF)                     
                             if (data[i][param8] !== null) { winter1 = Math.max(data[i][param3], data[i][param8]); }
                             else if (data[i][param3] !== null || winter1series[i] !== null && winter1series.length == data.length) 
                                 { winter1 = Math.max(data[i][param3], winter1series[i]); }
@@ -139,16 +139,16 @@ function drawtimeseries() {
                             dataSW2[k] = [];
                             // Date format that works also in mobile safari
                             dataSW2[k][0] = new Date(dataSWscaled[k]["utctime"].replace(/-/g, "/"));
-                            for (i = 1; i <= perturbations + 1; i = i + 1) {
+                            for (i = 0; i <= perturbations; i = i + 1) {
                                 // Remove seasonal forecast before startDate_smartobs-1day
                                 if (dataSW2[k][0] < smartmetDate) {
                                     // Remove seasonal forecast before smartobsDate
-                                    dataSW2[k][i] = "nan";
+                                    dataSW2[k][i+1] = null;
                                 } else if (dataSW[k][SWensemblelist[i]] == 0 || dataSWscaled[k][SWensemblelist[i]] < 0) {
                                     // Set SW to 0 if non-scaled SW is 0 or scaled < 0
-                                    dataSW2[k][i] = 0;
+                                    dataSW2[k][i+1] = 0;
                                 } else {
-                                    dataSW2[k][i] = dataSWscaled[k][SWensemblelist[i]];
+                                    dataSW2[k][i+1] = dataSWscaled[k][SWensemblelist[i]];
                                 }
                             }
                             dataSW2[k][perturbations + 2] = dataSW[k]["SWVL2-M3M3:SMARTMET:5015"];
@@ -201,16 +201,16 @@ function drawtimeseries() {
                             dataSH2[k] = [];
                             // Date format that works also in mobile safari
                             dataSH2[k][0] = new Date(dataSHscaled[k]["utctime"].replace(/-/g, "/"));
-                            for (i = 1; i <= perturbations + 1; i = i + 1) {
+                            for (i = 0; i <= perturbations; i = i + 1) {
                                 // Remove seasonal forecast before startDate_smartobs-1day
                                 if (dataSH2[k][0] < smartobsDate) {
                                     // Remove seasonal forecast before smartobsDate
-                                    dataSH2[k][i] = "nan";
+                                    dataSH2[k][i+1] = null;
                                 } else if (dataSH[k][SHensemblelist[i]] == 0 || dataSHscaled[k][SHensemblelist[i]] < 0) {
                                     // Set SD to 0 if non-scaled SD is 0 or scaled < 0
-                                    dataSH2[k][i] = 0;
+                                    dataSH2[k][i+1] = 0;
                                 } else {
-                                    dataSH2[k][i] = dataSHscaled[k][SHensemblelist[i]];
+                                    dataSH2[k][i+1] = dataSHscaled[k][SHensemblelist[i]];
                                 }
                             }
                             if (dataSHscaled[k]["HSNOW-M:SMARTOBS:13:4"] !== null) {
@@ -347,7 +347,7 @@ function drawOutsideFinland() {
                     }
                 });
 
-            graphLoad2 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + SHensemble + ",SD-M:SMARTMET:5027&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
+            graphLoad2 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + SHensemble + ",HSNOW-M:SMARTMET:5027&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
                 function (data) {
                     if (data.length > 0) {
                         gsh = new Dygraph(
