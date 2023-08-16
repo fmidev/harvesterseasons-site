@@ -72,13 +72,46 @@ let soilwetnessDate = new Date(Date.UTC(startYear, startMonth-1, soilwetnessDay)
 
 
 let ndviDate, ndviEndDate;
+let swiDate, swiEndDate;
+
+// Initial estimate
+let swiEndDay = now.getUTCDate() - 4;
+swiEndDate = new Date(Date.UTC(startYear, startMonth-1, swiEndDay));
+
+// console.debug(swiEndDate)
+
 
 $.get('https://desm.harvesterseasons.com/wms?&service=WMS&request=GetCapabilities', function (data) {
 
     let layerlist = data.getElementsByTagName("Layer");
+
+    let swiDateList;
+    for (i = 0; i < layerlist.length; i++) {
+        if (layerlist[i].childNodes[1].firstChild.nodeValue === 'gui:isobands:SWI_SWI2') {
+            // console.debug(layerlist[i].childNodes)
+            // console.debug(layerlist[i].childNodes[1].firstChild.nodeValue)
+            // console.debug(layerlist[i].childNodes[41].firstChild)
+            // console.debug(layerlist[i].childNodes[41].firstChild.nodeValue)
+            swiDateList = layerlist[i].childNodes[41].firstChild.nodeValue.split(",");
+            // swiDateList = layerlist[i].childNodes[29].firstChild.nodeValue.split(",");
+            break;
+        }
+    }
+    // ndviDate = new Date('2022-05-10');   
+    swiDate = new Date(swiDateList[swiDateList.length-1]);
+
+    // console.debug(swiDateList[swiDateList.length-1])
+    // console.debug(swiDate)
+
+    swiEndDate = new Date(Date.UTC(swiDate.getUTCFullYear(), swiDate.getUTCMonth(), swiDate.getUTCDate()));
+
+    // console.debug(swiEndDate)
+
+
     let ndviDateList;
     for (i = 0; i < layerlist.length; i++) {
         if (layerlist[i].childNodes[1].firstChild.nodeValue === 'harvester:s3sy:NDVI') {
+            // console.debug(layerlist[i].childNodes)
             // console.debug(layerlist[i].childNodes[1].firstChild.nodeValue)
             // console.debug(layerlist[i].childNodes[41].firstChild.nodeValue)
             // ndviDateList = layerlist[i].childNodes[41].firstChild.nodeValue.split(",");
@@ -784,7 +817,8 @@ var temperatureTimeLayer = L.timeDimension.layer.wms(temperatureLayer, {cache: 1
 var soilwetnessLayerOptions = {
     crs: L.CRS.EPSG4326,
     version: '1.3.0',
-    layers: 'harvester:smartmet:SWVL2-M3M3',
+    layers: 'gui:isobands:SWI_SWI2',
+    // layers: 'harvester:smartmet:SWVL2-M3M3',
     // layers: 'harvester:ecbsf:SOILWET-M3M3',
     // layers: 'harvester:ecbsf:SOILWET1-M',
     format: 'image/png',
@@ -2399,12 +2433,24 @@ function plotsoilwetness()
 
     // console.debug(soilwetnessDate)
 
+    // // layers: 'harvester:smartmet:SWVL2-M3M3'
+    // if (map.hasLayer(soilwetnessTimeLayer)) {
+    //     if (sliderDate > soilwetnessDate && !map.hasLayer(soilwetnessTimeLayer2)) {
+    //         soilwetnessTimeLayer2.addTo(map);
+    //         soilwetnessTimeLayer2.setParams({});
+    //     }
+    //     else if (sliderDate <= soilwetnessDate && map.hasLayer(soilwetnessTimeLayer2)) {
+    //         map.removeLayer(soilwetnessTimeLayer2);
+    //     }
+    // }
+
+    // // layers: 'gui:isobands:SWI_SWI2'
     if (map.hasLayer(soilwetnessTimeLayer)) {
-        if (sliderDate > soilwetnessDate && !map.hasLayer(soilwetnessTimeLayer2)) {
+        if (sliderDate > swiEndDate && !map.hasLayer(soilwetnessTimeLayer2)) {
             soilwetnessTimeLayer2.addTo(map);
             soilwetnessTimeLayer2.setParams({});
         }
-        else if (sliderDate <= soilwetnessDate && map.hasLayer(soilwetnessTimeLayer2)) {
+        else if (sliderDate <= swiEndDate && map.hasLayer(soilwetnessTimeLayer2)) {
             map.removeLayer(soilwetnessTimeLayer2);
         }
     }
