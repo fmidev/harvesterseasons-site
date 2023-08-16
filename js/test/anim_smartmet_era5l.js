@@ -87,7 +87,7 @@ $.get('https://desm.harvesterseasons.com/wms?&service=WMS&request=GetCapabilitie
 
     let swiDateList;
     for (i = 0; i < layerlist.length; i++) {
-        if (layerlist[i].childNodes[1].firstChild.nodeValue === 'gui:isobands:SWI_SWI2') {
+        if (layerlist[i].childNodes[1].firstChild.nodeValue === 'gui:isobands:SWI_SWI2-M3M3') {
             // console.debug(layerlist[i].childNodes)
             // console.debug(layerlist[i].childNodes[1].firstChild.nodeValue)
             // console.debug(layerlist[i].childNodes[41].firstChild)
@@ -828,6 +828,7 @@ var soilwetnessLayerOptions = {
     crs: L.CRS.EPSG4326,
     version: '1.3.0',
     layers: 'gui:isobands:SWI_SWI2',
+    // layers: 'gui:isobands:SWI_SWI2-M3M3',
     // layers: 'harvester:smartmet:SWVL2-M3M3',
     // layers: 'harvester:ecbsf:SOILWET-M3M3',
     // layers: 'harvester:ecbsf:SOILWET1-M',
@@ -2457,7 +2458,7 @@ function plotsoilwetness()
     //     }
     // }
 
-    // // layers: 'gui:isobands:SWI_SWI2'
+    // // layers: 'gui:isobands:SWI_SWI2-M3M3'
     if (map.hasLayer(soilwetnessTimeLayer)) {
         if (sliderDate > swiEndDate && !map.hasLayer(soilwetnessTimeLayer2)) {
             soilwetnessTimeLayer2.addTo(map);
