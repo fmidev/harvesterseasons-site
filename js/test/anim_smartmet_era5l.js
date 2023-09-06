@@ -19,6 +19,25 @@ if (startMonth2 < 10) {
     startMonth2 = '0' + startMonth2;
 }
 
+
+// const queryString = window.location.hash;
+
+// const urlParams = new URLSearchParams(window.location.hash);
+// urlParams.set('date', '1');
+// window.location.hash = urlParams;
+
+// console.debug(queryString);
+
+// const url = new URL(window.location.href);
+// // url.searchParams.set('param1', 'val1');
+// // url.searchParams.delete('param2');
+
+// var urlDateString = startYear.toString() + '-' + startMonth + '-' + startDay;
+// url.searchParams.set('date', urlDateString);
+
+// window.history.replaceState(null, null, url); // or pushState
+
+
 // var startDate = new Date(Date.UTC(startYear, startMonth-1, startDay));
 
 if (now.getUTCDate() < 15) {
@@ -28,7 +47,8 @@ else {
     var startDate = new Date(Date.UTC(startYear, startMonth2, 2));
 }
 
-var currentDate = new Date(Date.UTC(startYear, startMonth-1, startDay));
+// var currentDate = new Date(Date.UTC(startYear, startMonth-1, startDay));
+// console.debug(currentDate)
 
 var startDateYear = startDate.getUTCFullYear();
 var startDateMonth = startDate.getUTCMonth() + 1;
@@ -273,6 +293,9 @@ var harvDynamic = document.getElementById("dynamic-checkbox");
 var sliderDate = new Date(startDate);
 //console.debug(sliderDate)
 
+var currentDate = new Date(L.Permalink.getMapLocation().date);
+// console.debug(currentDate)
+
 // dateslider.value = 0;
 
 dateslider.value = (currentDate-startDate)/(24*60*60*1000);
@@ -285,7 +308,19 @@ dateoutput.innerHTML = sliderDate.toLocaleDateString(); // Display the default s
 
 map.timeDimension.setCurrentTime(sliderDate.getTime());
 
-//console.debug(sliderDate)
+updatePermalinkFunction();
+
+// console.debug(sliderDate)
+// console.debug(sliderDate.toISOString())
+// console.debug(sliderDate.toISOString().substring(0,10))
+// console.debug(sliderDate.toISOString().split('T')[0])
+
+// var currentDate = new Date(Date.UTC(startYear, startMonth-1, startDay));
+// console.debug(currentDate.toISOString().split('T')[0])
+
+// console.debug(new Date().toISOString().split('T')[0])
+
+
 
 var repeatId = 0;
 var dateforwardRepeatId = 0;
@@ -310,6 +345,7 @@ dateslider.oninput = function () {
     gsw.updateOptions({underlayCallback: timeseriedateline})
     gst.updateOptions({underlayCallback: timeseriedateline})
     */
+    updatePermalinkFunction();
 }
 
 dateslider.onchange = function () {
@@ -329,6 +365,7 @@ dateslider.onchange = function () {
     plotndvi();
     plotsoilwetness();
     // plotsoiltemperature();
+    updatePermalinkFunction();
 }
 
 function dateback() {
@@ -350,6 +387,7 @@ function dateback() {
         plotndvi();
         plotsoilwetness();
         // plotsoiltemperature();
+        updatePermalinkFunction();
     }
 }
 
@@ -370,6 +408,7 @@ function datebackscrollIntervalFunc() {
         plotndvi();
         plotsoilwetness();
         // plotsoiltemperature();
+        updatePermalinkFunction();
     }
 }
 
@@ -418,6 +457,7 @@ function dateforward() {
         plotndvi();
         plotsoilwetness();
         // plotsoiltemperature();
+        updatePermalinkFunction();
     }
 }
 
@@ -438,6 +478,7 @@ function dateforwardscrollIntervalFunc() {
         plotndvi();
         plotsoilwetness();
         // plotsoiltemperature();
+        updatePermalinkFunction();
     }
 }
 
@@ -491,6 +532,7 @@ function datestopscrollfast() {
     plotndvi();
     plotsoilwetness();
     // plotsoiltemperature();
+    updatePermalinkFunction();
 
     /*if (playButton.value == "Stop" ) {
         clearInterval(playButtonRepeatId);
@@ -521,6 +563,7 @@ function playButtonIntervalFunc() {
         plotndvi();
         plotsoilwetness();
         // plotsoiltemperature();
+        updatePermalinkFunction();
     } else {
         clearInterval(playButtonRepeatId);
         playButton.value = "Play";
@@ -2370,10 +2413,11 @@ function timeserieclick(e, x, points) {
 function altcolors() {
     urlpos=L.Permalink.getMapLocation();
     // location.href = "index_smartmet_era5l_altcolors.html";
-    if (isNaN(urlpos.center.lat)) {urlpos.center.lat = 64}
-    if (isNaN(urlpos.center.lng)) {urlpos.center.lng = 27}
+    // if (isNaN(urlpos.center.lat)) {urlpos.center.lat = 64}
+    // if (isNaN(urlpos.center.lng)) {urlpos.center.lng = 27}
     // location.href = "https://harvesterseasons.com/altcolors/#" + urlpos.center.lat + "," + urlpos.center.lng + "," + urlpos.zoom + "z";
-    location.href = "../altcolors/#" + urlpos.center.lat + "," + urlpos.center.lng + "," + urlpos.zoom + "z";
+    // location.href = "../altcolors/#" + urlpos.center.lat + "," + urlpos.center.lng + "," + urlpos.zoom + "z";
+    location.href = "../altcolors/#" + urlpos.center.lat + "," + urlpos.center.lng + "," + urlpos.zoom + "z" + "," + urlpos.date;
 }
 
 function showtext1()

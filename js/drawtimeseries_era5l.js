@@ -2,7 +2,7 @@ function drawtimeseries() {
     // Inside Finland, seasonal snow depth and soil wetness combined and scaled with SMARTOBS/SMARTMET observations
 
     // Fetch soil wetness data
-    var dataUrlSW = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWVL2-M3M3:SMARTMET:5015" + SWensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&precision=full&source=grid&timeformat=sql&tz=utc";
+    var dataUrlSW = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWI2:SWI:5059,SWVL2-M3M3:SMARTMET:5015" + SWensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&precision=full&source=grid&timeformat=sql&tz=utc";
     $.getJSON(dataUrlSW, function (dataSW) {
 
         // Find the latest SWVL2-M3M3:SMARTMET value
@@ -152,6 +152,9 @@ function drawtimeseries() {
                                 }
                             }
                             dataSW2[k][perturbations + 2] = dataSW[k]["SWVL2-M3M3:SMARTMET:5015"];
+                            if (dataSW[k]["SWI2:SWI:5059"] > 0) {
+                                dataSW2[k][perturbations + 3] = dataSW[k]["SWI2:SWI:5059"]/100;
+                            }
                         }
 
                         gsw = new Dygraph(

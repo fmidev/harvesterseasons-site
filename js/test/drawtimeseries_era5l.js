@@ -38,6 +38,8 @@ function drawtimeseries() {
             let dataSWscaled = [];
             dataSWscaled = scalingFunction(dataSW, SWensemblelist, smartmetIdx, perturbations, "SWVL2-M3M3:SMARTMET:5015");
 
+            // console.debug("dataSWscaled:")
+            // console.debug(dataSWscaled)
 
             // Fetch snow depth data
             var dataUrlSH = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,HSNOW-M:SMARTOBS:13:4,HSNOW-M:SMARTMET:5027," + SHensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&precision=full&source=grid&timeformat=sql&tz=utc";

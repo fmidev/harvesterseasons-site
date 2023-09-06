@@ -1867,7 +1867,9 @@ for (i = 0; i <= perturbations; i = i + 1) {
     SWensemble += ",VSW-M3M3:ECBSF:5022:9:7:0:" + i ;
 }
 label[perturbations+2] = 'SW-FMI';
+label[perturbations+3] = 'SWI2';
 labelstxt[label[perturbations+2]]= { fillGraph: false, strokeWidth: 3, color: 'red' };
+labelstxt[label[perturbations+3]]= { fillGraph: false, strokeWidth: 3, color: 'blue' };
 
 // var SWensemble = "";
 // var label = ["date", "SND-0"];
