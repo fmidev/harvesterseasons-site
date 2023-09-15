@@ -682,7 +682,7 @@ var temperatureLayerOptions = {
     transparent: 'true',
     styles: 'default',
     //source: 'grid',
-    opacity: 0.7,
+    opacity: 0.3,
     // maxZoom: 9,
     zIndex: 20,
 };

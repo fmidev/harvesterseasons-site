@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Harmonia</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="icon" href="img/favicon-16x16.png" type="image/png" sizes="16x16"/>
+    <link rel="icon" href="img/favicon-32x32.png" type="image/png" sizes="32x32"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="js/L.Control.Locate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.1/leaflet.css" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.4.2/Control.FullScreen.min.css" />
+    <link rel="stylesheet" href="js/leaflet.timedimension.control.min.css" />
+    <link rel="stylesheet" href="css/styles_harmonia.css" />
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1 style="color: darkred">Harmonia</h1>
+        </header>
+        <div id="titleB"></div>
+        <div hidden id="labelsB"></div>
+        <div hidden id="graphB"></div>
+        <div id="set-date">
+            <div hidden id="dynamic-control">
+                <label hidden id="dynamic">
+                    Trafficability forecast
+                    <input hidden type="checkbox" id="dynamic-checkbox" onchange="changedynamic()">
+                </label>
+            </div>
+            <div id="date-control">
+                <input id="test" type="button" value="<<"  
+                    onmousedown="datebackscrollfast()" onmouseup="datestopscrollfast()" onmouseleave="datestopscrollfast()" 
+                    ontouchstart="datebackscrollfast()" ontouchend="datestopscrollfast()" ontouchcancel="datestopscrollfast()">
+                <input type="button" value="<" onclick="dateback()" 
+                    onmousedown="datebackscroll()" onmouseup="datestop()" onmouseleave="datestop()" 
+                    ontouchstart="datebackscroll()" ontouchend="datestop()" ontouchcancel="datestop()">
+                <input type="range" min="0" max="180" value="0" id="date-range" class="slider">
+                <input type="button" value=">" onclick="dateforward()" 
+                    onmousedown="dateforwardscroll()" onmouseup="datestop()" onmouseleave="datestop()" 
+                    ontouchstart="dateforwardscroll()" ontouchend="datestop()" ontouchcancel="datestop()">
+                <input type="button" value=">>"  
+                    onmousedown="dateforwardscrollfast()" onmouseup="datestopscrollfast()" onmouseleave="datestopscrollfast()" 
+                    ontouchstart="dateforwardscrollfast()" ontouchend="datestopscrollfast()" ontouchcancel="datestopscrollfast()">
+            </div>
+            <div id="date-value-control">            
+                <div id="date-value" style="text-align:center; vertical-align:middle; min-width: 100px; display: inline-block;"></div>
+                <div id="play-button" style="text-align:center; vertical-align:middle; width: 50px; display: inline-block;">
+                    <input id="playbutton" type="button" value="Play" onclick="playbuttonfunc()">
+                </div>
+            </div>
+        </div>
+        <div id="map" class="map">
+            <p id="param"></p>
+        </div>
+        <!-- <div hidden id="harvestability-legend">
+            <ul class="legend">
+                <li><span class="frostheave"></span> Frost heave (kelirikko, GOOD)</li>
+                <li><span class="normalsummermineral"></span> Normal summer, mineral soil</li>
+                <li><span class="drysummermineral"></span> Dry summer, mineral soil</li>
+                <li><span class="normalsummerpeat"></span> Normal summer, peat soil</li>
+                <li><span class="drysummerpeat"></span> Dry summer, peat soil</li>
+                <li><span class="winter"></span> Winter (BAD)</li>
+            </ul>
+        </div> -->
+        <div id="set-opacity" style="padding-top: 15px;">
+            <div id="opacity">
+                Opacity:
+            </div>
+            <div id="opacity-slider">
+                <input type="range" min="0" max="100" value="70" id="opacity-range">
+            </div>
+            <div id="opacity-value" style="width: 45px;">
+                <!-- <div id="opacity-value"> -->
+            </div>
+            <div hidden id="altcolors">
+                <input type="button" value="Alternative Colors" onclick="altcolors()">
+            </div>
+        </div>
+
+        <div id="labels"></div>
+        <div id="graphsw"></div>
+        <div id="graphrr"></div>
+        <div id="graphst"></div>
+        <div id="graphsh"></div>
+        <div hidden id="footer">
+            <div style="float: left; width: 28%;">
+                <a href="https://harvesterseasons.com/">Harvester Seasons</a>
+            </div>
+            <!-- <div style="float: left; text-align: center; width: 37%; padding-left: 5px; padding-right: 5px;">
+                <a href="https://twitter.com/HarvesterSeaso1" target="_blank">
+                    <img src="img/logo-twitter.svg" width="20" alt="Twitter-logo" style="vertical-align:middle; margin-top:-3px;">
+                    Follow us on Twitter
+                </a>
+            </div> -->
+            <div style="float: left; text-align: center; width: 37%; padding-left: 5px; padding-right: 5px;">
+                <a href="https://www.linkedin.com/showcase/harvester-seasons" target="_blank">
+                    <img src="img/LI-In-Bug.png" width="20" alt="LinkedIn-logo" style="vertical-align:middle; margin-top:-3px;">
+                    Follow us on LinkedIn
+                </a>
+            </div>
+            <div style="float: right; width: 35%; text-align: right;">
+                <a href="../privacy-policy/" target="_blank">
+                    Privacy Policy / Terms <span style="white-space: nowrap;">of Use</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-9509467-58"></script>
+    <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","UA-9509467-58")</script>     -->
+    <script type="text/javascript" src="js/leaflet.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.4.2/Control.FullScreen.min.js"></script>
+    <script src="js/georaster.browser.bundle.min.js"></script>
+    <script src="js/proj4-src.js"></script>
+    <script src="js/georaster-layer-for-leaflet.browserify.min.js"></script>
+    <script type="text/javascript" src="js/dygraph-combined.js"></script>
+    <script type="text/javascript" src="js/iso8601.min.js"></script>
+    <script type="text/javascript" src="js/leaflet.timedimension.js"></script>
+    <script type="text/javascript" src="js/leaflet.timedimension.util.js"></script>
+    <script type="text/javascript" src="js/leaflet.timedimension.layer.js"></script>
+    <script type="text/javascript" src="js/leaflet.timedimension.layer.wms.js"></script>
+    <script type="text/javascript" src="js/leaflet.timedimension.layer.geojson.js"></script>
+    <script type="text/javascript" src="js/leaflet.timedimension.player.js"></script>
+    <script type="text/javascript" src="js/leaflet.timedimension.control.js"></script>
+    <script type="text/javascript" src="js/synchronizer.js"></script>
+    <script type="text/javascript" src="js/L.Control.Locate.min.js"
+        charset="utf-8"></script>
+    <script type="text/javascript" src="js/leaflet.permalink.js"></script>
+    <script type="text/javascript" src="js/plotgeotiff_era5l.js"></script>
+    <script type="text/javascript" src="js/drawtimeseries_harmonia.js"></script>
+    <script type="text/javascript" src="js/anim_harmonia.js"></script>
+</body>
+
+</html>
