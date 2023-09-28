@@ -132,10 +132,10 @@ $.get('https://desm.harvesterseasons.com/wms?&service=WMS&request=GetCapabilitie
 
 
 
-$.get('https://api.ipify.org/', function (data) {
-    document.getElementById('userIP_en').value = data;
-    document.getElementById('userIP_fi').value = data;
-})
+// $.get('https://api.ipify.org/', function (data) {
+//     document.getElementById('userIP_en').value = data;
+//     document.getElementById('userIP_fi').value = data;
+// })
 
 var mappos = L.Permalink.getMapLocation();
 
@@ -2288,38 +2288,38 @@ if (mappos.center[0] != 64 || mappos.center[1] != 27) {
     map.fire('zoomend');
 }
 
-$('#feedback').keyup(function () {
-    if ($(this).val().length != 0)
-        $('.feedbackButton').attr('disabled', false);
-    else
-        $('.feedbackButton').attr('disabled', true);
-});
+// $('#feedback').keyup(function () {
+//     if ($(this).val().length != 0)
+//         $('.feedbackButton').attr('disabled', false);
+//     else
+//         $('.feedbackButton').attr('disabled', true);
+// });
 
-$('#palaute').keyup(function(){
-    if($(this).val().length !=0)
-        $('.palauteButton').attr('disabled', false);            
-    else
-        $('.palauteButton').attr('disabled', true);
-})
+// $('#palaute').keyup(function(){
+//     if($(this).val().length !=0)
+//         $('.palauteButton').attr('disabled', false);            
+//     else
+//         $('.palauteButton').attr('disabled', true);
+// })
 
-function submitFunc() {
-    document.getElementById('userlatlon_en').value = latlonTitle;
-    document.getElementById('userlatlon_fi').value = latlonTitle;
+// function submitFunc() {
+//     document.getElementById('userlatlon_en').value = latlonTitle;
+//     document.getElementById('userlatlon_fi').value = latlonTitle;
 
-    //lat = map.getCenter().lat.toFixed(2);
-    //lon = map.getCenter().lng.toFixed(2);
-    lat = map.getCenter().lat;
-    lon = map.getCenter().lng;
+//     //lat = map.getCenter().lat.toFixed(2);
+//     //lon = map.getCenter().lng.toFixed(2);
+//     lat = map.getCenter().lat;
+//     lon = map.getCenter().lng;
 
-    document.getElementById('mapviewlatlon_en').value = lat + ", " + lon;
-    document.getElementById('mapviewlatlon_fi').value = lat + ", " + lon;
+//     document.getElementById('mapviewlatlon_en').value = lat + ", " + lon;
+//     document.getElementById('mapviewlatlon_fi').value = lat + ", " + lon;
 
-    document.getElementById('zoomlevel_en').value = map.getZoom();
-    document.getElementById('zoomlevel_fi').value = map.getZoom();
+//     document.getElementById('zoomlevel_en').value = map.getZoom();
+//     document.getElementById('zoomlevel_fi').value = map.getZoom();
 
-    document.getElementById('date_en').value = startYear + '-' + startMonth + '-' + startDay;
-    document.getElementById('date_fi').value = startYear + '-' + startMonth + '-' + startDay;
-}
+//     document.getElementById('date_en').value = startYear + '-' + startMonth + '-' + startDay;
+//     document.getElementById('date_fi').value = startYear + '-' + startMonth + '-' + startDay;
+// }
 
 
 function timeseriedateline(canvas, area, g) {
