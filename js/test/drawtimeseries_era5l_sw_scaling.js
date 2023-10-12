@@ -32,12 +32,11 @@ function drawtimeseries() {
 
             // let smartmetDate = new Date(dataSW[smartmetIdx]["utctime"]);
             // Date format that works also in mobile safari
-            // let smartmetDate = new Date(dataSW[smartmetIdx]["utctime"].replace(/-/g, "/"));
+            let smartmetDate = new Date(dataSW[smartmetIdx]["utctime"].replace(/-/g, "/"));
 
-            // // Scale seasonal soil wetness using SMARTMET-forecast
-            // let dataSWscaled = [];
-            // // dataSWscaled = scalingFunction(dataSW, SWensemblelist, smartmetIdx, perturbations, "SWVL2-M3M3:SMARTMET:5015");
-            // dataSWscaled = dataSW;
+            // Scale seasonal soil wetness using SMARTMET-forecast
+            let dataSWscaled = [];
+            dataSWscaled = scalingFunction(dataSW, SWensemblelist, smartmetIdx, perturbations, "SWVL2-M3M3:SMARTMET:5015");
 
 
             // Fetch snow depth data
@@ -60,33 +59,29 @@ function drawtimeseries() {
                 dataSHscaled = scalingFunction(dataSH, SHensemblelist, smartobsIdx, perturbations, "HSNOW-M:SMARTOBS:13:4", "HSNOW-M:SMARTMET:5027");
 
 
-                // // // // Summer index from the scaled seasonal soil wetness
-                // let summer1series = [];
-                // summer1series = harvidx(0.4, dataSWscaled, SWensemblelist, perturbations, "SWVL2-M3M3:SMARTMET:5015")
+                // // // Summer index from the scaled seasonal soil wetness
+                let summer1series = [];
+                summer1series = harvidx(0.4, dataSWscaled, SWensemblelist, perturbations, "SWVL2-M3M3:SMARTMET:5015")
 
                 // // // Winter index from the scaled seasonal snow depth
                 let winter1series = [];
                 winter1series = ensover(0.4, 0.9, dataSHscaled, SHensemblelist, perturbations, "HSNOW-M:SMARTOBS:13:4")
 
-                // const param2 = "HARVIDX{55;SWI2:ECXSF:5062:1:0:0:0-50}";
+                
                 // const param3 = "HARVIDX{273;TSOIL-K:ECBSF:::7:3:1-50;TSOIL-K:ECBSF:::7:1:0}";
                 // const param5 = "HARVIDX{0.4;SWVL2-M3M3:SMARTMET:5015}";
                 // const param7 = "ensover{0.4;0.9;HSNOW-M:SMARTMET:5027}";
                 // const param8 = "ensover{0.4;0.9;HSNOW-M:SMARTOBS:13:4}";
 
                 // Fetch rest of the trafficability index series
-                graphLoad = $.getJSON("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWI2:SWI:5059,SWVL2-M3M3:SMARTMET:5015," + param2 + "," + param3 + "," + param5 + "," + param7 + "," + param8 + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc",
+                graphLoad = $.getJSON("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + param3 + "," + param5 + "," + param7 + "," + param8 + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc",
                     function (data) {
                         var graphdata = [];
                         for (i = 0, k = 0; i < data.length; i++) {
                             var summer1, summer2, winter1, winter2;
 
-                            // // Seasonal summer index scaled with observations (VSW-M3M3:ECBSF & SWVL2-M3M3:SMARTMET)
-                            // if (summer1series.length == data.length) { summer1 = summer1series[i]; }
-                            // else { summer1 = 'nan'; }
-
-                            // Seasonal summer index (SWI2:ECXSF)
-                            if (data[i][param2] !== null) { summer1 = data[i][param2]; }
+                            // Seasonal summer index scaled with observations (VSW-M3M3:ECBSF & SWVL2-M3M3:SMARTMET)
+                            if (summer1series.length == data.length) { summer1 = summer1series[i]; }
                             else { summer1 = 'nan'; }
 
                             // Seasonal winter index, combined and scaled with observations (HSNOW-M:ECBSF & HSNOW-M:SMARTOBS, TSOIL-K:ECBSF)                     
@@ -138,38 +133,23 @@ function drawtimeseries() {
                             document.getElementById("graphB").innerHTML = "Error loading data";
                         }
 
-                        // // Plot scaled soil wetness time series
-                        // var dataSW2 = [];
-                        // for (k = 0; k < dataSWscaled.length; k++) {
-                        //     dataSW2[k] = [];
-                        //     // Date format that works also in mobile safari
-                        //     dataSW2[k][0] = new Date(dataSWscaled[k]["utctime"].replace(/-/g, "/"));
-                        //     for (i = 0; i <= perturbations; i = i + 1) {
-                        //         // Remove seasonal forecast before startDate_smartobs-1day
-                        //         if (dataSW2[k][0] < smartmetDate) {
-                        //             // Remove seasonal forecast before smartobsDate
-                        //             dataSW2[k][i+1] = null;
-                        //         } else if (dataSW[k][SWensemblelist[i]] == 0 || dataSWscaled[k][SWensemblelist[i]] < 0) {
-                        //             // Set SW to 0 if non-scaled SW is 0 or scaled < 0
-                        //             dataSW2[k][i+1] = 0;
-                        //         } else {
-                        //             dataSW2[k][i+1] = dataSWscaled[k][SWensemblelist[i]];
-                        //         }
-                        //     }
-                        //     dataSW2[k][perturbations + 2] = dataSW[k]["SWVL2-M3M3:SMARTMET:5015"];
-                        //     if (dataSW[k]["SWI2:SWI:5059"] > 0) {
-                        //         dataSW2[k][perturbations + 3] = dataSW[k]["SWI2:SWI:5059"]/100;
-                        //     }
-                        // }
-
-                        // Plot soil wetness time series
+                        // Plot scaled soil wetness time series
                         var dataSW2 = [];
-                        for (k = 0; k < dataSW.length; k++) {
+                        for (k = 0; k < dataSWscaled.length; k++) {
                             dataSW2[k] = [];
                             // Date format that works also in mobile safari
-                            dataSW2[k][0] = new Date(dataSW[k]["utctime"].replace(/-/g, "/"));
+                            dataSW2[k][0] = new Date(dataSWscaled[k]["utctime"].replace(/-/g, "/"));
                             for (i = 0; i <= perturbations; i = i + 1) {
-                                dataSW2[k][i + 1] = dataSW[k][SWensemblelist[i]];
+                                // Remove seasonal forecast before startDate_smartobs-1day
+                                if (dataSW2[k][0] < smartmetDate) {
+                                    // Remove seasonal forecast before smartobsDate
+                                    dataSW2[k][i+1] = null;
+                                } else if (dataSW[k][SWensemblelist[i]] == 0 || dataSWscaled[k][SWensemblelist[i]] < 0) {
+                                    // Set SW to 0 if non-scaled SW is 0 or scaled < 0
+                                    dataSW2[k][i+1] = 0;
+                                } else {
+                                    dataSW2[k][i+1] = dataSWscaled[k][SWensemblelist[i]];
+                                }
                             }
                             dataSW2[k][perturbations + 2] = dataSW[k]["SWVL2-M3M3:SMARTMET:5015"];
                             if (dataSW[k]["SWI2:SWI:5059"] > 0) {
