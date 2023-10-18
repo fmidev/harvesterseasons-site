@@ -823,6 +823,7 @@ var temperatureTimeLayer = L.timeDimension.layer.wms(temperatureLayer, {cache: 1
 var soilwetnessLayerOptions = {
     crs: L.CRS.EPSG4326,
     version: '1.3.0',
+    // layers: 'harvester:swi:SWI2',
     layers: 'gui:isobands:SWI_SWI2',
     // layers: 'gui:isobands:SWI_SWI2-M3M3',
     // layers: 'harvester:smartmet:SWVL2-M3M3',
@@ -842,8 +843,8 @@ var soilwetnessTimeLayer = L.timeDimension.layer.wms(soilwetnessLayer, {cache: 1
 var soilwetnessLayerOptions2 = {
     crs: L.CRS.EPSG4326,
     version: '1.3.0',
-    // layers: 'gui:isobands:ECXSF_SWI2',
-    layers: 'harvester:ecbsf:SOILWET-M3M3',
+    layers: 'gui:isobands:ECXSF_SWI2-0TO1',
+    // layers: 'harvester:ecbsf:SOILWET-M3M3',
     // layers: 'harvester:ecbsf:SOILWET1-M',
     format: 'image/png',
     transparent: 'true',
@@ -1038,18 +1039,21 @@ snowLegend.onAdd = function (map) {
 };
 
 soilwetLegend.onAdd = function (map) {
-    var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:SOILWET-M3M3&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
+    var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=gui:isobands:SWI_SWI2&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
+    // var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:SOILWET-M3M3&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
     // var src = 'https://sm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:SOILWET1-M&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
     var div = L.DomUtil.create('div', 'info legend');
-    if (screen.width < 425) {
-        // div.style.width = '65px';
-        // div.style.height = '325px';
-        div.style.width = '60px';
-        div.style.height = '285px';
-    } else {
-        div.style.width = '65px';
-        div.style.height = '320px';
-    }
+    div.style.width = '85px';
+    div.style.height = '185px';
+    // if (screen.width < 425) {
+    //     // div.style.width = '65px';
+    //     // div.style.height = '325px';
+    //     div.style.width = '60px';
+    //     div.style.height = '285px';
+    // } else {
+    //     div.style.width = '65px';
+    //     div.style.height = '320px';
+    // }
     div.style['background-image'] = 'url(' + src + ')';
     // div.style['background-size'] = 'contain';
     div.style['background-size'] = 'cover';
