@@ -87,7 +87,8 @@ $.get('https://desm.harvesterseasons.com/wms?&service=WMS&request=GetCapabilitie
 
     let swiDateList;
     for (i = 0; i < layerlist.length; i++) {
-        if (layerlist[i].childNodes[1].firstChild.nodeValue === 'gui:isobands:SWI_SWI2-M3M3') {
+        // if (layerlist[i].childNodes[1].firstChild.nodeValue === 'gui:isobands:SWI_SWI2-M3M3') {
+        if (layerlist[i].childNodes[1].firstChild.nodeValue === 'gui:isobands:SWI_SWI2') {
             // console.debug(layerlist[i].childNodes)
             // console.debug(layerlist[i].childNodes[1].firstChild.nodeValue)
             // console.debug(layerlist[i].childNodes[41].firstChild)
@@ -833,7 +834,8 @@ var temperatureTimeLayer = L.timeDimension.layer.wms(temperatureLayer, {cache: 1
 var soilwetnessLayerOptions = {
     crs: L.CRS.EPSG4326,
     version: '1.3.0',
-    layers: 'gui:isobands:SWI_SWI2-M3M3',
+    layers: 'gui:isobands:SWI_SWI2',
+    // layers: 'gui:isobands:SWI_SWI2-M3M3',
     // layers: 'harvester:smartmet:SWVL2-M3M3',
     // layers: 'harvester:ecbsf:SOILWET-M3M3',
     // layers: 'harvester:ecbsf:SOILWET1-M',
@@ -842,7 +844,7 @@ var soilwetnessLayerOptions = {
     styles: 'default',
     //source: 'grid',
     opacity: 0.7,
-    maxZoom: 9,
+    // maxZoom: 9,
     zIndex: 20,
 };
 var soilwetnessLayer = L.tileLayer.wms(smartWMS, soilwetnessLayerOptions);
@@ -851,6 +853,7 @@ var soilwetnessTimeLayer = L.timeDimension.layer.wms(soilwetnessLayer, {cache: 1
 var soilwetnessLayerOptions2 = {
     crs: L.CRS.EPSG4326,
     version: '1.3.0',
+    // layers: 'gui:isobands:ECXSF_SWI2',
     layers: 'harvester:ecbsf:SOILWET-M3M3',
     // layers: 'harvester:ecbsf:SOILWET1-M',
     format: 'image/png',
@@ -858,7 +861,7 @@ var soilwetnessLayerOptions2 = {
     styles: 'default',
     //source: 'grid',
     opacity: 0.7,
-    maxZoom: 9,
+    // maxZoom: 9,
     zIndex: 20,
 };
 var soilwetnessLayer2 = L.tileLayer.wms(smartWMS, soilwetnessLayerOptions2);
@@ -1275,7 +1278,15 @@ map.on('overlayadd', function (e) {
             break;
         }
         case "Soil Wetness": {
-            forecast = 0;
+            playButton.disabled = true;
+            harvDynamic.disabled = true;
+            document.getElementById("dynamic").style.color = "rgb(190, 190, 190)";
+
+            if (map.getZoom() > 9) {
+                traffState = false;
+            }
+            
+            // forecast = 0;
             if (map.hasLayer(snowthicknessTimeLayer)) { 
                 map.removeLayer(snowthicknessTimeLayer);
                 lcontrol._update();
@@ -1294,9 +1305,35 @@ map.on('overlayadd', function (e) {
                 map.removeLayer(treecoverLayer);
                 lcontrol._update();
             }
+            else if (map.hasLayer(harvLayer)) { 
+                map.removeLayer(harvLayer); 
+                idx = -1;
+            }
             else if (map.hasLayer(ndviTimeLayer)) { 
                 map.removeLayer(ndviTimeLayer);
                 lcontrol._update();
+            }
+
+            if (map.hasLayer(traffLayer)) { 
+                map.removeLayer(traffLayer); 
+                lcontrol._update(); 
+            }
+
+            map.removeLayer(harvStaticLayer);
+
+            if (map.getZoom() > 9) {
+                // lcontrol._overlaysList.children[0].control.disabled = true;
+                lcontrol._overlaysList.children[1].control.disabled = true;
+                lcontrol._overlaysList.children[2].control.disabled = true;
+                lcontrol._overlaysList.children[3].control.disabled = true;
+                        
+                // lcontrol._overlaysList.children[0].style.color = "rgb(190, 190, 190)";
+                lcontrol._overlaysList.children[1].style.color = "rgb(190, 190, 190)";
+                lcontrol._overlaysList.children[2].style.color = "rgb(190, 190, 190)";
+                lcontrol._overlaysList.children[3].style.color = "rgb(190, 190, 190)";
+            } else {
+                lcontrol._overlaysList.children[5].control.disabled = true;        
+                lcontrol._overlaysList.children[5].style.color = "rgb(190, 190, 190)";
             }
 
             // soilwetnessTimeLayer2.addTo(map);
@@ -1308,8 +1345,8 @@ map.on('overlayadd', function (e) {
                 soilwetnessTimeLayer2.setParams({});
             }
             soilwetLegend.addTo(this);
-            lcontrol._overlaysList.children[5].control.disabled = true;
-            lcontrol._overlaysList.children[5].style.color = "rgb(190, 190, 190)";
+            // lcontrol._overlaysList.children[5].control.disabled = true;
+            // lcontrol._overlaysList.children[5].style.color = "rgb(190, 190, 190)";
             break;
         }
         case "Soil Temperature": {
@@ -1430,12 +1467,12 @@ map.on('overlayadd', function (e) {
             map.removeLayer(harvStaticLayer);
 
             if (map.getZoom() > 9) {
-                lcontrol._overlaysList.children[0].control.disabled = true;
+                // lcontrol._overlaysList.children[0].control.disabled = true;
                 lcontrol._overlaysList.children[1].control.disabled = true;
                 lcontrol._overlaysList.children[2].control.disabled = true;
                 lcontrol._overlaysList.children[3].control.disabled = true;
                         
-                lcontrol._overlaysList.children[0].style.color = "rgb(190, 190, 190)";
+                // lcontrol._overlaysList.children[0].style.color = "rgb(190, 190, 190)";
                 lcontrol._overlaysList.children[1].style.color = "rgb(190, 190, 190)";
                 lcontrol._overlaysList.children[2].style.color = "rgb(190, 190, 190)";
                 lcontrol._overlaysList.children[3].style.color = "rgb(190, 190, 190)";
@@ -1494,12 +1531,12 @@ map.on('overlayadd', function (e) {
             }
 
             if (map.getZoom() > 9) {
-                lcontrol._overlaysList.children[0].control.disabled = true;
+                // lcontrol._overlaysList.children[0].control.disabled = true;
                 lcontrol._overlaysList.children[1].control.disabled = true;
                 lcontrol._overlaysList.children[2].control.disabled = true;
                 lcontrol._overlaysList.children[3].control.disabled = true;
         
-                lcontrol._overlaysList.children[0].style.color = "rgb(190, 190, 190)";
+                // lcontrol._overlaysList.children[0].style.color = "rgb(190, 190, 190)";
                 lcontrol._overlaysList.children[1].style.color = "rgb(190, 190, 190)";
                 lcontrol._overlaysList.children[2].style.color = "rgb(190, 190, 190)";
                 lcontrol._overlaysList.children[3].style.color = "rgb(190, 190, 190)";
@@ -1589,12 +1626,12 @@ map.on('overlayadd', function (e) {
             // ndviLayer.addTo(map);
 
             if (map.getZoom() > 9) {
-                lcontrol._overlaysList.children[0].control.disabled = true;
+                // lcontrol._overlaysList.children[0].control.disabled = true;
                 lcontrol._overlaysList.children[1].control.disabled = true;
                 lcontrol._overlaysList.children[2].control.disabled = true;
                 lcontrol._overlaysList.children[3].control.disabled = true;
                         
-                lcontrol._overlaysList.children[0].style.color = "rgb(190, 190, 190)";
+                // lcontrol._overlaysList.children[0].style.color = "rgb(190, 190, 190)";
                 lcontrol._overlaysList.children[1].style.color = "rgb(190, 190, 190)";
                 lcontrol._overlaysList.children[2].style.color = "rgb(190, 190, 190)";
                 lcontrol._overlaysList.children[3].style.color = "rgb(190, 190, 190)";
@@ -1644,7 +1681,7 @@ map.on('zoomend', function(e) {
     //} else if (harvDynamic.disabled == true) {
     // } else if (harvDynamic.disabled == true && !map.hasLayer(treecoverLayer)) {
     } else if (harvDynamic.disabled == true && !map.hasLayer(treecoverLayer)
-      && !map.hasLayer(ndviTimeLayer)) {
+    && !map.hasLayer(ndviTimeLayer) && !map.hasLayer(soilwetnessTimeLayer)) {
         if (harvDynamicState == true) {
             harvDynamic.checked = true;
             playButton.disabled = false;
@@ -1660,16 +1697,18 @@ map.on('zoomend', function(e) {
     if (map.getZoom() > 9) {
         // if (traffState && !map.hasLayer(treecoverLayer)) {
         if (traffState && !map.hasLayer(treecoverLayer) 
-            && !map.hasLayer(ndviTimeLayer)) {
+        && !map.hasLayer(ndviTimeLayer)
+        && !map.hasLayer(soilwetnessTimeLayer)) {
             traffLayer.addTo(map);
             lcontrol._overlaysList.children[5].control.checked = true;
         }
 
-        if (map.hasLayer(soilwetnessTimeLayer)) { 
-            map.removeLayer(soilwetnessTimeLayer);
-            forecast = 0; 
-        }
-        else if (map.hasLayer(temperatureTimeLayer)) {
+        // if (map.hasLayer(soilwetnessTimeLayer)) { 
+        //     map.removeLayer(soilwetnessTimeLayer);
+        //     forecast = 0; 
+        // }
+        // else 
+        if (map.hasLayer(temperatureTimeLayer)) {
             map.removeLayer(temperatureTimeLayer); 
             forecast = 1; 
         }
@@ -1688,12 +1727,12 @@ map.on('zoomend', function(e) {
         //     forecast = 4; 
         // }
 
-        lcontrol._overlaysList.children[0].control.disabled = true;
+        // lcontrol._overlaysList.children[0].control.disabled = true;
         lcontrol._overlaysList.children[1].control.disabled = true;
         lcontrol._overlaysList.children[2].control.disabled = true;
         lcontrol._overlaysList.children[3].control.disabled = true;
 
-        lcontrol._overlaysList.children[0].style.color = "rgb(190, 190, 190)";
+        // lcontrol._overlaysList.children[0].style.color = "rgb(190, 190, 190)";
         lcontrol._overlaysList.children[1].style.color = "rgb(190, 190, 190)";
         lcontrol._overlaysList.children[2].style.color = "rgb(190, 190, 190)";
         lcontrol._overlaysList.children[3].style.color = "rgb(190, 190, 190)";
@@ -1703,16 +1742,18 @@ map.on('zoomend', function(e) {
         lcontrol._overlaysList.children[5].control.disabled = false;
 
         map.removeControl(snowLegend);
-        map.removeControl(soilwetLegend);
+        // map.removeControl(soilwetLegend);
         map.removeControl(tempLegend);
         map.removeControl(fireLegend);
 
     } else {
         if (!map.hasLayer(treecoverLayer)
-            && !map.hasLayer(ndviTimeLayer)) {
-            if (!map.hasLayer(soilwetnessTimeLayer) && forecast == 0) {
-                soilwetnessTimeLayer.addTo(map);
-            } else if (!map.hasLayer(temperatureTimeLayer) && forecast == 1) {
+        && !map.hasLayer(ndviTimeLayer)
+        && !map.hasLayer(soilwetnessTimeLayer)) {
+            // if (!map.hasLayer(soilwetnessTimeLayer) && forecast == 0) {
+            //     soilwetnessTimeLayer.addTo(map);
+            // } else 
+            if (!map.hasLayer(temperatureTimeLayer) && forecast == 1) {
                 temperatureTimeLayer.addTo(map);
             } else if (!map.hasLayer(snowthicknessTimeLayer) && forecast == 2) {
                 snowthicknessTimeLayer.addTo(map);
@@ -1726,7 +1767,7 @@ map.on('zoomend', function(e) {
             // }
         }
 
-        lcontrol._overlaysList.children[0].style.color = "initial";
+        // lcontrol._overlaysList.children[0].style.color = "initial";
         lcontrol._overlaysList.children[1].style.color = "initial";
         lcontrol._overlaysList.children[2].style.color = "initial";
         lcontrol._overlaysList.children[3].style.color = "initial";
@@ -1736,10 +1777,11 @@ map.on('zoomend', function(e) {
         lcontrol._overlaysList.children[5].style.color = "rgb(190, 190, 190)";
         lcontrol._overlaysList.children[5].control.checked = false;
 
-        if (lcontrol._overlaysList.children[0].control.checked) { 
-            soilwetLegend.addTo(this); 
-        }
-        else if (lcontrol._overlaysList.children[1].control.checked) { 
+        // if (lcontrol._overlaysList.children[0].control.checked) { 
+        //     soilwetLegend.addTo(this); 
+        // }
+        // else 
+        if (lcontrol._overlaysList.children[1].control.checked) { 
             tempLegend.addTo(this); 
         }
         else if (lcontrol._overlaysList.children[2].control.checked) { 
@@ -1758,7 +1800,7 @@ map.on('zoomend', function(e) {
 map.on('moveend', function(e) {
     //if (harvDynamic.checked && georastercache) {
     if (harvDynamic.checked && georastercache && !map.hasLayer(treecoverLayer)
-    && !map.hasLayer(ndviTimeLayer)
+    && !map.hasLayer(ndviTimeLayer) && !map.hasLayer(soilwetnessTimeLayer)
     ) {
         plotgeotiff();
     }
@@ -2170,6 +2212,23 @@ function onMapClick(e) {
         }
     }
 
+    if (map.getZoom() > 6 && geotiffArea) {
+        if (map.hasLayer(soilwetnessTimeLayer)) {
+            map.removeLayer(soilwetnessTimeLayer);
+            map.removeLayer(soilwetnessTimeLayer2);
+            map.removeControl(soilwetnessLegend);
+            lcontrol._update();
+        }
+        traffState = true;
+        traffLayer.addTo(map);
+        lcontrol._overlaysList.children[5].control.checked = true;
+        if (georastercache) {
+            // idx = -100; // redraw dynamic trafficability
+            plotgeotiff();
+            plotgeotiffstatic();
+        }
+    }
+    
     maastokarttaAreaFunction(lat,lon);
 
 }
