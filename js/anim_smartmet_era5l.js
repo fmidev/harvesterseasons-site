@@ -618,7 +618,7 @@ const param1="utctime";
 
 // const param2="HARVIDX{0.4;SOILWET-M3M3:ECBSF:::7:3:1-50;SOILWET-M3M3:ECBSF:::7:1:0}";
 // const param2="HARVIDX{0.4;VSW-M3M3:ECBSF:5022:9:7:0:1-50;VSW-M3M3:ECBSF:5022:9:7:0:0}";
-const param2="HARVIDX{55;SWI2:ECXSF:5062:1:0:0:0-50}";
+const param2="HARVIDX{0.55;SWI2-0TO1:ECXSF:5062:1:0:0:0-50}";
 
 const param3="HARVIDX{273;TSOIL-K:ECBSF:::7:3:1-50;TSOIL-K:ECBSF:::7:1:0}";
 
@@ -681,9 +681,9 @@ var perturbations = 50;
 //     SWensemble2list[i] = "DIFF{VSW-M3M3:ECBSF:5022:9:7:0:" + i + ";SWVL2-M3M3:SMARTMET:5015}";
 // }
 
-var SWensemblelist = ["DIV{SWI2:ECXSF:5062:1:0:0:0;100}"];
+var SWensemblelist = ["SWI2-0TO1:ECXSF:5062:1:0:0:0"];
 for (i = 1; i <= perturbations; i = i + 1) {
-    SWensemblelist[i] = "DIV{SWI2:ECXSF:5062:1:0:0:" + i + ";100}";
+    SWensemblelist[i] = "SWI2-0TO1:ECXSF:5062:1:0:0:" + i ;
 }
 
 var SHensemblelist = ["HSNOW-M:ECBSF::1:0:1:0"];
@@ -823,8 +823,8 @@ var temperatureTimeLayer = L.timeDimension.layer.wms(temperatureLayer, {cache: 1
 var soilwetnessLayerOptions = {
     crs: L.CRS.EPSG4326,
     version: '1.3.0',
-    // layers: 'harvester:swi:SWI2',
-    layers: 'gui:isobands:SWI_SWI2',
+     layers: 'harvester:swi:SWI2-0TO1',
+    //layers: 'gui:isobands:SWI_SWI2',
     // layers: 'gui:isobands:SWI_SWI2-M3M3',
     // layers: 'harvester:smartmet:SWVL2-M3M3',
     // layers: 'harvester:ecbsf:SOILWET-M3M3',
@@ -1916,7 +1916,7 @@ for (i = 0; i <= perturbations; i = i + 1) {
     // SWensemble += ",SOILWET-M3M3:ECBSF::9:7:3:" + i ;
     // SWensemble += ",SOILWET-M3M3:ECBSF:::7:3:" + i ;
     // SWensemble += ",VSW-M3M3:ECBSF:5022:9:7:0:" + i ;
-    SWensemble += ",DIV{SWI2:ECXSF:5062:1:0:0:" + i + ";100}";
+    SWensemble += ",SWI2-0TO1:ECXSF:5062:1:0:0:" + i ;
 }
 label[perturbations+2] = 'SW-FMI';
 label[perturbations+3] = 'SWI2';
