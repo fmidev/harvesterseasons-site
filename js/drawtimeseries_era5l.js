@@ -138,44 +138,44 @@ function drawtimeseries() {
                             document.getElementById("graphB").innerHTML = "Error loading data";
                         }
 
-                        // // Plot scaled soil wetness time series
-                        // var dataSW2 = [];
-                        // for (k = 0; k < dataSWscaled.length; k++) {
-                        //     dataSW2[k] = [];
-                        //     // Date format that works also in mobile safari
-                        //     dataSW2[k][0] = new Date(dataSWscaled[k]["utctime"].replace(/-/g, "/"));
-                        //     for (i = 0; i <= perturbations; i = i + 1) {
-                        //         // Remove seasonal forecast before startDate_smartobs-1day
-                        //         if (dataSW2[k][0] < smartmetDate) {
-                        //             // Remove seasonal forecast before smartobsDate
-                        //             dataSW2[k][i+1] = null;
-                        //         } else if (dataSW[k][SWensemblelist[i]] == 0 || dataSWscaled[k][SWensemblelist[i]] < 0) {
-                        //             // Set SW to 0 if non-scaled SW is 0 or scaled < 0
-                        //             dataSW2[k][i+1] = 0;
-                        //         } else {
-                        //             dataSW2[k][i+1] = dataSWscaled[k][SWensemblelist[i]];
-                        //         }
-                        //     }
-                        //     dataSW2[k][perturbations + 2] = dataSW[k]["SWVL2-M3M3:SMARTMET:5015"];
-                        //     if (dataSW[k]["SWI2:SWI:5059"] > 0) {
-                        //         dataSW2[k][perturbations + 3] = dataSW[k]["SWI2:SWI:5059"]/100;
-                        //     }
-                        // }
-
-                        // Plot soil wetness time series
+                        // Plot scaled soil wetness time series
                         var dataSW2 = [];
-                        for (k = 0; k < dataSW.length; k++) {
+                        for (k = 0; k < dataSWscaled.length; k++) {
                             dataSW2[k] = [];
                             // Date format that works also in mobile safari
-                            dataSW2[k][0] = new Date(dataSW[k]["utctime"].replace(/-/g, "/"));
+                            dataSW2[k][0] = new Date(dataSWscaled[k]["utctime"].replace(/-/g, "/"));
                             for (i = 0; i <= perturbations; i = i + 1) {
-                                dataSW2[k][i + 1] = dataSW[k][SWensemblelist[i]];
+                                // Remove seasonal forecast before startDate_smartobs-1day
+                                if (dataSW2[k][0] < smartmetDate) {
+                                    // Remove seasonal forecast before smartobsDate
+                                    dataSW2[k][i+1] = null;
+                                } else if (dataSW[k][SWensemblelist[i]] == 0 || dataSWscaled[k][SWensemblelist[i]] < 0) {
+                                    // Set SW to 0 if non-scaled SW is 0 or scaled < 0
+                                    dataSW2[k][i+1] = 0;
+                                } else {
+                                    dataSW2[k][i+1] = dataSWscaled[k][SWensemblelist[i]];
+                                }
                             }
                             dataSW2[k][perturbations + 2] = dataSW[k]["SWVL2-M3M3:SMARTMET:5015"];
-                            if (dataSW[k]["SWI2:SWI:5059"] > 0) {
-                                dataSW2[k][perturbations + 3] = dataSW[k]["SWI2:SWI:5059"]/100;
+                            if (dataSW[k]["SWI2-0TO1:SWI:5059"] > 0) {
+                                dataSW2[k][perturbations + 3] = dataSW[k]["SWI2-0TO1:SWI:5059"]/100;
                             }
                         }
+
+                        // Plot soil wetness time series
+                        // var dataSW2 = [];
+                        // for (k = 0; k < dataSW.length; k++) {
+                        //    dataSW2[k] = [];
+                            // Date format that works also in mobile safari
+                        //    dataSW2[k][0] = new Date(dataSW[k]["utctime"].replace(/-/g, "/"));
+                        //    for (i = 0; i <= perturbations; i = i + 1) {
+                        //       dataSW2[k][i + 1] = dataSW[k][SWensemblelist[i]];
+                        //    }
+                        //    dataSW2[k][perturbations + 2] = dataSW[k]["SWVL2-M3M3:SMARTMET:5015"];
+                        //    if (dataSW[k]["SWI2:SWI:5059"] > 0) {
+                        //        dataSW2[k][perturbations + 3] = dataSW[k]["SWI2:SWI:5059"]/100;
+                        //    }
+                        //}
 
                         gsw = new Dygraph(
                             document.getElementById("graphsw"),
