@@ -9,7 +9,7 @@ function drawtimeseries() {
         let smartmetIdx = -1;
 
         for (let i = 0; i < dataSW.length; i++) {
-            if (dataSW[i]["SWVL2-M3M3:SMARTMET:5015"] !== null) {
+            if (dataSW[i]["SWI2-0TO1:SWI:5059"] !== null) {
                 smartmetIdx = i;
             }
         }
@@ -75,7 +75,7 @@ function drawtimeseries() {
                 // const param8 = "ensover{0.4;0.9;HSNOW-M:SMARTOBS:13:4}";
 
                 // Fetch rest of the trafficability index series
-                graphLoad = $.getJSON("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWI2:SWI:5059,SWVL2-M3M3:SMARTMET:5015," + param2 + "," + param3 + "," + param5 + "," + param7 + "," + param8 + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc",
+                graphLoad = $.getJSON("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWI2-0TO1:SWI:5059,SWVL2-M3M3:SMARTMET:5015," + param2 + "," + param3 + "," + param5 + "," + param7 + "," + param8 + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc",
                     function (data) {
                         var graphdata = [];
                         for (i = 0, k = 0; i < data.length; i++) {

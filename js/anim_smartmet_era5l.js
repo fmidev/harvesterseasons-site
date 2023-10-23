@@ -87,8 +87,8 @@ $.get('https://desm.harvesterseasons.com/wms?&service=WMS&request=GetCapabilitie
 
     let swiDateList;
     for (i = 0; i < layerlist.length; i++) {
-        // if (layerlist[i].childNodes[1].firstChild.nodeValue === 'gui:isobands:SWI_SWI2-M3M3') {
-        if (layerlist[i].childNodes[1].firstChild.nodeValue === 'gui:isobands:SWI_SWI2') {
+        if (layerlist[i].childNodes[1].firstChild.nodeValue === 'harvester:swi:SWI2-0TO1') {
+        // if (layerlist[i].childNodes[1].firstChild.nodeValue === 'gui:isobands:SWI_SWI2') {
             // console.debug(layerlist[i].childNodes)
             // console.debug(layerlist[i].childNodes[1].firstChild.nodeValue)
             // console.debug(layerlist[i].childNodes[41].firstChild)
@@ -245,7 +245,8 @@ if (mappos.center[0] == 64 && mappos.center[1] == 27) {
 //map.on('timeload',console.debug(L.timeDimension().getCurrentTime()));
 
 // const rasterUrl = "https://pta.data.lit.fmi.fi/geo/harvestability/KKL_SMK_Suomi_2020_09_02-UTM35.tif";
-const rasterUrl = "https://pta.data.lit.fmi.fi/geo/harvestability/KKL_SMK_Suomi_2021_06_01-UTM35.tif";
+//const rasterUrl = "https://pta.data.lit.fmi.fi/geo/harvestability/KKL_SMK_Suomi_2021_06_01-UTM35.tif";
+const rasterUrl = "https://copernicus.data.lit.fmi.fi/harvestability/Europe-2023-trfy-r30m.tif";
 
 var georastercache;
 
@@ -672,19 +673,19 @@ var perturbations = 50;
 //     SWensemble2list[i] = "DIFF{SOILWET-M3M3:ECBSF:::7:3:" + i + ";SWVL2-M3M3:SMARTMET:5015}";
 // }
 
-// var SWensemblelist = ["VSW-M3M3:ECBSF:5022:9:7:0:0"];
-// var SWensemble2 = "DIFF{VSW-M3M3:ECBSF:5022:9:7:0:0;SWVL2-M3M3:SMARTMET:5015}";
-// var SWensemble2list = ["DIFF{VSW-M3M3:ECBSF:5022:9:7:0:0;SWVL2-M3M3:SMARTMET:5015}"];
-// for (i = 1; i <= perturbations; i = i + 1) {
-//     SWensemblelist[i] = "VSW-M3M3:ECBSF:5022:9:7:0:" + i ;
-//     SWensemble2 += ",DIFF{VSW-M3M3:ECBSF:5022:9:7:0:" + i + ";SWVL2-M3M3:SMARTMET:5015}";
-//     SWensemble2list[i] = "DIFF{VSW-M3M3:ECBSF:5022:9:7:0:" + i + ";SWVL2-M3M3:SMARTMET:5015}";
-// }
-
 var SWensemblelist = ["SWI2-0TO1:ECXSF:5062:1:0:0:0"];
+var SWensemble2 = "DIFF{SWI2-0TO1:ECXSF:5062:1:0:0:0;SWI2-0TO1:SWI:5059}";
+var SWensemble2list = ["DIFF{SWI2-0TO1:ECXSF:5062:1:0:0:0;SWI2-0TO1:SWI:5059}"];
 for (i = 1; i <= perturbations; i = i + 1) {
     SWensemblelist[i] = "SWI2-0TO1:ECXSF:5062:1:0:0:" + i ;
+    SWensemble2 += ",DIFF{SWI2-0TO1:ECXSF:5062:1:0:0:" + i + ";SWI2-0TO1:SWI:5059}";
+    SWensemble2list[i] = "DIFF{SWI2-0TO1:ECXSF:5062:1:0:0:" + i + ";SWI2-0TO1:SWI:5059}";
 }
+
+// var SWensemblelist = ["SWI2-0TO1:ECXSF:5062:1:0:0:0"];
+// for (i = 1; i <= perturbations; i = i + 1) {
+//     SWensemblelist[i] = "SWI2-0TO1:ECXSF:5062:1:0:0:" + i ;
+//}
 
 var SHensemblelist = ["HSNOW-M:ECBSF::1:0:1:0"];
 var SHensemble2 = "DIFF{HSNOW-M:ECBSF::1:0:1:0;HSNOW-M:SMARTOBS:13:4}";
