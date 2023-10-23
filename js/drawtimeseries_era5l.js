@@ -34,9 +34,9 @@ function drawtimeseries() {
             // let smartmetDate = new Date(dataSW[smartmetIdx]["utctime"].replace(/-/g, "/"));
 
             // // Scale seasonal soil wetness using SMARTMET-forecast
-            // let dataSWscaled = [];
-            // // dataSWscaled = scalingFunction(dataSW, SWensemblelist, smartmetIdx, perturbations, "SWVL2-M3M3:SMARTMET:5015");
-            // dataSWscaled = dataSW;
+            let dataSWscaled = [];
+            dataSWscaled = scalingFunction(dataSW, SWensemblelist, smartmetIdx, perturbations, "SWI2-0TO1:SWI:5059", "SWI2-0TO1:SWI:5059");
+            //dataSWscaled = dataSW;
 
 
             // Fetch snow depth data
@@ -66,14 +66,16 @@ function drawtimeseries() {
                 let winter1series = [];
                 winter1series = ensover(0.4, 0.9, dataSHscaled, SHensemblelist, perturbations, "HSNOW-M:SMARTOBS:13:4")
 
-                // const param2 = "HARVIDX{55;SWI2:ECXSF:5062:1:0:0:0-50}";
+                // const param2 = "HARVIDX{0.55;SWI2-0TO1:ECXSF:5062:1:0:0:0-50}";
                 // const param3 = "HARVIDX{273;TSOIL-K:ECBSF:::7:3:1-50;TSOIL-K:ECBSF:::7:1:0}";
                 // const param5 = "HARVIDX{0.4;SWVL2-M3M3:SMARTMET:5015}";
                 // const param7 = "ensover{0.4;0.9;HSNOW-M:SMARTMET:5027}";
                 // const param8 = "ensover{0.4;0.9;HSNOW-M:SMARTOBS:13:4}";
 
-                // Fetch rest of the trafficability index series
-                graphLoad = $.getJSON("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWI2-0TO1:SWI:5059,SWVL2-M3M3:SMARTMET:5015," + param2 + "," + param3 + "," + param5 + "," + param7 + "," + param8 + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc",
+                // Fetch rest of the trafficability index series //SWI2-0TO1:SWI:5059,
+                graphLoad = $.getJSON("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWVL2-M3M3:SMARTMET:5015,"
+                 + param2 + "," + param3 + "," + param5 + "," + param7 + "," + param8 + "&starttime="
+                 + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc",
                     function (data) {
                         var graphdata = [];
                         for (i = 0, k = 0; i < data.length; i++) {
