@@ -144,7 +144,7 @@ function drawtimeseries() {
                             dataSW2[k] = [];
                             // Date format that works also in mobile safari
                             dataSW2[k][0] = new Date(dataSWscaled[k]["utctime"].replace(/-/g, "/"));
-                            for (i = 0; i <= perturbations; i = i + 2) {
+                            for (i = 0; i <= perturbations; i = i + 1) {
                                 // Remove seasonal forecast before startDate_smartobs-1day
                                 if (dataSW2[k][0] < smartmetDate) {
                                     // Remove seasonal forecast before smartobsDate
