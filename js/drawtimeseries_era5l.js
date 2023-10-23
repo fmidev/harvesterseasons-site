@@ -2,18 +2,17 @@ function drawtimeseries() {
     // Inside Finland, seasonal snow depth and soil wetness combined and scaled with SMARTOBS/SMARTMET observations
 
     // Fetch soil wetness data
-    var dataUrlSW = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWI2:SWI:5059,SWVL2-M3M3:SMARTMET:5015" + SWensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&precision=full&source=grid&timeformat=sql&tz=utc";
+    var dataUrlSW = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWI2-0TO1:SWI:5059,SWVL2-M3M3:SMARTMET:5015" + SWensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&precision=full&source=grid&timeformat=sql&tz=utc";
     $.getJSON(dataUrlSW, function (dataSW) {
 
         // Find the latest SWVL2-M3M3:SMARTMET value
         let smartmetIdx = -1;
 
         for (let i = 0; i < dataSW.length; i++) {
-            if (dataSW[i]["SWI2-0TO1:SWI:5059"] !== null) {
+            if (dataSW[i]["SWVL2-M3M3:SMARTMET:5015"] !== null) {
                 smartmetIdx = i;
             }
         }
-
         if (smartmetIdx == -1) {
             drawOutsideFinland()
         } else {
@@ -59,12 +58,11 @@ function drawtimeseries() {
                 let dataSHscaled = [];
                 dataSHscaled = scalingFunction(dataSH, SHensemblelist, smartobsIdx, perturbations, "HSNOW-M:SMARTOBS:13:4", "HSNOW-M:SMARTMET:5027");
 
+                // Summer index from the scaled seasonal soil wetness
+                let summer1series = [];
+                summer1series = harvidx(0.55, dataSWscaled, SWensemblelist, perturbations, "SWI-0TO1:SWI:5059")
 
-                // // // // Summer index from the scaled seasonal soil wetness
-                // let summer1series = [];
-                // summer1series = harvidx(0.4, dataSWscaled, SWensemblelist, perturbations, "SWVL2-M3M3:SMARTMET:5015")
-
-                // // // Winter index from the scaled seasonal snow depth
+                // Winter index from the scaled seasonal snow depth
                 let winter1series = [];
                 winter1series = ensover(0.4, 0.9, dataSHscaled, SHensemblelist, perturbations, "HSNOW-M:SMARTOBS:13:4")
 
@@ -81,13 +79,13 @@ function drawtimeseries() {
                         for (i = 0, k = 0; i < data.length; i++) {
                             var summer1, summer2, winter1, winter2;
 
-                            // // Seasonal summer index scaled with observations (VSW-M3M3:ECBSF & SWVL2-M3M3:SMARTMET)
-                            // if (summer1series.length == data.length) { summer1 = summer1series[i]; }
-                            // else { summer1 = 'nan'; }
+                            // Seasonal summer index scaled with observations (SWI2-0TO1:ECXSF & SWI2-0TO1:SWI)
+                            if (summer1series.length == data.length) { summer1 = summer1series[i]; }
+                            else { summer1 = 'nan'; }
 
                             // Seasonal summer index (SWI2:ECXSF)
-                            if (data[i][param2] !== null) { summer1 = data[i][param2]; }
-                            else { summer1 = 'nan'; }
+                            // if (data[i][param2] !== null) { summer1 = data[i][param2]; }
+                            // else { summer1 = 'nan'; }
 
                             // Seasonal winter index, combined and scaled with observations (HSNOW-M:ECBSF & HSNOW-M:SMARTOBS, TSOIL-K:ECBSF)                     
                             if (data[i][param8] !== null) { winter1 = Math.max(data[i][param3], data[i][param8]); }
@@ -144,11 +142,11 @@ function drawtimeseries() {
                             dataSW2[k] = [];
                             // Date format that works also in mobile safari
                             dataSW2[k][0] = new Date(dataSWscaled[k]["utctime"].replace(/-/g, "/"));
-                            for (i = 0; i <= perturbations; i = i + 1) {
+                            for (i = 0; i <= perturbations; i = i + 2) {
                                 // Remove seasonal forecast before startDate_smartobs-1day
                                 if (dataSW2[k][0] < smartmetDate) {
                                     // Remove seasonal forecast before smartobsDate
-                                    dataSW2[k][i+1] = null;
+                                //    dataSW2[k][i+1] = null;
                                 } else if (dataSW[k][SWensemblelist[i]] == 0 || dataSWscaled[k][SWensemblelist[i]] < 0) {
                                     // Set SW to 0 if non-scaled SW is 0 or scaled < 0
                                     dataSW2[k][i+1] = 0;
@@ -158,7 +156,7 @@ function drawtimeseries() {
                             }
                             dataSW2[k][perturbations + 2] = dataSW[k]["SWVL2-M3M3:SMARTMET:5015"];
                             if (dataSW[k]["SWI2-0TO1:SWI:5059"] > 0) {
-                                dataSW2[k][perturbations + 3] = dataSW[k]["SWI2-0TO1:SWI:5059"]/100;
+                                dataSW2[k][perturbations + 3] = dataSW[k]["SWI2-0TO1:SWI:5059"];
                             }
                         }
 
