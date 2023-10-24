@@ -244,7 +244,7 @@ if (mappos.center[0] == 64 && mappos.center[1] == 27) {
 //map.on('timeloading',console.debug(L.timeDimension().getCurrentTime()));
 //map.on('timeload',console.debug(L.timeDimension().getCurrentTime()));
 
-// const rasterUrl = "https://pta.data.lit.fmi.fi/geo/harvestability/KKL_SMK_Suomi_2020_09_02-UTM35.tif";
+// const rasterUrl = "https://copernicus.data.lit.fmi.fi/harvestability/Europe-2023-trfy-r30m.tif";
 const rasterUrl = "https://pta.data.lit.fmi.fi/geo/harvestability/KKL_SMK_Suomi_2021_06_01-UTM35.tif";
 
 var georastercache;
@@ -681,9 +681,9 @@ var perturbations = 50;
 //     SWensemble2list[i] = "DIFF{VSW-M3M3:ECBSF:5022:9:7:0:" + i + ";SWVL2-M3M3:SMARTMET:5015}";
 // }
 
-var SWensemblelist = ["DIV{SWI2:ECXSF:5062:1:0:0:0;100}"];
+var SWensemblelist = ["SWI2-0TO1:ECXSF:5062:1:0:0:0"];
 for (i = 1; i <= perturbations; i = i + 1) {
-    SWensemblelist[i] = "DIV{SWI2:ECXSF:5062:1:0:0:" + i + ";100}";
+    SWensemblelist[i] = "SWI2-0TO1:ECXSF:5062:1:0:0:" + i ; // + ";100}"
 }
 
 var SHensemblelist = ["HSNOW-M:ECBSF::1:0:1:0"];
@@ -823,8 +823,8 @@ var temperatureTimeLayer = L.timeDimension.layer.wms(temperatureLayer, {cache: 1
 var soilwetnessLayerOptions = {
     crs: L.CRS.EPSG4326,
     version: '1.3.0',
-    // layers: 'harvester:swi:SWI2',
-    layers: 'gui:isobands:SWI_SWI2',
+    layers: 'harvester:swi:SWI2-0TO1',
+    //layers: 'gui:isobands:SWI_SWI2',
     // layers: 'gui:isobands:SWI_SWI2-M3M3',
     // layers: 'harvester:smartmet:SWVL2-M3M3',
     // layers: 'harvester:ecbsf:SOILWET-M3M3',
