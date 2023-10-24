@@ -681,9 +681,9 @@ var perturbations = 50;
 //     SWensemble2list[i] = "DIFF{VSW-M3M3:ECBSF:5022:9:7:0:" + i + ";SWVL2-M3M3:SMARTMET:5015}";
 // }
 
-var SWensemblelist = ["SWI2-0TO1:ECXSF:5062:1:0:0:0"];
+var SWensemblelist = ["SWI2:ECXSF:5062:1:0:0:0;100}"];
 for (i = 1; i <= perturbations; i = i + 1) {
-    SWensemblelist[i] = "SWI2-0TO1:ECXSF:5062:1:0:0:" + i ; // + ";100}"
+    SWensemblelist[i] = "DIV{SWI2:ECXSF:5062:1:0:0:" + i + ";100}";
 }
 
 var SHensemblelist = ["HSNOW-M:ECBSF::1:0:1:0"];
@@ -824,7 +824,7 @@ var soilwetnessLayerOptions = {
     crs: L.CRS.EPSG4326,
     version: '1.3.0',
     layers: 'harvester:swi:SWI2-0TO1',
-    //layers: 'gui:isobands:SWI_SWI2',
+    // layers: 'gui:isobands:SWI_SWI2',
     // layers: 'gui:isobands:SWI_SWI2-M3M3',
     // layers: 'harvester:smartmet:SWVL2-M3M3',
     // layers: 'harvester:ecbsf:SOILWET-M3M3',
