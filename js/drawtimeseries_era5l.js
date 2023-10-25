@@ -35,7 +35,7 @@ function drawtimeseries() {
 
             // // Scale seasonal soil wetness using SMARTMET-forecast
             let dataSWscaled = [];
-            dataSWscaled = scalingFunction(dataSW, SWensemblelist, smartmetIdx, perturbations, "SWI2-0TO1:SWI:5059", "SWI2-0TO1:SWI:5059");
+            dataSWscaled = scalingFunction(dataSW, SWensemble2list, smartmetIdx, perturbations, "SWI2-0TO1:SWI:5059");
             //dataSWscaled = dataSW;
 
 
@@ -148,10 +148,10 @@ function drawtimeseries() {
                                 // Remove seasonal forecast before startDate_smartobs-1day
                                 if (dataSW2[k][0] < smartmetDate) {
                                     // Remove seasonal forecast before smartobsDate
-                                //    dataSW2[k][i+1] = null;
-                                } else if (dataSW[k][SWensemblelist[i]] == 0 || dataSWscaled[k][SWensemblelist[i]] < 0) {
+                                    dataSW2[k][i+1] = null;
+                                // } else if (dataSW[k][SWensemblelist[i]] == 0 || dataSWscaled[k][SWensemblelist[i]] < 0) {
                                     // Set SW to 0 if non-scaled SW is 0 or scaled < 0
-                                    dataSW2[k][i+1] = 0;
+                                //    dataSW2[k][i+1] = 0;
                                 } else {
                                     dataSW2[k][i+1] = dataSWscaled[k][SWensemblelist[i]];
                                 }
@@ -409,7 +409,7 @@ function scalingFunction(data, ensemblelist, smartIdx, perturbations, smartvaria
         }
         for (let j = 0; j <= perturbations; j++) {
             if (data[i][ensemblelist[j]] !== null) {
-                datascaled[i][ensemblelist[j]] = data[i][ensemblelist[j]] - (data[smartIdx][ensemblelist[j]] - data[smartIdx][smartvariable1]);
+                datascaled[i][ensemblelist[j]] = data[i][ensemblelist[j]] - (data[smartIdx][ensemblelist[j]] + data[smartIdx][smartvariable1]);
             } else {
                 datascaled[i][ensemblelist[j]] = null;
             }
