@@ -34,8 +34,8 @@ function drawtimeseries() {
             // let smartmetDate = new Date(dataSW[smartmetIdx]["utctime"].replace(/-/g, "/"));
 
             // // Scale seasonal soil wetness using SMARTMET-forecast
-            let dataSWscaled = [];
-            dataSWscaled = scalingFunction(dataSW, SWensemble2list, smartmetIdx, perturbations, "SWI2-0TO1:SWI:5059");
+            // let dataSWscaled = [];
+            // dataSWscaled = scalingFunction(dataSW, SWensemble2list, smartmetIdx, perturbations, "SWI2-0TO1:SWI:5059");
             //dataSWscaled = dataSW;
 
 
@@ -409,7 +409,7 @@ function scalingFunction(data, ensemblelist, smartIdx, perturbations, smartvaria
         }
         for (let j = 0; j <= perturbations; j++) {
             if (data[i][ensemblelist[j]] !== null) {
-                datascaled[i][ensemblelist[j]] = data[i][ensemblelist[j]] - (data[smartIdx][ensemblelist[j]] + data[smartIdx][smartvariable1]);
+                datascaled[i][ensemblelist[j]] = data[i][ensemblelist[j]] - (data[smartIdx][ensemblelist[j]] - data[smartIdx][smartvariable1]);
             } else {
                 datascaled[i][ensemblelist[j]] = null;
             }
