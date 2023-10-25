@@ -36,7 +36,7 @@ function drawtimeseries() {
             // // Scale seasonal soil wetness using SMARTMET-forecast
             // let dataSWscaled = [];
             // dataSWscaled = scalingFunction(dataSW, SWensemble2list, smartmetIdx, perturbations, "SWI2-0TO1:SWI:5059");
-            //dataSWscaled = dataSW;
+            dataSWscaled = dataSW;
 
 
             // Fetch snow depth data
