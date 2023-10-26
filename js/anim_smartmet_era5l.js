@@ -1040,21 +1040,21 @@ snowLegend.onAdd = function (map) {
 };
 
 soilwetLegend.onAdd = function (map) {
-    var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:swi:SWI-0TO1&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
+    var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:swi:SWI2-0TO1&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
     // var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:SOILWET-M3M3&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
     // var src = 'https://sm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:SOILWET1-M&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
     var div = L.DomUtil.create('div', 'info legend');
-    div.style.width = '65px';
-    div.style.height = '285px';
-    // if (screen.width < 425) {
-    //     // div.style.width = '65px';
-    //     // div.style.height = '325px';
-    //     div.style.width = '60px';
-    //     div.style.height = '285px';
-    // } else {
-    //     div.style.width = '65px';
-    //     div.style.height = '320px';
-    // }
+    // div.style.width = '85px';
+    // div.style.height = '185px';
+    if (screen.width < 425) {
+        // div.style.width = '65px';
+        // div.style.height = '325px';
+        div.style.width = '75px';
+        div.style.height = '285px';
+    } else {
+        div.style.width = '85px';
+        div.style.height = '320px';
+    }
     div.style['background-image'] = 'url(' + src + ')';
     // div.style['background-size'] = 'contain';
     div.style['background-size'] = 'cover';
@@ -2159,38 +2159,39 @@ function onMapClick(e) {
     else if (map.getZoom() == 12) { map.setView(e.latlng, map.getZoom() + 1) }
     else { map.setView(e.latlng) }
 
-    var geotiffArea = false;
+    // var geotiffArea = false;
 
 /*     if (lat >= 59.7 && lat <= 69.3 && lon >= 21 && lon <= 31.6) {
         geotiffArea = true;
     } */
 
-    //The Northest Finland
-    if (lat >= 68.7 && lat <= 69.3 && lon >= 26 && lon <= 29) {
-        geotiffArea = true;
-    }
-    //North Finland
-    else if (lat >= 68 && lat < 68.7 && lon >= 22 && lon <= 28.8) {
-        geotiffArea = true;
-    }
-    //North-Middle Finland
-    else if (lat >= 64.4 && lat < 68 && lon >= 23.3 && lon <= 30.2) {
-        geotiffArea = true;
-    }
-    //South-Middle Finland
-    else if (lat >= 63.5 && lat < 64.4 && lon >= 22 && lon <= 30.6) {
-        geotiffArea = true;
-    }
-    //South Finland
-    else if (lat >= 60.3 && lat < 63.5 && lon >= 21 && lon <= 31.6) {
-        geotiffArea = true;
-    }
-    //The Southest Finland
-    else if (lat >= 59.7 && lat < 60.3 && lon >= 21 && lon <= 26.9) {
-        geotiffArea = true;
-    }
+    // //The Northest Finland
+    // if (lat >= 68.7 && lat <= 69.3 && lon >= 26 && lon <= 29) {
+    //     geotiffArea = true;
+    // }
+    // //North Finland
+    // else if (lat >= 68 && lat < 68.7 && lon >= 22 && lon <= 28.8) {
+    //     geotiffArea = true;
+    // }
+    // //North-Middle Finland
+    // else if (lat >= 64.4 && lat < 68 && lon >= 23.3 && lon <= 30.2) {
+    //     geotiffArea = true;
+    // }
+    // //South-Middle Finland
+    // else if (lat >= 63.5 && lat < 64.4 && lon >= 22 && lon <= 30.6) {
+    //     geotiffArea = true;
+    // }
+    // //South Finland
+    // else if (lat >= 60.3 && lat < 63.5 && lon >= 21 && lon <= 31.6) {
+    //     geotiffArea = true;
+    // }
+    // //The Southest Finland
+    // else if (lat >= 59.7 && lat < 60.3 && lon >= 21 && lon <= 26.9) {
+    //     geotiffArea = true;
+    // }
 
-    if (map.getZoom() > 6 && geotiffArea) {
+    // if (map.getZoom() > 6 && geotiffArea) {
+    if (map.getZoom() > 6) {
         if (map.hasLayer(treecoverLayer)) {
             map.removeLayer(treecoverLayer);
             map.removeControl(treecoverLegend);
@@ -2206,7 +2207,8 @@ function onMapClick(e) {
         }
     }
 
-    if (map.getZoom() > 6 && geotiffArea) {
+    // if (map.getZoom() > 6 && geotiffArea) {
+    if (map.getZoom() > 6) {
         if (map.hasLayer(soilwetnessTimeLayer)) {
             map.removeLayer(soilwetnessTimeLayer);
             map.removeLayer(soilwetnessTimeLayer2);

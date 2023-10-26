@@ -87,8 +87,8 @@ $.get('https://desm.harvesterseasons.com/wms?&service=WMS&request=GetCapabilitie
 
     let swiDateList;
     for (i = 0; i < layerlist.length; i++) {
-        // if (layerlist[i].childNodes[1].firstChild.nodeValue === 'gui:isobands:SWI_SWI2-M3M3') {
-        if (layerlist[i].childNodes[1].firstChild.nodeValue === 'gui:isobands:SWI_SWI2') {
+        if (layerlist[i].childNodes[1].firstChild.nodeValue === 'harvester:swi:SWI2-0TO1') {
+        // if (layerlist[i].childNodes[1].firstChild.nodeValue === 'gui:isobands:SWI_SWI2') {
             // console.debug(layerlist[i].childNodes)
             // console.debug(layerlist[i].childNodes[1].firstChild.nodeValue)
             // console.debug(layerlist[i].childNodes[41].firstChild)
@@ -245,7 +245,8 @@ if (mappos.center[0] == 64 && mappos.center[1] == 27) {
 //map.on('timeload',console.debug(L.timeDimension().getCurrentTime()));
 
 // const rasterUrl = "https://pta.data.lit.fmi.fi/geo/harvestability/KKL_SMK_Suomi_2020_09_02-UTM35.tif";
-const rasterUrl = "https://pta.data.lit.fmi.fi/geo/harvestability/KKL_SMK_Suomi_2021_06_01-UTM35.tif";
+//const rasterUrl = "https://pta.data.lit.fmi.fi/geo/harvestability/KKL_SMK_Suomi_2021_06_01-UTM35.tif";
+const rasterUrl = "https://copernicus.data.lit.fmi.fi/harvestability/Europe-2023-trfy-r30m.tif";
 
 var georastercache;
 
@@ -618,7 +619,8 @@ const param1="utctime";
 
 // const param2="HARVIDX{0.4;SOILWET-M3M3:ECBSF:::7:3:1-50;SOILWET-M3M3:ECBSF:::7:1:0}";
 // const param2="HARVIDX{0.4;VSW-M3M3:ECBSF:5022:9:7:0:1-50;VSW-M3M3:ECBSF:5022:9:7:0:0}";
-const param2="HARVIDX{55;SWI2:ECXSF:5062:1:0:0:0-50}";
+// const param2="HARVIDX{55;SWI2:ECXSF:5062:1:0:0:0-50}";
+const param2="HARVIDX{0.55;SWI2-0TO1:ECXSF:5062:1:0:0:0-50}";
 
 const param3="HARVIDX{273;TSOIL-K:ECBSF:::7:3:1-50;TSOIL-K:ECBSF:::7:1:0}";
 
@@ -682,9 +684,14 @@ var perturbations = 50;
 //     SWensemble2list[i] = "DIFF{VSW-M3M3:ECBSF:5022:9:7:0:" + i + ";SWVL2-M3M3:SMARTMET:5015}";
 // }
 
-var SWensemblelist = ["DIV{SWI2:ECXSF:5062:1:0:0:0;100}"];
+// var SWensemblelist = ["DIV{SWI2:ECXSF:5062:1:0:0:0;100}"];
+// for (i = 1; i <= perturbations; i = i + 1) {
+//     SWensemblelist[i] = "DIV{SWI2:ECXSF:5062:1:0:0:" + i + ";100}";
+// }
+
+var SWensemblelist = ["SWI2-0TO1:ECXSF:5062:1:0:0:0"];
 for (i = 1; i <= perturbations; i = i + 1) {
-    SWensemblelist[i] = "DIV{SWI2:ECXSF:5062:1:0:0:" + i + ";100}";
+    SWensemblelist[i] = "SWI2-0TO1:ECXSF:5062:1:0:0:" + i ;
 }
 
 var SHensemblelist = ["HSNOW-M:ECBSF::1:0:1:0"];
@@ -834,8 +841,9 @@ var temperatureTimeLayer = L.timeDimension.layer.wms(temperatureLayer, {cache: 1
 var soilwetnessLayerOptions = {
     crs: L.CRS.EPSG4326,
     version: '1.3.0',
+    layers: 'harvester:swi:SWI2-0TO1',
     // layers: 'harvester:swi:SWI2',
-    layers: 'gui:isobands:SWI_SWI2',
+    // layers: 'gui:isobands:SWI_SWI2',
     // layers: 'gui:isobands:SWI_SWI2-M3M3',
     // layers: 'harvester:smartmet:SWVL2-M3M3',
     // layers: 'harvester:ecbsf:SOILWET-M3M3',
@@ -1050,21 +1058,22 @@ snowLegend.onAdd = function (map) {
 };
 
 soilwetLegend.onAdd = function (map) {
-    var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=gui:isobands:SWI_SWI2&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
+    var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:swi:SWI2-0TO1&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
+    // var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=gui:isobands:SWI_SWI2&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
     // var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:SOILWET-M3M3&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
     // var src = 'https://sm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:SOILWET1-M&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
     var div = L.DomUtil.create('div', 'info legend');
-    div.style.width = '85px';
-    div.style.height = '185px';
-    // if (screen.width < 425) {
-    //     // div.style.width = '65px';
-    //     // div.style.height = '325px';
-    //     div.style.width = '60px';
-    //     div.style.height = '285px';
-    // } else {
-    //     div.style.width = '65px';
-    //     div.style.height = '320px';
-    // }
+    // div.style.width = '85px';
+    // div.style.height = '185px';
+    if (screen.width < 425) {
+        // div.style.width = '65px';
+        // div.style.height = '325px';
+        div.style.width = '75px';
+        div.style.height = '285px';
+    } else {
+        div.style.width = '85px';
+        div.style.height = '320px';
+    }
     div.style['background-image'] = 'url(' + src + ')';
     // div.style['background-size'] = 'contain';
     div.style['background-size'] = 'cover';
@@ -1927,7 +1936,8 @@ for (i = 0; i <= perturbations; i = i + 1) {
     // SWensemble += ",SOILWET-M3M3:ECBSF::9:7:3:" + i ;
     // SWensemble += ",SOILWET-M3M3:ECBSF:::7:3:" + i ;
     // SWensemble += ",VSW-M3M3:ECBSF:5022:9:7:0:" + i ;
-    SWensemble += ",DIV{SWI2:ECXSF:5062:1:0:0:" + i + ";100}";
+    // SWensemble += ",DIV{SWI2:ECXSF:5062:1:0:0:" + i + ";100}";
+    SWensemble += ",SWI2-0TO1:ECXSF:5062:1:0:0:" + i ;
 }
 label[perturbations+2] = 'SW-FMI';
 label[perturbations+3] = 'SWI2';
@@ -2169,38 +2179,39 @@ function onMapClick(e) {
     else if (map.getZoom() == 12) { map.setView(e.latlng, map.getZoom() + 1) }
     else { map.setView(e.latlng) }
 
-    var geotiffArea = false;
+    // var geotiffArea = false;
 
 /*     if (lat >= 59.7 && lat <= 69.3 && lon >= 21 && lon <= 31.6) {
         geotiffArea = true;
     } */
 
-    //The Northest Finland
-    if (lat >= 68.7 && lat <= 69.3 && lon >= 26 && lon <= 29) {
-        geotiffArea = true;
-    }
-    //North Finland
-    else if (lat >= 68 && lat < 68.7 && lon >= 22 && lon <= 28.8) {
-        geotiffArea = true;
-    }
-    //North-Middle Finland
-    else if (lat >= 64.4 && lat < 68 && lon >= 23.3 && lon <= 30.2) {
-        geotiffArea = true;
-    }
-    //South-Middle Finland
-    else if (lat >= 63.5 && lat < 64.4 && lon >= 22 && lon <= 30.6) {
-        geotiffArea = true;
-    }
-    //South Finland
-    else if (lat >= 60.3 && lat < 63.5 && lon >= 21 && lon <= 31.6) {
-        geotiffArea = true;
-    }
-    //The Southest Finland
-    else if (lat >= 59.7 && lat < 60.3 && lon >= 21 && lon <= 26.9) {
-        geotiffArea = true;
-    }
+    // //The Northest Finland
+    // if (lat >= 68.7 && lat <= 69.3 && lon >= 26 && lon <= 29) {
+    //     geotiffArea = true;
+    // }
+    // //North Finland
+    // else if (lat >= 68 && lat < 68.7 && lon >= 22 && lon <= 28.8) {
+    //     geotiffArea = true;
+    // }
+    // //North-Middle Finland
+    // else if (lat >= 64.4 && lat < 68 && lon >= 23.3 && lon <= 30.2) {
+    //     geotiffArea = true;
+    // }
+    // //South-Middle Finland
+    // else if (lat >= 63.5 && lat < 64.4 && lon >= 22 && lon <= 30.6) {
+    //     geotiffArea = true;
+    // }
+    // //South Finland
+    // else if (lat >= 60.3 && lat < 63.5 && lon >= 21 && lon <= 31.6) {
+    //     geotiffArea = true;
+    // }
+    // //The Southest Finland
+    // else if (lat >= 59.7 && lat < 60.3 && lon >= 21 && lon <= 26.9) {
+    //     geotiffArea = true;
+    // }
 
-    if (map.getZoom() > 6 && geotiffArea) {
+    // if (map.getZoom() > 6 && geotiffArea) {
+    if (map.getZoom() > 6) {
         if (map.hasLayer(treecoverLayer)) {
             map.removeLayer(treecoverLayer);
             map.removeControl(treecoverLegend);
@@ -2216,8 +2227,9 @@ function onMapClick(e) {
         }
     }
 
-    if (map.getZoom() > 6 && geotiffArea) {
-        if (map.hasLayer(soilwetnessTimeLayer)) {
+     // if (map.getZoom() > 6 && geotiffArea) {
+    if (map.getZoom() > 6) {
+       if (map.hasLayer(soilwetnessTimeLayer)) {
             map.removeLayer(soilwetnessTimeLayer);
             map.removeLayer(soilwetnessTimeLayer2);
             map.removeControl(soilwetnessLegend);
