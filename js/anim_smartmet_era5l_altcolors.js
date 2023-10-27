@@ -87,8 +87,8 @@ $.get('https://desm.harvesterseasons.com/wms?&service=WMS&request=GetCapabilitie
 
     let swiDateList;
     for (i = 0; i < layerlist.length; i++) {
-        // if (layerlist[i].childNodes[1].firstChild.nodeValue === 'gui:isobands:SWI_SWI2-M3M3') {
-        if (layerlist[i].childNodes[1].firstChild.nodeValue === 'gui:isobands:SWI_SWI2') {
+        if (layerlist[i].childNodes[1].firstChild.nodeValue === 'harvester:swi:SWI2-0TO1') {
+        // if (layerlist[i].childNodes[1].firstChild.nodeValue === 'gui:isobands:SWI_SWI2') {
             // console.debug(layerlist[i].childNodes)
             // console.debug(layerlist[i].childNodes[1].firstChild.nodeValue)
             // console.debug(layerlist[i].childNodes[41].firstChild)
@@ -1054,17 +1054,17 @@ soilwetLegend.onAdd = function (map) {
     // var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:SOILWET-M3M3&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
     // var src = 'https://sm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:SOILWET1-M&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
     var div = L.DomUtil.create('div', 'info legend');
-    div.style.width = '85px';
-    div.style.height = '185px';
-    // if (screen.width < 425) {
-    //     // div.style.width = '65px';
-    //     // div.style.height = '325px';
-    //     div.style.width = '60px';
-    //     div.style.height = '285px';
-    // } else {
-    //     div.style.width = '65px';
-    //     div.style.height = '320px';
-    // }
+    // div.style.width = '85px';
+    // div.style.height = '185px';
+    if (screen.width < 425) {
+        // div.style.width = '65px';
+        // div.style.height = '325px';
+        div.style.width = '75px';
+        div.style.height = '285px';
+    } else {
+        div.style.width = '85px';
+        div.style.height = '320px';
+    }
     div.style['background-image'] = 'url(' + src + ')';
     // div.style['background-size'] = 'contain';
     div.style['background-size'] = 'cover';
