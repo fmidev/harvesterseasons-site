@@ -2,6 +2,7 @@ function drawtimeseries() {
     // Inside Finland, seasonal snow depth and soil wetness combined and scaled with SMARTOBS/SMARTMET observations
 
     // Fetch soil wetness data
+    // var dataUrlSW = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWI2:SWIC:5022,SWI2-0TO1:SWI:5059,SWVL2-M3M3:SMARTMET:5015" + SWensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&precision=full&source=grid&timeformat=sql&tz=utc";
     var dataUrlSW = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWI2-0TO1:SWI:5059,SWVL2-M3M3:SMARTMET:5015" + SWensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&precision=full&source=grid&timeformat=sql&tz=utc";
     $.getJSON(dataUrlSW, function (dataSW) {
 
@@ -36,7 +37,7 @@ function drawtimeseries() {
             // // Scale seasonal soil wetness using SMARTMET-forecast
             // let dataSWscaled = [];
             // dataSWscaled = scalingFunction(dataSW, SWensemble2list, smartmetIdx, perturbations, "SWI2-0TO1:SWI:5059");
-            dataSWscaled = dataSW;
+            // dataSWscaled = dataSW;
 
 
             // Fetch snow depth data
@@ -58,9 +59,9 @@ function drawtimeseries() {
                 let dataSHscaled = [];
                 dataSHscaled = scalingFunction(dataSH, SHensemblelist, smartobsIdx, perturbations, "HSNOW-M:SMARTOBS:13:4", "HSNOW-M:SMARTMET:5027");
 
-                // Summer index from the scaled seasonal soil wetness
-                let summer1series = [];
-                summer1series = harvidx(0.55, dataSWscaled, SWensemblelist, perturbations, "SWI-0TO1:SWI:5059")
+                // // Summer index from the scaled seasonal soil wetness
+                // let summer1series = [];
+                // summer1series = harvidx(0.55, dataSWscaled, SWensemblelist, perturbations, "SWI-0TO1:SWI:5059")
 
                 // Winter index from the scaled seasonal snow depth
                 let winter1series = [];
@@ -81,13 +82,13 @@ function drawtimeseries() {
                         for (i = 0, k = 0; i < data.length; i++) {
                             var summer1, summer2, winter1, winter2;
 
-                            // Seasonal summer index scaled with observations (SWI2-0TO1:ECXSF & SWI2-0TO1:SWI)
-                            if (summer1series.length == data.length) { summer1 = summer1series[i]; }
-                            else { summer1 = 'nan'; }
+                            // // Seasonal summer index scaled with observations (SWI2-0TO1:ECXSF & SWI2-0TO1:SWI)
+                            // if (summer1series.length == data.length) { summer1 = summer1series[i]; }
+                            // else { summer1 = 'nan'; }
 
                             // Seasonal summer index (SWI2:ECXSF)
-                            // if (data[i][param2] !== null) { summer1 = data[i][param2]; }
-                            // else { summer1 = 'nan'; }
+                            if (data[i][param2] !== null) { summer1 = data[i][param2]; }
+                            else { summer1 = 'nan'; }
 
                             // Seasonal winter index, combined and scaled with observations (HSNOW-M:ECBSF & HSNOW-M:SMARTOBS, TSOIL-K:ECBSF)                     
                             if (data[i][param8] !== null) { winter1 = Math.max(data[i][param3], data[i][param8]); }
@@ -138,44 +139,47 @@ function drawtimeseries() {
                             document.getElementById("graphB").innerHTML = "Error loading data";
                         }
 
-                        // Plot scaled soil wetness time series
-                        var dataSW2 = [];
-                        for (k = 0; k < dataSWscaled.length; k++) {
-                            dataSW2[k] = [];
-                            // Date format that works also in mobile safari
-                            dataSW2[k][0] = new Date(dataSWscaled[k]["utctime"].replace(/-/g, "/"));
-                            for (i = 0; i <= perturbations; i = i + 1) {
-                                // Remove seasonal forecast before startDate_smartobs-1day
-                                if (dataSW2[k][0] < smartmetDate) {
-                                    // Remove seasonal forecast before smartobsDate
-                                    dataSW2[k][i+1] = null;
-                                // } else if (dataSW[k][SWensemblelist[i]] == 0 || dataSWscaled[k][SWensemblelist[i]] < 0) {
-                                    // Set SW to 0 if non-scaled SW is 0 or scaled < 0
-                                //    dataSW2[k][i+1] = 0;
-                                } else {
-                                    dataSW2[k][i+1] = dataSWscaled[k][SWensemblelist[i]];
-                                }
-                            }
-                            dataSW2[k][perturbations + 2] = dataSW[k]["SWVL2-M3M3:SMARTMET:5015"];
-                            if (dataSW[k]["SWI2-0TO1:SWI:5059"] > 0) {
-                                dataSW2[k][perturbations + 3] = dataSW[k]["SWI2-0TO1:SWI:5059"];
-                            }
-                        }
+                        // // Plot scaled soil wetness time series
+                        // var dataSW2 = [];
+                        // for (k = 0; k < dataSWscaled.length; k++) {
+                        //     dataSW2[k] = [];
+                        //     // Date format that works also in mobile safari
+                        //     dataSW2[k][0] = new Date(dataSWscaled[k]["utctime"].replace(/-/g, "/"));
+                        //     for (i = 0; i <= perturbations; i = i + 1) {
+                        //         // Remove seasonal forecast before startDate_smartobs-1day
+                        //         if (dataSW2[k][0] < smartmetDate) {
+                        //             // Remove seasonal forecast before smartobsDate
+                        //             dataSW2[k][i+1] = null;
+                        //         // } else if (dataSW[k][SWensemblelist[i]] == 0 || dataSWscaled[k][SWensemblelist[i]] < 0) {
+                        //             // Set SW to 0 if non-scaled SW is 0 or scaled < 0
+                        //         //    dataSW2[k][i+1] = 0;
+                        //         } else {
+                        //             dataSW2[k][i+1] = dataSWscaled[k][SWensemblelist[i]];
+                        //         }
+                        //     }
+                        //     dataSW2[k][perturbations + 2] = dataSW[k]["SWVL2-M3M3:SMARTMET:5015"];
+                        //     if (dataSW[k]["SWI2-0TO1:SWI:5059"] > 0) {
+                        //         dataSW2[k][perturbations + 3] = dataSW[k]["SWI2-0TO1:SWI:5059"];
+                        //     }
+                        // }
 
                         // Plot soil wetness time series
-                        // var dataSW2 = [];
-                        // for (k = 0; k < dataSW.length; k++) {
-                        //    dataSW2[k] = [];
+                        var dataSW2 = [];
+                        for (k = 0; k < dataSW.length; k++) {
+                           dataSW2[k] = [];
                             // Date format that works also in mobile safari
-                        //    dataSW2[k][0] = new Date(dataSW[k]["utctime"].replace(/-/g, "/"));
-                        //    for (i = 0; i <= perturbations; i = i + 1) {
-                        //       dataSW2[k][i + 1] = dataSW[k][SWensemblelist[i]];
+                           dataSW2[k][0] = new Date(dataSW[k]["utctime"].replace(/-/g, "/"));
+                           for (i = 0; i <= perturbations; i = i + 1) {
+                              dataSW2[k][i + 1] = dataSW[k][SWensemblelist[i]];
+                           }
+                           dataSW2[k][perturbations + 2] = dataSW[k]["SWVL2-M3M3:SMARTMET:5015"];
+                           dataSW2[k][perturbations + 3] = dataSW[k]["SWI2-0TO1:SWI:5059"];
+                        //    dataSW2[k][perturbations + 4] = dataSW[k]["SWI2:SWIC:5022"];
+
+                        //    if (dataSW[k]["SWI2-0TO1:SWI:5059"] > 0) {
+                        //        dataSW2[k][perturbations + 3] = dataSW[k]["SWI2-0TO1:SWI:5059"];
                         //    }
-                        //    dataSW2[k][perturbations + 2] = dataSW[k]["SWVL2-M3M3:SMARTMET:5015"];
-                        //    if (dataSW[k]["SWI2:SWI:5059"] > 0) {
-                        //        dataSW2[k][perturbations + 3] = dataSW[k]["SWI2:SWI:5059"]/100;
-                        //    }
-                        //}
+                        }
 
                         gsw = new Dygraph(
                             document.getElementById("graphsw"),

@@ -673,19 +673,19 @@ var perturbations = 50;
 //     SWensemble2list[i] = "DIFF{SOILWET-M3M3:ECBSF:::7:3:" + i + ";SWVL2-M3M3:SMARTMET:5015}";
 // }
 
-var SWensemblelist = ["SWI2-0TO1:ECXSF:5062:1:0:0:0"];
-var SWensemble2 = "DIFF{SWI2-0TO1:ECXSF:5062:1:0:0:0;SWI2-0TO1:SWI:5059}";
-var SWensemble2list = ["DIFF{SWI2-0TO1:ECXSF:5062:1:0:0:0;SWI2-0TO1:SWI:5059}"];
-for (i = 1; i <= perturbations; i = i + 1) {
-    SWensemblelist[i] = "SWI2-0TO1:ECXSF:5062:1:0:0:" + i ;
-    SWensemble2 += ",DIFF{SWI2-0TO1:ECXSF:5062:1:0:0:" + i + ";SWI2-0TO1:SWI:5059}";
-    SWensemble2list[i] = "DIFF{SWI2-0TO1:ECXSF:5062:1:0:0:" + i + ";SWI2-0TO1:SWI:5059}";
-}
-
 // var SWensemblelist = ["SWI2-0TO1:ECXSF:5062:1:0:0:0"];
+// var SWensemble2 = "DIFF{SWI2-0TO1:ECXSF:5062:1:0:0:0;SWI2-0TO1:SWI:5059}";
+// var SWensemble2list = ["DIFF{SWI2-0TO1:ECXSF:5062:1:0:0:0;SWI2-0TO1:SWI:5059}"];
 // for (i = 1; i <= perturbations; i = i + 1) {
 //     SWensemblelist[i] = "SWI2-0TO1:ECXSF:5062:1:0:0:" + i ;
-//}
+//     SWensemble2 += ",DIFF{SWI2-0TO1:ECXSF:5062:1:0:0:" + i + ";SWI2-0TO1:SWI:5059}";
+//     SWensemble2list[i] = "DIFF{SWI2-0TO1:ECXSF:5062:1:0:0:" + i + ";SWI2-0TO1:SWI:5059}";
+// }
+
+var SWensemblelist = ["SWI2-0TO1:ECXSF:5062:1:0:0:0"];
+for (i = 1; i <= perturbations; i = i + 1) {
+    SWensemblelist[i] = "SWI2-0TO1:ECXSF:5062:1:0:0:" + i ;
+}
 
 var SHensemblelist = ["HSNOW-M:ECBSF::1:0:1:0"];
 var SHensemble2 = "DIFF{HSNOW-M:ECBSF::1:0:1:0;HSNOW-M:SMARTOBS:13:4}";
@@ -1921,8 +1921,10 @@ for (i = 0; i <= perturbations; i = i + 1) {
 }
 label[perturbations+2] = 'SW-FMI';
 label[perturbations+3] = 'SWI2';
+// label[perturbations+4] = 'SWIC';
 labelstxt[label[perturbations+2]]= { fillGraph: false, strokeWidth: 3, color: 'red' };
 labelstxt[label[perturbations+3]]= { fillGraph: false, strokeWidth: 3, color: 'blue' };
+// labelstxt[label[perturbations+4]]= { fillGraph: false, strokeWidth: 3, color: 'green' };
 
 // var SWensemble = "";
 // var label = ["date", "SND-0"];
