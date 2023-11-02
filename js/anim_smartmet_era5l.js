@@ -1921,10 +1921,10 @@ for (i = 0; i <= perturbations; i = i + 1) {
 }
 label[perturbations+2] = 'SW-FMI';
 label[perturbations+3] = 'SWI2';
-// label[perturbations+4] = 'SWIC';
+label[perturbations+4] = 'SWIC';
 labelstxt[label[perturbations+2]]= { fillGraph: false, strokeWidth: 3, color: 'red' };
 labelstxt[label[perturbations+3]]= { fillGraph: false, strokeWidth: 3, color: 'blue' };
-// labelstxt[label[perturbations+4]]= { fillGraph: false, strokeWidth: 3, color: 'green' };
+labelstxt[label[perturbations+4]]= { fillGraph: false, strokeWidth: 3, color: 'green' };
 
 // var SWensemble = "";
 // var label = ["date", "SND-0"];

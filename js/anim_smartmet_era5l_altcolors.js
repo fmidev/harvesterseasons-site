@@ -1941,8 +1941,10 @@ for (i = 0; i <= perturbations; i = i + 1) {
 }
 label[perturbations+2] = 'SW-FMI';
 label[perturbations+3] = 'SWI2';
-labelstxt[label[perturbations+2]]= { fillGraph: false, strokeWidth: 3, color: 'red' };
-labelstxt[label[perturbations+3]]= { fillGraph: false, strokeWidth: 3, color: 'blue' };
+label[perturbations+4] = 'SWIC';
+labelstxt[label[perturbations+2]]= { fillGraph: false, strokeWidth: 3, color: 'blue' };
+labelstxt[label[perturbations+3]]= { fillGraph: false, strokeWidth: 3, color: 'purple' };
+labelstxt[label[perturbations+4]]= { fillGraph: false, strokeWidth: 3, color: 'green' };
 
 // var SWensemble = "";
 // var label = ["date", "SND-0"];
@@ -2016,7 +2018,7 @@ for (i = 1; i <= perturbations; i = i + 1) {
     SHensemble += ",HSNOW-M:ECBSF::1:0:3:" + i ;
 }
 label[perturbations+2] = 'SH-FMI';
-labelstxt[label[perturbations+2]]= { fillGraph: false, strokeWidth: 3, color: 'red' };
+labelstxt[label[perturbations+2]]= { fillGraph: false, strokeWidth: 3, color: 'blue' };
 
 /* // Test version with double ensembles
 var SHensemble = "SD-M:ECBSF::1:0:1:0";
