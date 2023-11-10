@@ -626,7 +626,7 @@ const param4="ensover{0.4;0.9;HSNOW-M:ECBSF::1:0:3:1-50;HSNOW-M:ECBSF::1:0:1:0}"
 
 const param5 = "HARVIDX{0.55;SWI2-0TO1:SWI}";
 // const param6 = "HARVIDX{-0.7;TG-K:SMARTMET}";
-const param6 = "HARVIDX{-0.7;STL1-C:EDTE}";
+const param6 = "HARVIDX{273.05;TSOIL-K:EDTE}";
 const param7 = "ensover{0.4;0.9;HSNOW-M:SMARTMET:5027}";
 
 const param8 = "ensover{0.4;0.9;HSNOW-M:SMARTOBS:13:4}";
