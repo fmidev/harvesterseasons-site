@@ -2,7 +2,7 @@ function drawtimeseries() {
     // Inside Finland, seasonal snow depth and soil wetness combined and scaled with SMARTOBS/SMARTMET observations
 
     // Fetch soil wetness data
-    var dataUrlSW = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWI2:SWI:5059,SWVL2-M3M3:SMARTMET:5015" + SWensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&precision=full&source=grid&timeformat=sql&tz=utc";
+    var dataUrlSW = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWI2-0TO1:SWI:5059,SWVL2-M3M3:SMARTMET:5015" + SWensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&precision=full&source=grid&timeformat=sql&tz=utc";
     $.getJSON(dataUrlSW, function (dataSW) {
 
         // Find the latest SWVL2-M3M3:SMARTMET value
@@ -75,7 +75,7 @@ function drawtimeseries() {
                 // const param8 = "ensover{0.4;0.9;HSNOW-M:SMARTOBS:13:4}";
 
                 // Fetch rest of the trafficability index series
-                graphLoad = $.getJSON("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWI2:SWI:5059,SWVL2-M3M3:SMARTMET:5015," + param2 + "," + param3 + "," + param5 + "," + param7 + "," + param8 + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc",
+                graphLoad = $.getJSON("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWI2-0TO1:SWI:5059,SWVL2-M3M3:SMARTMET:5015," + param2 + "," + param3 + "," + param5 + "," + param7 + "," + param8 + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc",
                     function (data) {
                         var graphdata = [];
                         for (i = 0, k = 0; i < data.length; i++) {
@@ -157,8 +157,8 @@ function drawtimeseries() {
                         //         }
                         //     }
                         //     dataSW2[k][perturbations + 2] = dataSW[k]["SWVL2-M3M3:SMARTMET:5015"];
-                        //     if (dataSW[k]["SWI2:SWI:5059"] > 0) {
-                        //         dataSW2[k][perturbations + 3] = dataSW[k]["SWI2:SWI:5059"]/100;
+                        //     if (dataSW[k]["SWI2-0TO1:SWI:5059"] > 0) {
+                        //         dataSW2[k][perturbations + 3] = dataSW[k]["SWI2-0TO1:SWI:5059"]/100;
                         //     }
                         // }
 
@@ -172,9 +172,10 @@ function drawtimeseries() {
                                 dataSW2[k][i + 1] = dataSW[k][SWensemblelist[i]];
                             }
                             dataSW2[k][perturbations + 2] = dataSW[k]["SWVL2-M3M3:SMARTMET:5015"];
-                            if (dataSW[k]["SWI2:SWI:5059"] > 0) {
-                                dataSW2[k][perturbations + 3] = dataSW[k]["SWI2:SWI:5059"]/100;
-                            }
+                            dataSW2[k][perturbations + 3] = dataSW[k]["SWI2-0TO1:SWI:5059"];
+                            // if (dataSW[k]["SWI2:SWI:5059"] > 0) {
+                            //     dataSW2[k][perturbations + 3] = dataSW[k]["SWI2:SWI:5059"]/100;
+                            // }
                         }
 
                         gsw = new Dygraph(
