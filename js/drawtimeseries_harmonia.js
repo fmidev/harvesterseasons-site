@@ -1,6 +1,6 @@
 function drawtimeseries() {
 
-    graphLoad = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,RR-M:ECXB2SF:5021:1:0:1:0" + SWensemble2 + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
+    graphLoad = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,RR-M:ECXB2SF:5054:1:0:1:0" + SWensemble2 + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
         function (data) {
             if (data.length > 0) {
                 grr = new Dygraph(
