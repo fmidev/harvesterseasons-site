@@ -49,7 +49,7 @@ var dateString_origintime = startYear.toString() + startMonth + startDay + '0000
 
 let ndviDate, ndviEndDate;
 
-$.get('https://sm.harvesterseasons.com/wms?&service=WMS&request=GetCapabilities', function (data) {
+$.get('https://desm.harvesterseasons.com/wms?&service=WMS&request=GetCapabilities', function (data) {
 
     let layerlist = data.getElementsByTagName("Layer");
     let ndviDateList;
@@ -672,7 +672,7 @@ var opacity = slider.value;
 // function plotgeotiffstatic() {
 // }
 
-var smartWMS = 'https://sm.harvesterseasons.com/wms?';
+var smartWMS = 'https://desm.harvesterseasons.com/wms?';
 
 var temperatureLayerOptions = {
     crs: L.CRS.EPSG4326,
@@ -759,7 +759,7 @@ var ndviTimeLayer = L.timeDimension.layer.wms(ndviLayer, {cache: 100});
 // var ndviTimeLayer = L.timeDimension.layer.wms(ndviLayer, {cache: 100, timeInterval: ndvidateString});
 
 
-// https://sm.harvesterseasons.com/wms?&SERVICE=WMS&REQUEST=GetMap&VERSION=1.3.0&LAYERS=harvester:s3sy:NDVI&STYLES=&FORMAT=image/png&TRANSPARENT=true&HEIGHT=800&WIDTH=800&20220111T000000&CRS=EPSG:4326&BBOX=34,-10,71,50
+// https://desm.harvesterseasons.com/wms?&SERVICE=WMS&REQUEST=GetMap&VERSION=1.3.0&LAYERS=harvester:s3sy:NDVI&STYLES=&FORMAT=image/png&TRANSPARENT=true&HEIGHT=800&WIDTH=800&20220111T000000&CRS=EPSG:4326&BBOX=34,-10,71,50
 
 /* //fireWMS = "https://data.fmi.fi/fmi-apikey/edfa704e-69a2-45e2-89bf-d173d79b6b76/wms?";
 fireWMS2 = "https://ies-ows.jrc.ec.europa.eu/effis?";
@@ -865,7 +865,7 @@ var ndviLegend = L.control({
 });
 
 tempLegend.onAdd = function (map) {
-    var src = 'https://sm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:TSOIL-C-short&sld_version=1.1.0&style=&format=image/png&WIDTH=60&HEIGHT=455';
+    var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:TSOIL-C-short&sld_version=1.1.0&style=&format=image/png&WIDTH=60&HEIGHT=455';
     var div = L.DomUtil.create('div', 'info legend');
     div.style.width = '48px';
     if (screen.width < 425) {
@@ -886,19 +886,19 @@ tempLegend.onAdd = function (map) {
 };
 
 snowLegend.onAdd = function (map) {
-    var src = 'https://sm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:FF-MS&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=60&HEIGHT=185';
+    var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:FF-MS&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=60&HEIGHT=185';
     var div = L.DomUtil.create('div', 'info legend');
-    // if (screen.width < 425) {
-    //     // div.style.width = '65px';
-    //     // div.style.height = '325px';
-    //     div.style.width = '60px';
-    //     div.style.height = '285px';
-    // } else {
-    //     div.style.width = '65px';
-    //     div.style.height = '320px';
-    // }
-    div.style.width = '60px';
-    div.style.height = '185px';
+    if (screen.width < 425) {
+        // div.style.width = '65px';
+        // div.style.height = '325px';
+        div.style.width = '60px';
+        div.style.height = '285px';
+    } else {
+        div.style.width = '65px';
+        div.style.height = '320px';
+    }
+    // div.style.width = '60px';
+    // div.style.height = '185px';
     div.style['background-image'] = 'url(' + src + ')';
     // div.style['background-size'] = 'contain';
     div.style['background-size'] = 'cover';
@@ -907,8 +907,8 @@ snowLegend.onAdd = function (map) {
 };
 
 soilwetLegend.onAdd = function (map) {
-    // var src = 'https://sm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:SOILWET-M3M3&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
-    var src = 'https://sm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:RR-M&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
+    // var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:SOILWET-M3M3&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
+    var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:RR-M&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
     var div = L.DomUtil.create('div', 'info legend');
     if (screen.width < 425) {
         // div.style.width = '65px';
@@ -927,8 +927,8 @@ soilwetLegend.onAdd = function (map) {
 };
 
 soilwetLegend2.onAdd = function (map) {
-    // var src = 'https://sm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:SOILWET-M3M3&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
-    var src = 'https://sm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecxb2sf:RR-M&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
+    // var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:SOILWET-M3M3&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
+    var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecxb2sf:RR-M&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
     var div = L.DomUtil.create('div', 'info legend');
     if (screen.width < 425) {
         // div.style.width = '65px';
@@ -947,7 +947,7 @@ soilwetLegend2.onAdd = function (map) {
 };
 
 /* fireLegend.onAdd = function (map) {
-    //var src = 'https://sm.harvesterseasons.com/wms?service=WMS&request=GetLegendGraphic&version=1.3.0&sld_version=1.1.0&style=default&format=image%2Fpng&layer=fmi%3Akosteusmalli%3A10km%3Aforestfireindexlegend&WIDTH=65&HEIGHT=110';
+    //var src = 'https://desm.harvesterseasons.com/wms?service=WMS&request=GetLegendGraphic&version=1.3.0&sld_version=1.1.0&style=default&format=image%2Fpng&layer=fmi%3Akosteusmalli%3A10km%3Aforestfireindexlegend&WIDTH=65&HEIGHT=110';
     var src = 'https://ies-ows.jrc.ec.europa.eu/effis?format=image/png&request=getlegendgraphic&service=WMS&singletile=false&transparent=true&version=1.1.1&scale=1000000&layer=ecmwf007.fwi';
     var div = L.DomUtil.create('div', 'info legend');
     div.style.width = '140px';
@@ -961,7 +961,7 @@ soilwetLegend2.onAdd = function (map) {
 }; */
 
 fireLegend.onAdd = function (map) {
-    var src = 'https://sm.harvesterseasons.com/wms?service=WMS&request=GetLegendGraphic&version=1.3.0&sld_version=1.1.0&style=default&format=image%2Fpng&layer=fmi%3Akosteusmalli%3A10km%3Aforestfireindexlegend&WIDTH=65&HEIGHT=110';
+    var src = 'https://desm.harvesterseasons.com/wms?service=WMS&request=GetLegendGraphic&version=1.3.0&sld_version=1.1.0&style=default&format=image%2Fpng&layer=fmi%3Akosteusmalli%3A10km%3Aforestfireindexlegend&WIDTH=65&HEIGHT=110';
     var div = L.DomUtil.create('div', 'info legend');
     div.style.width = '75px';
     div.style.height = '120px';
@@ -973,7 +973,7 @@ fireLegend.onAdd = function (map) {
 };
 
 treecoverLegend.onAdd = function (map) {
-    var src = 'https://sm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:copernicus:treecoverdensitylegend&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
+    var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:copernicus:treecoverdensitylegend&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
     var div = L.DomUtil.create('div', 'info legend');
     div.style.width = '48px';
     if (screen.width < 425) {
@@ -993,7 +993,7 @@ treecoverLegend.onAdd = function (map) {
 };
 
 ndviLegend.onAdd = function (map) {
-    var src = 'https://sm.harvesterseasons.com/wms?service=WMS&request=GetLegendGraphic&version=1.3.0&sld_version=1.1.0&style=default&format=image%2Fpng&layer=harvester%3As3sy%3ANDVI&width=85&height=185';
+    var src = 'https://desm.harvesterseasons.com/wms?service=WMS&request=GetLegendGraphic&version=1.3.0&sld_version=1.1.0&style=default&format=image%2Fpng&layer=harvester%3As3sy%3ANDVI&width=85&height=185';
     var div = L.DomUtil.create('div', 'info legend');
     div.style.width = '85px';
     div.style.height = '185px';
