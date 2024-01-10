@@ -2,7 +2,8 @@ function drawtimeseries() {
     // Inside Finland, seasonal snow depth and soil wetness combined and scaled with SMARTOBS/SMARTMET observations
 
     // Fetch soil wetness data
-    var dataUrlSW = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWI2-0TO1:SWI:5059,SWVL2-M3M3:SMARTMET:5015" + SWensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&precision=full&source=grid&timeformat=sql&tz=utc";
+    // var dataUrlSW = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWI2-0TO1:SWI:5059,SWVL2-M3M3:SMARTMET:5015" + SWensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&precision=full&source=grid&timeformat=sql&tz=utc";
+    var dataUrlSW = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWI2-0TO1:SWI:5059,SWVL2-M3M3:SMARTMET:5015,SWI2-0TO1:EDTE:5068" + SWensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&precision=full&source=grid&timeformat=sql&tz=utc";
     $.getJSON(dataUrlSW, function (dataSW) {
 
         // Find the latest SWVL2-M3M3:SMARTMET value
@@ -18,17 +19,17 @@ function drawtimeseries() {
             drawOutsideFinland()
         } else {
 
-            // // Fix soilwetnessDay for the WMS-layers using smartmetIdx
+            // // // Fix soilwetnessDay for the WMS-layers using smartmetIdx
 
-            let smartmetIdxDateYear = dataSW[smartmetIdx]["utctime"].substr(0, 4);
-            let smartmetIdxDateMonth = dataSW[smartmetIdx]["utctime"].substr(5, 2);
-            let smartmetIdxDateDay = dataSW[smartmetIdx]["utctime"].substr(8, 2);
+            // let smartmetIdxDateYear = dataSW[smartmetIdx]["utctime"].substr(0, 4);
+            // let smartmetIdxDateMonth = dataSW[smartmetIdx]["utctime"].substr(5, 2);
+            // let smartmetIdxDateDay = dataSW[smartmetIdx]["utctime"].substr(8, 2);
 
-            let smartmetIdxDate = new Date(Date.UTC(smartmetIdxDateYear, smartmetIdxDateMonth - 1, smartmetIdxDateDay));
+            // let smartmetIdxDate = new Date(Date.UTC(smartmetIdxDateYear, smartmetIdxDateMonth - 1, smartmetIdxDateDay));
 
-            if (smartmetIdxDate.getTime() !== soilwetnessDate.getTime()) {
-                soilwetnessDate = smartmetIdxDate;
-            }
+            // if (smartmetIdxDate.getTime() !== soilwetnessDate.getTime()) {
+            //     soilwetnessDate = smartmetIdxDate;
+            // }
 
             // let smartmetDate = new Date(dataSW[smartmetIdx]["utctime"]);
             // Date format that works also in mobile safari
@@ -70,12 +71,13 @@ function drawtimeseries() {
 
                 // const param2 = "HARVIDX{55;SWI2:ECXSF:5062:1:0:0:0-50}";
                 // const param3 = "HARVIDX{273;TSOIL-K:ECBSF:::7:3:1-50;TSOIL-K:ECBSF:::7:1:0}";
-                // const param5 = "HARVIDX{0.4;SWVL2-M3M3:SMARTMET:5015}";
+                // const param5 = "HARVIDX{0.55;SWI2-0TO1:EDTE:5068}";
                 // const param7 = "ensover{0.4;0.9;HSNOW-M:SMARTMET:5027}";
                 // const param8 = "ensover{0.4;0.9;HSNOW-M:SMARTOBS:13:4}";
 
                 // Fetch rest of the trafficability index series
-                graphLoad = $.getJSON("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWI2-0TO1:SWI:5059,SWVL2-M3M3:SMARTMET:5015," + param2 + "," + param3 + "," + param5 + "," + param7 + "," + param8 + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc",
+                // graphLoad = $.getJSON("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWI2-0TO1:SWI:5059,SWVL2-M3M3:SMARTMET:5015," + param2 + "," + param3 + "," + param5 + "," + param7 + "," + param8 + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc",
+                graphLoad = $.getJSON("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + param2 + "," + param3 + "," + param5 + "," + param7 + "," + param8 + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc",
                     function (data) {
                         var graphdata = [];
                         for (i = 0, k = 0; i < data.length; i++) {
@@ -95,7 +97,7 @@ function drawtimeseries() {
                                 { winter1 = Math.max(data[i][param3], winter1series[i]); }
                             else { winter1 = 'nan'; }
                             
-                            // 10 day forecast summer index (SWVL2-M3M3:SMARTMET)                      
+                            // 10 day forecast summer index (SWI2:EDTE)                      
                             if (data[i][param5] !== null) { summer2 = data[i][param5]; }
                             else { summer2 = 'nan'; }
 
@@ -171,7 +173,8 @@ function drawtimeseries() {
                             for (i = 0; i <= perturbations; i = i + 1) {
                                 dataSW2[k][i + 1] = dataSW[k][SWensemblelist[i]];
                             }
-                            dataSW2[k][perturbations + 2] = dataSW[k]["SWVL2-M3M3:SMARTMET:5015"];
+                            // dataSW2[k][perturbations + 2] = dataSW[k]["SWVL2-M3M3:SMARTMET:5015"];
+                            dataSW2[k][perturbations + 2] = dataSW[k]["SWI2-0TO1:EDTE:5068"];
                             dataSW2[k][perturbations + 3] = dataSW[k]["SWI2-0TO1:SWI:5059"];
                             // if (dataSW[k]["SWI2:SWI:5059"] > 0) {
                             //     dataSW2[k][perturbations + 3] = dataSW[k]["SWI2:SWI:5059"]/100;
@@ -323,7 +326,7 @@ function drawOutsideFinland() {
 
             // graphLoad3 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SOILWET1-M:ECBSF::9:7:1:0" + SWensemble + ",SWVL2-M3M3:SMARTMET:5015&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
             // graphLoad3 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SOILWET-M3M3:ECBSF:::7:1:0" + SWensemble + ",SWVL2-M3M3:SMARTMET:5015&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
-            graphLoad3 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,VSW-M3M3:ECBSF:5022:9:7:0:0" + SWensemble + ",SWVL2-M3M3:SMARTMET:5015&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
+            graphLoad3 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime" + SWensemble + ",SWI2-0TO1:EDTE:5068,SWI2-0TO1:SWI:5059&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
                 function (data) {
                     if (data.length > 0) {
                         gsw = new Dygraph(

@@ -26,15 +26,15 @@ function plotgeotiff() {
         if (typeof geotiffSmartobsDate == 'undefined'
             || typeof geotiffSmartmetDate == 'undefined') {
 
-            // // Find the latest SMARTMET and SMARTOBS values
-            let smartobsUrl = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,HSNOW-M:SMARTOBS:13:4,SWVL2-M3M3:SMARTMET:5015&starttime=" + dateString_smartobs + "T000000Z&endtime=" + dateString_smartmet + "&timestep=1440&format=json&precision=full&tz=utc&timeformat=xml";
+            // // Find the latest EDTE and SMARTOBS values
+            let smartobsUrl = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,HSNOW-M:SMARTOBS:13:4,SWI2-0TO1:EDTE:5068&starttime=" + dateString_smartobs + "T000000Z&endtime=" + dateString_smartmet + "&timestep=1440&format=json&precision=full&tz=utc&timeformat=xml";
             $.getJSON(smartobsUrl, function (smartobsData) {
 
-                // Find the latest SMARTMET value
+                // Find the latest EDTE value
                 let geotiffSmartmetIdx = -1;
 
                 for (let i = 0; i < smartobsData.length; i++) {
-                    if (smartobsData[i]["SWVL2-M3M3:SMARTMET:5015"] !== null) {
+                    if (smartobsData[i]["SWI2-0TO1:EDTE:5068"] !== null) {
                         geotiffSmartmetIdx = i;
                     }
                 }
@@ -161,14 +161,14 @@ function plotgeotiff_scaling() {
         // const param2 = "HARVIDX{55;SWI2:ECXSF:5062:1:0:0:0-50}";
         // const param3 = "HARVIDX{273;TSOIL-K:ECBSF:::7:3:1-50;TSOIL-K:ECBSF:::7:1:0}";
         // const param4 = "ensover{0.4;0.9;HSNOW-M:ECBSF::1:0:3:1-50;HSNOW-M:ECBSF::1:0:1:0}";
-        // const param5 = "HARVIDX{0.4;SWVL2-M3M3:SMARTMET:5015}";
+        // const param5 = "HARVIDX{0.55;SWI2-0TO1:EDTE:5068}";
         // const param6 = "HARVIDX{-0.7;STL1-K:SMARTMET}";
         // const param7 = "ensover{0.4;0.9;HSNOW-M:SMARTMET:5027}";
         // const param8 = "ensover{0.4;0.9;HSNOW-M:SMARTOBS:13:4}";
 
         $.getJSON(dataUrl2, function (data) {
 
-            // Use SMARTMET when available            
+            // Use EDTE when available            
             if (data[0][param5] !== null) {
                 idxSummer = data[0][param5];
             } else {
