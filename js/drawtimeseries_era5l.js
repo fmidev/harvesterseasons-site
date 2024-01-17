@@ -173,9 +173,9 @@ function drawtimeseries() {
                             for (i = 0; i <= perturbations; i = i + 1) {
                                 dataSW2[k][i + 1] = dataSW[k][SWensemblelist[i]];
                             }
-                            // dataSW2[k][perturbations + 2] = dataSW[k]["SWVL2-M3M3:SMARTMET:5015"];
                             dataSW2[k][perturbations + 2] = dataSW[k]["SWI2-0TO1:EDTE:5068"];
                             dataSW2[k][perturbations + 3] = dataSW[k]["SWI2-0TO1:SWI:5059"];
+                            dataSW2[k][perturbations + 4] = dataSW[k]["SWVL2-M3M3:SMARTMET:5015"];
                             // if (dataSW[k]["SWI2:SWI:5059"] > 0) {
                             //     dataSW2[k][perturbations + 3] = dataSW[k]["SWI2:SWI:5059"]/100;
                             // }
