@@ -158,11 +158,10 @@ function plotgeotiff_scaling() {
         // HSNOW-M:SMARTOBS (param8) and HSNOW-M:SMARTMET (param7)
         let dataUrl2 = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + param1 + "," + param2 + "," + param3 + "," + param4ensemble + "," + param5 + "," + param7 + "," + param8 + "&starttime=" + dataYear + dataMonth + dataDay + "T000000Z&timesteps=1&format=json";
 
-        // const param2 = "HARVIDX{55;SWI2:ECXSF:5062:1:0:0:0-50}";
+        // const param2 = "HARVIDX{0.55;SWI2-0TO1:ECXSF:5062:1:0:0:0-50}";
         // const param3 = "HARVIDX{273;TSOIL-K:ECBSF:::7:3:1-50;TSOIL-K:ECBSF:::7:1:0}";
         // const param4 = "ensover{0.4;0.9;HSNOW-M:ECBSF::1:0:3:1-50;HSNOW-M:ECBSF::1:0:1:0}";
         // const param5 = "HARVIDX{0.55;SWI2-0TO1:EDTE:5068}";
-        // const param6 = "HARVIDX{-0.7;STL1-K:SMARTMET}";
         // const param7 = "ensover{0.4;0.9;HSNOW-M:SMARTMET:5027}";
         // const param8 = "ensover{0.4;0.9;HSNOW-M:SMARTOBS:13:4}";
 

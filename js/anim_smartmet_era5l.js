@@ -668,7 +668,7 @@ const param4="ensover{0.4;0.9;HSNOW-M:ECBSF::1:0:3:1-50;HSNOW-M:ECBSF::1:0:1:0}"
 const param5 = "HARVIDX{0.55;SWI2-0TO1:EDTE:5068}";
 
 // const param6 = "HARVIDX{-0.7;TG-K:SMARTMET}";
-const param6 = "HARVIDX{273.05;TSOIL-K:EDTE}";
+// const param6 = "HARVIDX{273.05;TSOIL-K:EDTE}";
 
 const param7 = "ensover{0.4;0.9;HSNOW-M:SMARTMET:5027}";
 const param8 = "ensover{0.4;0.9;HSNOW-M:SMARTOBS:13:4}";
@@ -1103,7 +1103,8 @@ snowLegend.onAdd = function (map) {
 };
 
 soilwetLegend.onAdd = function (map) {
-    var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=gui:isobands:SWI_SWI2&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
+    var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:swi:SWI2-0TO1&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
+    // var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=gui:isobands:SWI_SWI2&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
     // var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:SOILWET-M3M3&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
     // var src = 'https://sm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:SOILWET1-M&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
     var div = L.DomUtil.create('div', 'info legend');
@@ -1985,12 +1986,12 @@ for (i = 0; i <= perturbations; i = i + 1) {
     labelstxt[label[i+1]]= { fillGraph: false };
     SWensemble += ",SWI2-0TO1:ECXSF:5062:1:0:0:" + i;
 }
-label[perturbations+2] = 'SWI-EDTE';
-label[perturbations+3] = 'SWI2';
-label[perturbations+4] = 'SW-FMI';
-labelstxt[label[perturbations+2]]= { fillGraph: false, strokeWidth: 3, color: 'red' };
-labelstxt[label[perturbations+3]]= { fillGraph: false, strokeWidth: 3, color: 'blue' };
-labelstxt[label[perturbations+4]]= { fillGraph: false, strokeWidth: 3, color: 'black' };
+label[perturbations+2] = 'SW-FMI';
+label[perturbations+3] = 'SWI-EDTE';
+label[perturbations+4] = 'SWI2';
+labelstxt[label[perturbations+2]]= { fillGraph: false, strokeWidth: 3, color: 'black' };
+labelstxt[label[perturbations+3]]= { fillGraph: false, strokeWidth: 3, color: 'red' };
+labelstxt[label[perturbations+4]]= { fillGraph: false, strokeWidth: 3, color: 'blue' };
 
 // var SWensemble = "";
 // var label = ["date", "SND-0"];
