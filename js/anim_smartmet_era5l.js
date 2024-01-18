@@ -958,7 +958,7 @@ var ndviTimeLayer = L.timeDimension.layer.wms(ndviLayer, {cache: 100});
 
 // https://sm.harvesterseasons.com/wms?&SERVICE=WMS&REQUEST=GetMap&VERSION=1.3.0&LAYERS=harvester:s3sy:NDVI&STYLES=&FORMAT=image/png&TRANSPARENT=true&HEIGHT=800&WIDTH=800&20220111T000000&CRS=EPSG:4326&BBOX=34,-10,71,50
 
-/* //fireWMS = "https://data.fmi.fi/fmi-apikey/edfa704e-69a2-45e2-89bf-d173d79b6b76/wms?";
+//fireWMS = "https://data.fmi.fi/fmi-apikey/edfa704e-69a2-45e2-89bf-d173d79b6b76/wms?";
 fireWMS2 = "https://ies-ows.jrc.ec.europa.eu/effis?";
 
 var forestfireLayerOptions = {
@@ -977,42 +977,42 @@ var forestfireLayerOptions = {
 var forestfireLayer = L.tileLayer.wms(fireWMS2, forestfireLayerOptions);
 //var firedateString = startYear + '-' + startMonth + '-' + startDay + 'T12:00:00Z/P7M';
 //var forestfireTimeLayer = L.timeDimension.layer.wms(forestfireLayer, {cache: 10, timeInterval: firedateString});
-var forestfireTimeLayer = L.timeDimension.layer.wms(forestfireLayer, {cache: 10}); */
+var forestfireTimeLayer = L.timeDimension.layer.wms(forestfireLayer, {cache: 30});
 
-fireWMS = "https://data.fmi.fi/fmi-apikey/edfa704e-69a2-45e2-89bf-d173d79b6b76/wms?";
+// fireWMS = "https://data.fmi.fi/fmi-apikey/edfa704e-69a2-45e2-89bf-d173d79b6b76/wms?";
 
-var forestfireLayerOptions = {
-    crs: L.CRS.EPSG4326,
-    version: '1.3.0',
-    //layers: 'fmi:kosteusmalli:1km:obs:forestfireindex',
-    layers: 'fmi:kosteusmalli:10km:forestfireindex',
-    format: 'image/png',
-    transparent: 'true',
-    styles: 'default',
-    opacity: 0.7,
-    maxZoom: 9,
-    zIndex: 20,
-    exceptions: 'blank',
-};
-var forestfireLayer = L.tileLayer.wms(fireWMS, forestfireLayerOptions);
-var firedateString = startYear + '-' + startMonth + '-' + startDay + 'T12:00:00Z/P7M';
-var forestfireTimeLayer = L.timeDimension.layer.wms(forestfireLayer, {cache: 10, timeInterval: firedateString});
+// var forestfireLayerOptions = {
+//     crs: L.CRS.EPSG4326,
+//     version: '1.3.0',
+//     //layers: 'fmi:kosteusmalli:1km:obs:forestfireindex',
+//     layers: 'fmi:kosteusmalli:10km:forestfireindex',
+//     format: 'image/png',
+//     transparent: 'true',
+//     styles: 'default',
+//     opacity: 0.7,
+//     maxZoom: 9,
+//     zIndex: 20,
+//     exceptions: 'blank',
+// };
+// var forestfireLayer = L.tileLayer.wms(fireWMS, forestfireLayerOptions);
+// var firedateString = startYear + '-' + startMonth + '-' + startDay + 'T12:00:00Z/P7M';
+// var forestfireTimeLayer = L.timeDimension.layer.wms(forestfireLayer, {cache: 10, timeInterval: firedateString});
 
-var forestfire1kmLayerOptions = {
-    crs: L.CRS.EPSG4326,
-    version: '1.3.0',
-    layers: 'fmi:kosteusmalli:1km:obs:forestfireindex',
-    format: 'image/png',
-    transparent: 'true',
-    styles: 'default',
-    opacity: 0.7,
-    maxZoom: 9,
-    zIndex: 20,
-    exceptions: 'blank',
-};
-var forestfire1kmLayer = L.tileLayer.wms(fireWMS, forestfire1kmLayerOptions);
-var forestfire1kmTimeLayer = L.timeDimension.layer.wms(forestfire1kmLayer, {cache: 10});
-//forestfire1kmTimeLayer.addTo(map);
+// var forestfire1kmLayerOptions = {
+//     crs: L.CRS.EPSG4326,
+//     version: '1.3.0',
+//     layers: 'fmi:kosteusmalli:1km:obs:forestfireindex',
+//     format: 'image/png',
+//     transparent: 'true',
+//     styles: 'default',
+//     opacity: 0.7,
+//     maxZoom: 9,
+//     zIndex: 20,
+//     exceptions: 'blank',
+// };
+// var forestfire1kmLayer = L.tileLayer.wms(fireWMS, forestfire1kmLayerOptions);
+// var forestfire1kmTimeLayer = L.timeDimension.layer.wms(forestfire1kmLayer, {cache: 10});
+// //forestfire1kmTimeLayer.addTo(map);
 
 var copernicusWMS = 'https://image.discomap.eea.europa.eu/arcgis/services/GioLandPublic/HRL_TreeCoverDensity_2018/ImageServer/WMSServer?';
 
@@ -1120,7 +1120,7 @@ soilwetLegend.onAdd = function (map) {
     return div;
 };
 
-/* fireLegend.onAdd = function (map) {
+fireLegend.onAdd = function (map) {
     //var src = 'https://sm.harvesterseasons.com/wms?service=WMS&request=GetLegendGraphic&version=1.3.0&sld_version=1.1.0&style=default&format=image%2Fpng&layer=fmi%3Akosteusmalli%3A10km%3Aforestfireindexlegend&WIDTH=65&HEIGHT=110';
     var src = 'https://ies-ows.jrc.ec.europa.eu/effis?format=image/png&request=getlegendgraphic&service=WMS&singletile=false&transparent=true&version=1.1.1&scale=1000000&layer=ecmwf007.fwi';
     var div = L.DomUtil.create('div', 'info legend');
@@ -1132,20 +1132,20 @@ soilwetLegend.onAdd = function (map) {
     div.style['background-size'] = 'contain';
     div.style['background-repeat'] = 'no-repeat';
     return div;
-}; */
-
-fireLegend.onAdd = function (map) {
-    var src = 'https://desm.harvesterseasons.com/wms?service=WMS&request=GetLegendGraphic&version=1.3.0&sld_version=1.1.0&style=default&format=image%2Fpng&layer=harvester%3Afmi%3Aforestfireindexlegend&WIDTH=65&HEIGHT=110';
-    // var src = 'https://sm.harvesterseasons.com/wms?service=WMS&request=GetLegendGraphic&version=1.3.0&sld_version=1.1.0&style=default&format=image%2Fpng&layer=fmi%3Akosteusmalli%3A10km%3Aforestfireindexlegend&WIDTH=65&HEIGHT=110';
-    var div = L.DomUtil.create('div', 'info legend');
-    div.style.width = '75px';
-    div.style.height = '120px';
-    div.style['background-image'] = 'url(' + src + ')';
-    // div.style['background-size'] = 'contain';
-    div.style['background-size'] = 'cover';
-    div.style['background-repeat'] = 'no-repeat';
-    return div;
 };
+
+// fireLegend.onAdd = function (map) {
+//     var src = 'https://desm.harvesterseasons.com/wms?service=WMS&request=GetLegendGraphic&version=1.3.0&sld_version=1.1.0&style=default&format=image%2Fpng&layer=harvester%3Afmi%3Aforestfireindexlegend&WIDTH=65&HEIGHT=110';
+//     // var src = 'https://sm.harvesterseasons.com/wms?service=WMS&request=GetLegendGraphic&version=1.3.0&sld_version=1.1.0&style=default&format=image%2Fpng&layer=fmi%3Akosteusmalli%3A10km%3Aforestfireindexlegend&WIDTH=65&HEIGHT=110';
+//     var div = L.DomUtil.create('div', 'info legend');
+//     div.style.width = '75px';
+//     div.style.height = '120px';
+//     div.style['background-image'] = 'url(' + src + ')';
+//     // div.style['background-size'] = 'contain';
+//     div.style['background-size'] = 'cover';
+//     div.style['background-repeat'] = 'no-repeat';
+//     return div;
+// };
 
 treecoverLegend.onAdd = function (map) {
     var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:copernicus:treecoverdensitylegend&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
@@ -1264,7 +1264,8 @@ map.on('overlayremove', function (e) {
             break;
         }
         case "Forest Fire Index": {
-            map.removeLayer(forestfire1kmTimeLayer);
+            // map.removeLayer(forestfire1kmTimeLayer);
+            map.removeLayer(forestfireTimeLayer); // When only one forest fire layer
             map.removeControl(fireLegend);
             break;
         }
@@ -1313,7 +1314,7 @@ map.on('overlayadd', function (e) {
             }
             else if (map.hasLayer(forestfireTimeLayer)) {
                 map.removeLayer(forestfireTimeLayer);
-                map.removeLayer(forestfire1kmTimeLayer);
+                // map.removeLayer(forestfire1kmTimeLayer);
                 lcontrol._update();
             }
             else if (map.hasLayer(treecoverLayer)) {
@@ -1354,7 +1355,7 @@ map.on('overlayadd', function (e) {
             }
             else if (map.hasLayer(forestfireTimeLayer)) {
                 map.removeLayer(forestfireTimeLayer);
-                map.removeLayer(forestfire1kmTimeLayer);
+                // map.removeLayer(forestfire1kmTimeLayer);
                 lcontrol._update();
             }
             else if (map.hasLayer(treecoverLayer)) {
@@ -1420,7 +1421,7 @@ map.on('overlayadd', function (e) {
             }
             else if (map.hasLayer(forestfireTimeLayer)) {
                 map.removeLayer(forestfireTimeLayer);
-                map.removeLayer(forestfire1kmTimeLayer);
+                // map.removeLayer(forestfire1kmTimeLayer);
                 lcontrol._update();
             }
             else if (map.hasLayer(treecoverLayer)) {
@@ -1469,13 +1470,13 @@ map.on('overlayadd', function (e) {
                 lcontrol._update();
             }
 
-            forestfire1kmTimeLayer.addTo(map);
-            if (!forestfireTimeLayer._currentLayer._map) {
-                forestfireTimeLayer.setParams({});
-                forestfire1kmTimeLayer.setParams({});
-            }
-            // // When only one forest fire layer:
-            // forestfireTimeLayer.setParams({});
+            // forestfire1kmTimeLayer.addTo(map);
+            // if (!forestfireTimeLayer._currentLayer._map) {
+            //     forestfireTimeLayer.setParams({});
+            //     forestfire1kmTimeLayer.setParams({});
+            // }
+            // When only one forest fire layer:
+            forestfireTimeLayer.setParams({});
             fireLegend.addTo(this);
             lcontrol._overlaysList.children[5].control.disabled = true;
             lcontrol._overlaysList.children[5].style.color = "rgb(190, 190, 190)";
@@ -1507,7 +1508,7 @@ map.on('overlayadd', function (e) {
             }
             else if (map.hasLayer(forestfireTimeLayer)) {
                 map.removeLayer(forestfireTimeLayer);
-                map.removeLayer(forestfire1kmTimeLayer);
+                // map.removeLayer(forestfire1kmTimeLayer);
                 lcontrol._update();
             }
             else if (map.hasLayer(harvLayer)) {
@@ -1565,7 +1566,7 @@ map.on('overlayadd', function (e) {
             }
             else if (map.hasLayer(forestfireTimeLayer)) {
                 map.removeLayer(forestfireTimeLayer);
-                map.removeLayer(forestfire1kmTimeLayer);
+                // map.removeLayer(forestfire1kmTimeLayer);
                 lcontrol._update();
             }
             else if (map.hasLayer(treecoverLayer)) {
@@ -1664,7 +1665,7 @@ map.on('overlayadd', function (e) {
             }
             else if (map.hasLayer(forestfireTimeLayer)) {
                 map.removeLayer(forestfireTimeLayer);
-                map.removeLayer(forestfire1kmTimeLayer);
+                // map.removeLayer(forestfire1kmTimeLayer);
                 lcontrol._update();
             }
             else if (map.hasLayer(harvLayer)) {
@@ -1780,7 +1781,7 @@ map.on('zoomend', function(e) {
         }
         else if (map.hasLayer(forestfireTimeLayer)) {
             map.removeLayer(forestfireTimeLayer); 
-            map.removeLayer(forestfire1kmTimeLayer); 
+            // map.removeLayer(forestfire1kmTimeLayer); 
             forecast = 3; 
         }
         // else if (map.hasLayer(ndviTimeLayer)) {
@@ -1821,7 +1822,7 @@ map.on('zoomend', function(e) {
                 snowthicknessTimeLayer.addTo(map);
             } else if (!map.hasLayer(forestfireTimeLayer) && forecast == 3) {
                 forestfireTimeLayer.addTo(map);
-                forestfire1kmTimeLayer.addTo(map);
+                // forestfire1kmTimeLayer.addTo(map);
             } 
             // else if (!map.hasLayer(ndviTimeLayer) && forecast == 4) {
             //     ndviLayer.addTo(map);
@@ -1891,7 +1892,7 @@ soilwetnessTimeLayer3.setOpacity(this.value / 100);
     if (forestfireTimeLayer) {
         opacity = this.value;
         forestfireTimeLayer.setOpacity(this.value / 100);
-        forestfire1kmTimeLayer.setOpacity(this.value / 100);
+        // forestfire1kmTimeLayer.setOpacity(this.value / 100);
         output.innerHTML = this.value + " %";
     }
     if (treecoverLayer) {
@@ -2566,7 +2567,29 @@ function plotndvi()
 
 }
 
+// function plotforestfire() {
+//     if (inFinland(marker.getLatLng().lat,marker.getLatLng().lon)) { 
+//         if (map.hasLayer(forestfireTimeLayer2)) {
+//             map.removeLayer(forestfireTimeLayer2);
+//         }
+//         if (!map.hasLayer(forestfireTimeLayer)) {
+//             forestfireTimeLayer.addTo(map);
+//             forestfireTimeLayer.setParams({});
+//             forestfire1kmTimeLayer.addTo(map);
+//             forestfire1kmTimeLayer.setParams({});
+//         }
+//     } else {
+//         if (map.hasLayer(forestfireTimeLayer)) {
+//             map.removeLayer(forestfireTimeLayer);
+//             map.removeLayer(forestfire1kmTimeLayer);
+//         }
+//         if (!map.hasLayer(forestfireTimeLayer2)) {
+//             forestfireTimeLayer2.addTo(map);
+//             forestfireTimeLayer2.setParams({});
+//         }
 
+//     }
+// }
 
 function plotsoilwetness() {
     // let soilwetnessDate = new Date('2022-09-15');
