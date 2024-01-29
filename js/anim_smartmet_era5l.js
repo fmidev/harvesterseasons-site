@@ -148,6 +148,7 @@ let edteDateList;
 
     let ndviDateList;
     for (i = 0; i < layerlist.length; i++) {
+        // if (layerlist[i].childNodes[1].firstChild.nodeValue === 'harvester:clms') {
         if (layerlist[i].childNodes[1].firstChild.nodeValue === 'harvester:s3sy') {
         // if (layerlist[i].childNodes[1].firstChild.nodeValue === 'harvester:s3sy:NDVI') {
             // console.debug(layerlist[i].childNodes)
@@ -940,6 +941,7 @@ var ndviLayerOptions = {
     crs: L.CRS.EPSG4326,
     version: '1.3.0',
     layers: 'harvester:s3sy:NDVI',
+    // layers: 'harvester:clms:CLMS_NDVI',
     format: 'image/png',
     transparent: 'true',
     styles: 'default',
@@ -1227,7 +1229,7 @@ map.on('overlayremove', function (e) {
     if (map.getZoom() <= 9 && !map.hasLayer(snowthicknessTimeLayer) &&
         !map.hasLayer(soilwetnessTimeLayer) && !map.hasLayer(temperatureTimeLayer) &&
         !map.hasLayer(forestfireTimeLayer) && !map.hasLayer(traffLayer)
-        // && !map.hasLayer(ndviTimeLayer)
+        && !map.hasLayer(ndviTimeLayer) && !map.hasLayer(treecoverLayer)
     ) {
         forecast = -1;
     }
@@ -1241,6 +1243,7 @@ map.on('overlayremove', function (e) {
         playButton.value = "Play";
         playButton.disabled = true;
     }
+
     switch (e.name) {
         case "Snow Thickness": {
             map.removeControl(snowLegend);
@@ -1274,8 +1277,9 @@ map.on('overlayremove', function (e) {
             break;
         }
         case "NDVI": {
-            if (map.hasLayer(ndviLayer)) {
-                map.removeLayer(ndviLayer);
+            if (map.hasLayer(ndviTimeLayer)) {
+                map.removeLayer(ndviTimeLayer);
+                // map.removeLayer(ndviLayer);
             }
             map.removeControl(ndviLegend);
             break;
@@ -1290,7 +1294,16 @@ map.on('overlayremove', function (e) {
             }
             harvDynamic.disabled = true;
             document.getElementById("dynamic").style.color = "rgb(190, 190, 190)";
-            playButton.disabled = true;
+            // playButton.disabled = true;
+
+            if (!map.hasLayer(snowthicknessTimeLayer) &&
+                !map.hasLayer(soilwetnessTimeLayer) && !map.hasLayer(temperatureTimeLayer) &&
+                !map.hasLayer(forestfireTimeLayer)
+                && !map.hasLayer(ndviTimeLayer)
+            ) {
+                playButton.disabled = true;
+            }
+
             break;
         }
     }
@@ -1335,7 +1348,7 @@ map.on('overlayadd', function (e) {
             break;
         }
         case "Soil Wetness": {
-            playButton.disabled = true;
+            // playButton.disabled = true;
             harvDynamic.disabled = true;
             document.getElementById("dynamic").style.color = "rgb(190, 190, 190)";
 
@@ -1343,7 +1356,7 @@ map.on('overlayadd', function (e) {
                 traffState = false;
             }
 
-            // forecast = 0;
+            forecast = 0;
             if (map.hasLayer(snowthicknessTimeLayer)) {
                 map.removeLayer(snowthicknessTimeLayer);
                 lcontrol._update();
@@ -1490,7 +1503,7 @@ map.on('overlayadd', function (e) {
             if (map.getZoom() > 9) {
                 traffState = false;
             }
-            // forecast = 4;
+            forecast = 4;
             if (map.hasLayer(soilwetnessTimeLayer)) {
                 map.removeLayer(soilwetnessTimeLayer);
                 map.removeLayer(soilwetnessTimeLayer2);
@@ -1647,7 +1660,7 @@ map.on('overlayadd', function (e) {
             if (map.getZoom() > 9) {
                 traffState = false;
             }
-            // forecast = 4;
+            forecast = 5;
             if (map.hasLayer(soilwetnessTimeLayer)) {
                 map.removeLayer(soilwetnessTimeLayer);
                 map.removeLayer(soilwetnessTimeLayer2);
@@ -1718,12 +1731,6 @@ var forecast = 1; // soil temperature
 
 map.on('zoomend', function(e) {
 
-/*     console.debug(map.hasLayer(harvStaticLayer))
-    console.debug(map.hasLayer(treecoverLayer))
- */
-
-    //console.debug(map.getZoom())
-
     if (map.getZoom() < 13) {
         harvDynamic.checked = false;
         harvDynamic.disabled = true;
@@ -1733,7 +1740,7 @@ map.on('zoomend', function(e) {
         if (!map.hasLayer(snowthicknessTimeLayer) &&
             !map.hasLayer(soilwetnessTimeLayer) && !map.hasLayer(temperatureTimeLayer) &&
             !map.hasLayer(forestfireTimeLayer) 
-            // && !map.hasLayer(ndviTimeLayer)
+            && !map.hasLayer(ndviTimeLayer)
             ) {
             playButton.disabled = true;
             if (playButton.value == "Stop") {
@@ -1754,7 +1761,11 @@ map.on('zoomend', function(e) {
     }
 
     if (map.getZoom() > 9 && map.getZoom() < 13) {
-        playButton.disabled = true;
+        // playButton.disabled = true;
+        if (!map.hasLayer(soilwetnessTimeLayer) && !map.hasLayer(ndviTimeLayer)
+        ) {
+            playButton.disabled = true;
+        }
     }
 
     if (map.getZoom() > 9) {
@@ -1813,21 +1824,27 @@ map.on('zoomend', function(e) {
         if (!map.hasLayer(treecoverLayer)
             && !map.hasLayer(ndviTimeLayer)
             && !map.hasLayer(soilwetnessTimeLayer)) {
-            // if (!map.hasLayer(soilwetnessTimeLayer) && forecast == 0) {
-            //     soilwetnessTimeLayer.addTo(map);
-            // } else 
-            if (!map.hasLayer(temperatureTimeLayer) && forecast == 1) {
+            if (!map.hasLayer(soilwetnessTimeLayer) && forecast == 0) {
+                soilwetnessTimeLayer.addTo(map);
+            } 
+            else if (!map.hasLayer(temperatureTimeLayer) && forecast == 1) {
                 temperatureTimeLayer.addTo(map);
-            } else if (!map.hasLayer(snowthicknessTimeLayer) && forecast == 2) {
+            } 
+            else if (!map.hasLayer(snowthicknessTimeLayer) && forecast == 2) {
                 snowthicknessTimeLayer.addTo(map);
-            } else if (!map.hasLayer(forestfireTimeLayer) && forecast == 3) {
+            } 
+            else if (!map.hasLayer(forestfireTimeLayer) && forecast == 3) {
                 forestfireTimeLayer.addTo(map);
                 // forestfire1kmTimeLayer.addTo(map);
             } 
-            // else if (!map.hasLayer(ndviTimeLayer) && forecast == 4) {
-            //     ndviLayer.addTo(map);
-            //     ndviTimeLayer.addTo(map);
-            // }
+            else if (!map.hasLayer(treecoverLayer) && forecast == 4) {
+                treecoverLayer.addTo(map);
+            }
+            else if (!map.hasLayer(ndviTimeLayer) && forecast == 5) {
+                ndviTimeLayer.addTo(map);
+                // ndviLayer.addTo(map);
+            }
+
         }
 
         // lcontrol._overlaysList.children[0].style.color = "initial";
@@ -1875,7 +1892,7 @@ slider.oninput = function () {
         opacity = this.value;
         soilwetnessTimeLayer.setOpacity(this.value / 100);
         soilwetnessTimeLayer2.setOpacity(this.value / 100);
-soilwetnessTimeLayer3.setOpacity(this.value / 100);
+        soilwetnessTimeLayer3.setOpacity(this.value / 100);
         output.innerHTML = this.value + " %";
     }
     if (temperatureTimeLayer) {
@@ -2261,6 +2278,7 @@ function onMapClick(e) {
             map.removeLayer(treecoverLayer);
             map.removeControl(treecoverLegend);
             lcontrol._update();
+            forecast = 4;
         }
         traffState = true;
         traffLayer.addTo(map);
@@ -2280,6 +2298,7 @@ function onMapClick(e) {
             map.removeLayer(soilwetnessTimeLayer3);
             map.removeControl(soilwetnessLegend);
             lcontrol._update();
+            forecast = 0;
         }
         traffState = true;
         traffLayer.addTo(map);
