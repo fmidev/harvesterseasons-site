@@ -1624,6 +1624,11 @@ map.on('zoomend', function(e) {
         if (!map.hasLayer(thunderforest)) {
             thunderforest.addTo(map);
         }
+        lcontrol._baseLayersList.children[1].style.color = "rgb(190, 190, 190)";
+        lcontrol._baseLayersList.children[2].style.color = "rgb(190, 190, 190)";
+    } else {
+        lcontrol._baseLayersList.children[1].style.color = "initial";
+        lcontrol._baseLayersList.children[2].style.color = "initial";
     }
 
     if (map.getZoom() < 13) {
