@@ -942,7 +942,8 @@ tempLegend.onAdd = function (map) {
         //div.style.width = '48px';
         //div.style.height = '345px';
         // div.style.height = '325px';
-        div.style.height = '285px';
+        // div.style.height = '285px';
+        div.style.height = '265px';
     } else {
         //div.style.height = '380px';
         //div.style.height = '360px';
@@ -963,7 +964,8 @@ snowLegend.onAdd = function (map) {
         // div.style.width = '65px';
         // div.style.height = '325px';
         div.style.width = '60px';
-        div.style.height = '285px';
+        // div.style.height = '285px';
+        div.style.height = '265px';
     } else {
         div.style.width = '65px';
         // div.style.height = '320px';
@@ -988,7 +990,8 @@ soilwetLegend.onAdd = function (map) {
         // div.style.width = '65px';
         // div.style.height = '325px';
         div.style.width = '75px';
-        div.style.height = '285px';
+        // div.style.height = '285px';
+        div.style.height = '265px';
     } else {
         div.style.width = '85px';
         // div.style.height = '320px';
@@ -1021,7 +1024,8 @@ treecoverLegend.onAdd = function (map) {
         // div.style.width = '65px';
         // div.style.height = '325px';
         div.style.width = '60px';
-        div.style.height = '285px';
+        // div.style.height = '285px';
+        div.style.height = '265px';
     } else {
         div.style.width = '65px';
         // div.style.height = '320px';
