@@ -36,11 +36,28 @@ var dateString = startDateYear + '-' + startDateMonth + '-01/P7M';
 let ndviDateString, ndviDateYear, ndviDateMonth, ndviDateDay;
 let ndviDate, ndviEndDate;
 
+// // Data available on the second day
+// if (now.getUTCDate() <= 1) {
+//     ndviDate = new Date(Date.UTC(startYear, startMonth2 - 1, 11));
+// }
+// else if (now.getUTCDate() <= 11) {
+//     ndviDate = new Date(Date.UTC(startYear, startMonth2 - 1, 21));
+// }
+// else if (now.getUTCDate() <= 21) {
+//     ndviDate = new Date(Date.UTC(startYear, startMonth2, 1));
+// }
+// else {
+//     ndviDate = new Date(Date.UTC(startYear, startMonth2, 11));
+// }
 
-if (now.getUTCDate() <= 11) {
+// Data available on the fourth day
+if (now.getUTCDate() <= 3) {
+    ndviDate = new Date(Date.UTC(startYear, startMonth2 - 1, 11));
+}
+else if (now.getUTCDate() <= 13) {
     ndviDate = new Date(Date.UTC(startYear, startMonth2 - 1, 21));
 }
-else if (now.getUTCDate() <= 21) {
+else if (now.getUTCDate() <= 23) {
     ndviDate = new Date(Date.UTC(startYear, startMonth2, 1));
 }
 else {
@@ -59,7 +76,9 @@ if (ndviDateDay < 10) {
 
 ndviDateString = ndviDateYear + '-' + ndviDateMonth + '-' + ndviDateDay;
 
-ndviEndDate = new Date(Date.UTC(ndviDate.getUTCFullYear(), ndviDate.getUTCMonth(), ndviDate.getUTCDate()+21)); // 22 days
+// ndviEndDate = new Date(Date.UTC(ndviDate.getUTCFullYear(), ndviDate.getUTCMonth(), ndviDate.getUTCDate()+21)); // 22 days (data available on the second day)
+
+ndviEndDate = new Date(Date.UTC(ndviDate.getUTCFullYear(), ndviDate.getUTCMonth(), ndviDate.getUTCDate()+23)); // 24 days (data available on the fourth day)
 
 var dateString_origintime = startYear.toString() + startMonth + startDay + '0000';
 
