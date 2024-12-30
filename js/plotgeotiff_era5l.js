@@ -23,24 +23,26 @@ function plotgeotiff() {
 
         // console.debug(geotiffSmartobsDate)
 
-        if (typeof geotiffSmartobsDate == 'undefined'
-            || typeof geotiffSmartmetDate == 'undefined') {
+        // if (typeof geotiffSmartobsDate == 'undefined'
+        //     || typeof geotiffSmartmetDate == 'undefined') {
+
+        if (typeof geotiffSmartobsDate == 'undefined') {
 
             // // Find the latest EDTE and SMARTOBS values
             let smartobsUrl = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,HSNOW-M:SMARTOBS:13:4,SWI2-0TO1:EDTE:5068&starttime=" + dateString_smartobs + "T000000Z&endtime=" + dateString_smartmet + "&timestep=1440&format=json&precision=full&tz=utc&timeformat=xml";
             $.getJSON(smartobsUrl, function (smartobsData) {
 
-                // Find the latest EDTE value
-                let geotiffSmartmetIdx = -1;
+                // // Find the latest EDTE value
+                // let geotiffSmartmetIdx = -1;
 
-                for (let i = 0; i < smartobsData.length; i++) {
-                    if (smartobsData[i]["SWI2-0TO1:EDTE:5068"] !== null) {
-                        geotiffSmartmetIdx = i;
-                    }
-                }
+                // for (let i = 0; i < smartobsData.length; i++) {
+                //     if (smartobsData[i]["SWI2-0TO1:EDTE:5068"] !== null) {
+                //         geotiffSmartmetIdx = i;
+                //     }
+                // }
 
-                // if (geotiffSmartmetIdx > -1) {
-                geotiffSmartmetDate = smartobsData[geotiffSmartmetIdx]["utctime"].substr(0, 10).replace(/-/g, "");
+                // // if (geotiffSmartmetIdx > -1) {
+                // geotiffSmartmetDate = smartobsData[geotiffSmartmetIdx]["utctime"].substr(0, 10).replace(/-/g, "");
 
                 // Find the latest SMARTOBS value
                 let geotiffSmartobsIdx = -1;
