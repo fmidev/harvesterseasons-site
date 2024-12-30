@@ -299,7 +299,7 @@ const rasterUrl = "https://pta.data.lit.fmi.fi/geo/harvestability/KKL_SMK_Suomi_
 
 var georastercache;
 
-var geotiffSmartmetDate;
+// var geotiffSmartmetDate;
 var geotiffSmartobsDate;
 
 parseGeoraster(rasterUrl).then(georaster => {
