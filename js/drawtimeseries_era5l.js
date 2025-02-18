@@ -61,15 +61,15 @@ function drawtimeseries() {
 
                 // // Summer index from the scaled seasonal soil wetness
                 // let summer1series = [];
-                // summer1series = harvidx(0.55, dataSWscaled, SWensemblelist, perturbations, "SWI-0TO1:SWI:5059")
+                // summer1series = harvidx(0.69, dataSWscaled, SWensemblelist, perturbations, "SWI-0TO1:SWI:5059")
 
                 // Winter index from the scaled seasonal snow depth
                 let winter1series = [];
                 winter1series = ensover(0.4, 0.9, dataSHscaled, SHensemblelist, perturbations, "HSNOW-M:SMARTOBS:13:4")
 
-                // const param2 = "HARVIDX{0.55;SWI2-0TO1:ECXSF:5062:1:0:0:0-50}";
+                // const param2 = "HARVIDX{0.69;SWI2-0TO1:ECXSF:5062:1:0:0:0-50}";
                 // const param3 = "HARVIDX{273;TSOIL-K:ECBSF:::7:3:1-50;TSOIL-K:ECBSF:::7:1:0}";
-                // const param5 = "HARVIDX{0.55;SWI2-0TO1:EDTE:5068}";
+                // const param5 = "HARVIDX{0.69;SWI2-0TO1:EDTE:5068}";
                 // const param7 = "ensover{0.4;0.9;HSNOW-M:SMARTMET:5027}";
                 // const param8 = "ensover{0.4;0.9;HSNOW-M:SMARTOBS:13:4}";
                 //SWI2-0TO1:SWI:5059
