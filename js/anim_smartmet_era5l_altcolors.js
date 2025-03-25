@@ -979,14 +979,14 @@ var frostLegend = L.control({
 });
 
 tempLegend.onAdd = function (map) {
-    var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:TSOIL-C-short&sld_version=1.1.0&style=&format=image/png&WIDTH=60&HEIGHT=455';
+    var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:TSOIL-C-short&sld_version=1.1.0&style=&format=image/png'; //&WIDTH=60&HEIGHT=455
     var div = L.DomUtil.create('div', 'info legend');
     if (screen.width < 425) {
         div.style.width = '40px';
         div.style.height = '245px';
     } else {
         div.style.width = '48px';
-        div.style.height = '280px';
+        div.style.height = '270px';
     }
     div.style['background-image'] = 'url(' + src + ')';
     // div.style['background-size'] = 'contain';
@@ -996,14 +996,14 @@ tempLegend.onAdd = function (map) {
 };
 
 snowLegend.onAdd = function (map) {
-    var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:SD-M&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=60&HEIGHT=345';
+    var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:ecbsf:SD-M&sld_version=1.1.0&style=&FORMAT=image/png'; //&WIDTH=60&HEIGHT=345
     var div = L.DomUtil.create('div', 'info legend');
     if (screen.width < 425) {
         div.style.width = '50px';
         div.style.height = '245px';
     } else {
         div.style.width = '55px';
-        div.style.height = '280px';
+        div.style.height = '270px';
     }
     div.style['background-image'] = 'url(' + src + ')';
     // div.style['background-size'] = 'contain';
@@ -1013,14 +1013,14 @@ snowLegend.onAdd = function (map) {
 };
 
 soilwetLegend.onAdd = function (map) {
-    var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:swi:SWI2-0TO1&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
+    var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:swi:SWI2-0TO1&sld_version=1.1.0&style=&FORMAT=image/png'; //&WIDTH=65&HEIGHT=345
     var div = L.DomUtil.create('div', 'info legend');
     if (screen.width < 425) {
         div.style.width = '70px';
         div.style.height = '245px';
     } else {
         div.style.width = '80px';
-        div.style.height = '280px';
+        div.style.height = '270px';
     }
     div.style['background-image'] = 'url(' + src + ')';
     // div.style['background-size'] = 'contain';
@@ -1030,7 +1030,7 @@ soilwetLegend.onAdd = function (map) {
 };
 
 fireLegend.onAdd = function (map) {
-    var src = 'https://desm.harvesterseasons.com/wms?service=WMS&request=GetLegendGraphic&version=1.3.0&sld_version=1.1.0&style=default&format=image%2Fpng&layer=harvester%3Afmi%3Aforestfireindexlegend&WIDTH=65&HEIGHT=110';
+    var src = 'https://desm.harvesterseasons.com/wms?service=WMS&request=GetLegendGraphic&version=1.3.0&sld_version=1.1.0&style=default&format=image%2Fpng&layer=harvester%3Afmi%3Aforestfireindexlegend'; //&WIDTH=65&HEIGHT=110
     var div = L.DomUtil.create('div', 'info legend');
     div.style.width = '75px';
     div.style.height = '120px';
@@ -1042,14 +1042,14 @@ fireLegend.onAdd = function (map) {
 };
 
 treecoverLegend.onAdd = function (map) {
-    var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:copernicus:treecoverdensitylegend&sld_version=1.1.0&style=&FORMAT=image/png&WIDTH=65&HEIGHT=345';
+    var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:copernicus:treecoverdensitylegend&sld_version=1.1.0&style=&FORMAT=image/png'; //&WIDTH=65&HEIGHT=345
     var div = L.DomUtil.create('div', 'info legend');
     if (screen.width < 425) {
         div.style.width = '50px';
         div.style.height = '245px';
     } else {
         div.style.width = '55px';
-        div.style.height = '280px';
+        div.style.height = '270px';
     }
     div.style['background-image'] = 'url(' + src + ')';
     // div.style['background-size'] = 'contain';
@@ -1059,7 +1059,7 @@ treecoverLegend.onAdd = function (map) {
 };
 
 ndviLegend.onAdd = function (map) {
-    var src = 'https://desm.harvesterseasons.com/wms?service=WMS&request=GetLegendGraphic&version=1.3.0&sld_version=1.1.0&style=default&format=image%2Fpng&layer=harvester%3As3sy%3ANDVI&width=85&height=185';
+    var src = 'https://desm.harvesterseasons.com/wms?service=WMS&request=GetLegendGraphic&version=1.3.0&sld_version=1.1.0&style=default&format=image%2Fpng&layer=harvester%3As3sy%3ANDVI'; // &width=85&height=185
     var div = L.DomUtil.create('div', 'info legend');
     div.style.width = '85px';
     div.style.height = '185px';
@@ -1071,7 +1071,7 @@ ndviLegend.onAdd = function (map) {
 };
 
 frostLegend.onAdd = function (map) {
-    var src = 'https://paikkatiedot.ymparisto.fi/geoserver/vespa/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=finnrouy_absoluteValue&style=rouY_daddy';
+    var src = 'https://paikkatiedot.ymparisto.fi/geoserver/vespa/ows?service=WMS&version=1.3.0&request=GetLegendGraphic&format=image%2Fpng&layer=finnrouy_absoluteValue&style=rouY_daddy'; // &width=20&height=20
     var div = L.DomUtil.create('div', 'info legend');
     div.style.width = '85px';
     div.style.height = '185px';
@@ -1085,23 +1085,17 @@ frostLegend.onAdd = function (map) {
 var traffLayer = L.tileLayer('');
 
 var overlayMaps = {
-    "Soil Wetness": soilwetnessTimeLayer,
+    "Soil Water Index": soilwetnessTimeLayer,
     "Soil Temperature": temperatureTimeLayer.addTo(map),
     // "Soil Temperature": temperatureTimeLayer,
     "Snow Height": snowthicknessTimeLayer,
     "Forest Fire Index": forestfireTimeLayer,
     "Tree Cover % 2018": treecoverLayer,
     "Trafficability": traffLayer,
-    // "NDVI": ndviTimeLayer.addTo(map),
     "NDVI": ndviTimeLayer,
-    // "NDVI": ndviLayer,
     "Ground Frost": frostTimeLayer,
     "Real Estate Borders": estates,
 };
-
-// var overlayMaps2 = {
-//     "Estates": estates,
-// };
 
 if (screen.width < 425) {
     var lcontrol = L.control.layers(baseMaps, overlayMaps).addTo(map);
@@ -1155,7 +1149,7 @@ map.on('overlayremove', function (e) {
             map.removeControl(snowLegend);
             break;
         }
-        case "Soil Wetness": {
+        case "Soil Water Index": {
             if (map.hasLayer(soilwetnessTimeLayer2)) {
                 map.removeLayer(soilwetnessTimeLayer2);
             }
@@ -1269,7 +1263,7 @@ map.on('overlayadd', function (e) {
             }
             break;
         }
-        case "Soil Wetness": {
+        case "Soil Water Index": {
             // playButton.disabled = true;
             harvDynamic.disabled = true;
             document.getElementById("dynamic").style.color = "rgb(190, 190, 190)";
