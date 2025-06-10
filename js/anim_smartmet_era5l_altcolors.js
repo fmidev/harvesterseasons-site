@@ -616,7 +616,8 @@ function changedynamic() {
 const param1="utctime";
 
 // const param2="HARVIDX{0.55;SWI2-0TO1:ECXSF:5062:1:0:0:0-50}";
-const param2="HARVIDX{0.69;SWI2-0TO1:ECXSF:5062:1:0:0:0-50}";
+// const param2="HARVIDX{0.69;SWI2-0TO1:ECXSF:5062:1:0:0:0-50}";
+const param2="HARVIDX{0.69;SWI2-0TO1:ECXSF:5062:1:0:3:1-50;SWI2-0TO1:ECXSF:5062:1:0:1:0}";
 
 const param3="HARVIDX{273;TSOIL-K:ECBSF:::7:3:1-50;TSOIL-K:ECBSF:::7:1:0}";
 
@@ -652,9 +653,13 @@ var dateString_smartobs = startDate_smartobs.getUTCFullYear().toString() + start
 
 var perturbations = 50;
 
-var SWensemblelist = ["SWI2-0TO1:ECXSF:5062:1:0:0:0"];
+// var SWensemblelist = ["SWI2-0TO1:ECXSF:5062:1:0:0:0"];
+// for (i = 1; i <= perturbations; i = i + 1) {
+//     SWensemblelist[i] = "SWI2-0TO1:ECXSF:5062:1:0:0:" + i;
+// }
+var SWensemblelist = ["SWI2-0TO1:ECXSF:5062:1:0:1:0"];
 for (i = 1; i <= perturbations; i = i + 1) {
-    SWensemblelist[i] = "SWI2-0TO1:ECXSF:5062:1:0:0:" + i;
+    SWensemblelist[i] = "SWI2-0TO1:ECXSF:5062:1:0:3:" + i;
 }
 
 var SHensemblelist = ["HSNOW-M:ECBSF::1:0:1:0"];
@@ -1016,10 +1021,10 @@ soilwetLegend.onAdd = function (map) {
     var src = 'https://desm.harvesterseasons.com/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&LAYER=harvester:swi:SWI2-0TO1&sld_version=1.1.0&style=&FORMAT=image/png'; //&WIDTH=65&HEIGHT=345
     var div = L.DomUtil.create('div', 'info legend');
     if (screen.width < 425) {
-        div.style.width = '70px';
+        div.style.width = '75px';
         div.style.height = '245px';
     } else {
-        div.style.width = '80px';
+        div.style.width = '85px';
         div.style.height = '270px';
     }
     div.style['background-image'] = 'url(' + src + ')';
@@ -1061,8 +1066,8 @@ treecoverLegend.onAdd = function (map) {
 ndviLegend.onAdd = function (map) {
     var src = 'https://desm.harvesterseasons.com/wms?service=WMS&request=GetLegendGraphic&version=1.3.0&sld_version=1.1.0&style=default&format=image%2Fpng&layer=harvester%3As3sy%3ANDVI'; // &width=85&height=185
     var div = L.DomUtil.create('div', 'info legend');
-    div.style.width = '85px';
-    div.style.height = '185px';
+    div.style.width = '100px';
+    div.style.height = '180px';
     div.style['background-image'] = 'url(' + src + ')';
     // div.style['background-size'] = 'contain';
     div.style['background-size'] = 'cover';
@@ -2053,14 +2058,23 @@ var dyGraphBOptions = {
       },
 }
 
-var SWensemble = "";
+// var SWensemble = "";
+// var label = ["date", "SWI-0"];
+// var labelstxt = {'SWI-0': { fillGraph: false }};
+// for (i = 0; i <= perturbations; i = i + 1) {
+//     label[i+1] = 'SWI-' + i ;
+//     labelstxt[label[i+1]]= { fillGraph: false };
+//     SWensemble += ",SWI2-0TO1:ECXSF:5062:1:0:0:" + i;
+// }
+var SWensemble = ",SWI2-0TO1:ECXSF:5062:1:0:1:0";
 var label = ["date", "SWI-0"];
 var labelstxt = {'SWI-0': { fillGraph: false }};
-for (i = 0; i <= perturbations; i = i + 1) {
+for (i = 1; i <= perturbations; i = i + 1) {
     label[i+1] = 'SWI-' + i ;
     labelstxt[label[i+1]]= { fillGraph: false };
-    SWensemble += ",SWI2-0TO1:ECXSF:5062:1:0:0:" + i;
+    SWensemble += ",SWI2-0TO1:ECXSF:5062:1:0:3:" + i;
 }
+
 label[perturbations+2] = 'SW-FMI';
 label[perturbations+3] = 'SWI-EDTE';
 label[perturbations+4] = 'SWI2';
