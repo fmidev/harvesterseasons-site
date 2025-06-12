@@ -120,7 +120,8 @@ $.get('https://desm.harvesterseasons.com/wms?&service=WMS&request=GetCapabilitie
     let swiDateList;
     for (i = 0; i < layerlist.length; i++) {
         // console.debug(layerlist[i].childNodes[1].firstChild.nodeValue)  
-        if (layerlist[i].childNodes[1].firstChild.nodeValue === 'harvester:swi:SWI1') { // 10.6.2025 Quick fix for missing SWI2 time dimension
+        if (layerlist[i].childNodes[1].firstChild.nodeValue === 'harvester:swi:SWI2-M3M3') {
+        // if (layerlist[i].childNodes[1].firstChild.nodeValue === 'harvester:swi:SWI1') { // 10.6.2025 Quick fix for missing SWI2 time dimension
         // if (layerlist[i].childNodes[1].firstChild.nodeValue === 'harvester:swi:SWI2-0TO1') {
         // if (layerlist[i].childNodes[1].firstChild.nodeValue === 'gui:isobands:SWI_SWI2') {
             // console.debug(layerlist[i].childNodes)
