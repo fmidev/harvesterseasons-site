@@ -2186,7 +2186,7 @@ var circle = L.circle(null, {
 
 var endDate = new Date();
 
-if (endDate.getUTCDate() < 15) {
+if (endDate.getUTCDate() < 9) {
     endDate.setMonth(endDate.getUTCMonth() + 6);
 } else {
     endDate.setMonth(endDate.getUTCMonth() + 7);
@@ -2201,7 +2201,7 @@ var dateString_ecbsf = endDate.getUTCFullYear().toString() + endMonth + '040000'
 
 var startDate_timeseries = new Date();
 
-if (startDate_timeseries.getUTCDate() < 15) {
+if (startDate_timeseries.getUTCDate() < 9) {
     startDate_timeseries.setMonth(startDate_timeseries.getUTCMonth() - 1);
 } 
 
