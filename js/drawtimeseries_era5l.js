@@ -1,22 +1,32 @@
 function drawtimeseries() {
-    // Inside Finland, seasonal snow depth and soil wetness combined and scaled with SMARTOBS/SMARTMET observations
+    // Inside Finland, seasonal snow depth combined and scaled with SMARTOBS/SMARTMET observations
 
-    // Fetch soil wetness data
-    // var dataUrlSW = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWI2-0TO1:SWI:5059,SWVL2-M3M3:SMARTMET:5015" + SWensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&precision=full&source=grid&timeformat=sql&tz=utc";
-    var dataUrlSW = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWI2-0TO1:SWI:5059,SWVL2-M3M3:SMARTMET:5015,SWI2-0TO1:EDTE:5068" + SWensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&precision=full&source=grid&timeformat=sql&tz=utc";
+    // var dataUrlSW = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWI2-0TO1:SWI:5059,SWVL2-M3M3:SMARTMET:5015,SWI2-0TO1:EDTE:5068," + SWensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&precision=full&source=grid&timeformat=sql&tz=utc";
+    // $.getJSON(dataUrlSW, function (dataSW) {
+
+    var dataUrlSW = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,HSNOW-M:SMARTOBS:13:4,SWI2-0TO1:SWI:5059," + SWensemble + "," + SWensemble_ecxens + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&precision=full&source=grid&timeformat=sql&tz=utc";
     $.getJSON(dataUrlSW, function (dataSW) {
 
-        // Find the latest SWVL2-M3M3:SMARTMET value
+        // Find the latest HSNOW-M:SMARTOBS:13:4 value
         let smartmetIdx = -1;
-
         for (let i = 0; i < dataSW.length; i++) {
-            if (dataSW[i]["SWVL2-M3M3:SMARTMET:5015"] !== null) {
+            if (dataSW[i]["HSNOW-M:SMARTOBS:13:4"] !== null) {
                 smartmetIdx = i;
             }
         }
 
+        // Find the latest SWI2-0TO1:ECXENS value
+        let ecxensIdx = -1;
+        for (let i = 0; i < dataSW.length; i++) {
+            if (dataSW[i][SWensemblelist_ecxens[0]] !== null) {
+                ecxensIdx = i;
+            }
+        }
+
         if (smartmetIdx == -1) {
-            drawOutsideFinland()
+            drawOutsideFinland(dataSW, ecxensIdx);
+        // } else if (ecxensIdx == -1) {
+        //     drawOutsideECENS()
         } else {
 
             // // // Fix soilwetnessDay for the WMS-layers using smartmetIdx
@@ -41,16 +51,27 @@ function drawtimeseries() {
             // dataSWscaled = dataSW;
 
 
+            // // Fetch snow depth data
+            // var dataUrlSH = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,HSNOW-M:SMARTOBS:13:4,HSNOW-M:SMARTMET:5027," + SHensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&precision=full&source=grid&timeformat=sql&tz=utc";
+            // $.getJSON(dataUrlSH, function (dataSH) {
+
             // Fetch snow depth data
-            var dataUrlSH = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,HSNOW-M:SMARTOBS:13:4,HSNOW-M:SMARTMET:5027," + SHensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&precision=full&source=grid&timeformat=sql&tz=utc";
+            var dataUrlSH = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,HSNOW-M:SMARTOBS:13:4," + SHensemble + "," + SHensemble_ecens + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&precision=full&source=grid&timeformat=sql&tz=utc";
             $.getJSON(dataUrlSH, function (dataSH) {
 
                 // Find the latest HSNOW-M:SMARTOBS value
                 let smartobsIdx = -1;
-
                 for (let i = 0; i < dataSH.length; i++) {
                     if (dataSH[i]["HSNOW-M:SMARTOBS:13:4"] !== null) {
                         smartobsIdx = i;
+                    }
+                }
+
+                // Find the latest HSNOW-M:ECENS value
+                let SHecensIdx = -1;
+                for (let i = 0; i < dataSH.length; i++) {
+                    if (dataSH[i][SHensemblelist_ecens[0]] !== null) {
+                        SHecensIdx = i;
                     }
                 }
 
@@ -58,8 +79,12 @@ function drawtimeseries() {
 
                 // Scale seasonal snow forecast using SMARTOBS-observations
                 let dataSHscaled = [];
-                dataSHscaled = scalingFunction(dataSH, SHensemblelist, smartobsIdx, perturbations, "HSNOW-M:SMARTOBS:13:4", "HSNOW-M:SMARTMET:5027");
+                // dataSHscaled = scalingFunction(dataSH, SHensemblelist, smartobsIdx, perturbations, "HSNOW-M:SMARTOBS:13:4", "HSNOW-M:SMARTMET:5027");
+                dataSHscaled = scalingFunction(dataSH, SHensemblelist, smartobsIdx, perturbations, "HSNOW-M:SMARTOBS:13:4");
 
+                // Scale ECENS snow forecast using SMARTOBS-observations?
+                let dataSHscaled_ecens = [];
+                dataSHscaled_ecens = scalingFunction(dataSH, SHensemblelist_ecens, smartobsIdx, perturbations, "HSNOW-M:SMARTOBS:13:4");
 
                 // // // // Summer index from the scaled seasonal soil wetness
                 // let summer1series = [];
@@ -69,15 +94,11 @@ function drawtimeseries() {
                 let winter1series = [];
                 winter1series = ensover(0.4, 0.9, dataSHscaled, SHensemblelist, perturbations, "HSNOW-M:SMARTOBS:13:4")
 
-                // const param_ecxsf_swi2 = "HARVIDX{0.69;SWI2-0TO1:ECXSF:5062:1:0:0:0-50}";
-                // const param_ecbsf_tsoil = "HARVIDX{273;TSOIL-K:ECBSF:::7:3:1-50;TSOIL-K:ECBSF:::7:1:0}";
-                // const param_swi_swi2 = "HARVIDX{0.69;SWI2-0TO1:EDTE:5068}";
-                // const param_smartmet_hsnow = "ensover{0.4;0.9;HSNOW-M:SMARTMET:5027}";
-                // const param_smartobs_hsnow = "ensover{0.4;0.9;HSNOW-M:SMARTOBS:13:4}";
+                // // // Winter index from the scaled seasonal snow depth
+                let winter2series = [];
+                winter2series = ensover(0.4, 0.9, dataSHscaled_ecens, SHensemblelist_ecens, perturbations, "HSNOW-M:SMARTOBS:13:4")
 
-                // Fetch rest of the trafficability index series
-                // graphLoad = $.getJSON("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWI2-0TO1:SWI:5059,SWVL2-M3M3:SMARTMET:5015," + param_ecxsf_swi2 + "," + param_ecbsf_tsoil + "," + param_swi_swi2 + "," + param_smartmet_hsnow + "," + param_smartobs_hsnow + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc",
-                graphLoad = $.getJSON("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + param_ecxsf_swi2 + "," + param_ecbsf_tsoil + "," + param_swi_swi2 + "," + param_smartmet_hsnow + "," + param_smartobs_hsnow + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc",
+                graphLoad = $.getJSON("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + param_ecxsf_swi2 + "," + param_ecxens_swi2 + "," + param_ecbsf_tsoil + "," + param_ecens_tsoil + "," + param_swi_swi2 + "," + param_smartobs_hsnow + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc",
                     function (data) {
                         var graphdata = [];
                         for (i = 0, k = 0; i < data.length; i++) {
@@ -91,20 +112,36 @@ function drawtimeseries() {
                             if (data[i][param_ecxsf_swi2] !== null) { summer1 = data[i][param_ecxsf_swi2]; }
                             else { summer1 = 'nan'; }
 
-                            // Seasonal winter index, combined and scaled with observations (HSNOW-M:ECBSF & HSNOW-M:SMARTOBS, TSOIL-K:ECBSF)                     
-                            if (data[i][param_smartobs_hsnow] !== null) { winter1 = Math.max(data[i][param_ecbsf_tsoil], data[i][param_smartobs_hsnow]); }
+                            // Seasonal winter index, combined and scaled with observations (HSNOW-M:ECBSF & HSNOW-M:SMARTOBS, TSOIL-K:ECBSF)                                    
+                            if (data[i][param_smartobs_hsnow] !== null) { 
+                                winter1 = Math.max(data[i][param_ecbsf_tsoil], data[i][param_smartobs_hsnow]); 
+                            }
                             else if (data[i][param_ecbsf_tsoil] !== null || winter1series[i] !== null && winter1series.length == data.length) 
                                 { winter1 = Math.max(data[i][param_ecbsf_tsoil], winter1series[i]); }
                             else { winter1 = 'nan'; }
                             
-                            // 10 day forecast summer index (SWI2:EDTE)                      
-                            if (data[i][param_swi_swi2] !== null) { summer2 = data[i][param_swi_swi2]; }
+                            // // 10 day forecast summer index (SWI2:SWI)                      
+                            // if (data[i][param_swi_swi2] !== null) { summer2 = data[i][param_swi_swi2]; }
+                            // else { summer2 = 'nan'; }
+
+                            // 15 day forecast summer index (SWI2:ECXENS)
+                            if (data[i][param_ecxens_swi2] !== null) { 
+                                summer2 = data[i][param_ecxens_swi2]; 
+                            }
                             else { summer2 = 'nan'; }
 
-                            // // 10 day forecast winter index (HSNOW-M:SMARTOBS, HSNOW-M:SMARTMET, TSOIL-K:ECBSF)                      
-                            // First HSNOW-M:SMARTOBS and then HSNOW-M:SMARTMET
-                            if (data[i][param_smartobs_hsnow] !== null) { winter2 = Math.max(data[i][param_ecbsf_tsoil], data[i][param_smartobs_hsnow]); }
-                            else if (data[i][param_smartmet_hsnow] !== null) { winter2 = Math.max(data[i][param_ecbsf_tsoil], data[i][param_smartmet_hsnow]); }
+                            // // // 10 day forecast winter index (HSNOW-M:SMARTOBS, HSNOW-M:SMARTMET, TSOIL-K:ECBSF)                      
+                            // // First HSNOW-M:SMARTOBS and then HSNOW-M:SMARTMET
+                            // if (data[i][param_smartobs_hsnow] !== null) { winter2 = Math.max(data[i][param_ecbsf_tsoil], data[i][param_smartobs_hsnow]); }
+                            // // else if (data[i][param_smartmet_hsnow] !== null) { winter2 = Math.max(data[i][param_ecbsf_tsoil], data[i][param_smartmet_hsnow]); }
+                            // else { winter2 = 'nan'; }
+
+                            // 15 day winter index, combined and scaled with observations (HSNOW-M:ECENS & HSNOW-M:SMARTOBS, TSOIL-K:ECENS)                     
+                            if (data[i][param_smartobs_hsnow] !== null) { 
+                                winter2 = Math.max(data[i][param_ecens_tsoil], data[i][param_smartobs_hsnow]); 
+                            }
+                            else if (data[i][param_ecbsf_tsoil] !== null || winter2series[i] !== null && winter2series.length == data.length) 
+                                { winter2 = Math.max(data[i][param_ecens_tsoil], winter2series[i]); }
                             else { winter2 = 'nan'; }
 
                             // Combined trafficability index time series
@@ -164,18 +201,37 @@ function drawtimeseries() {
                         //     }
                         // }
 
-                        // Plot soil wetness time series
+                        // // Plot soil wetness time series
+                        // var dataSW2 = [];
+                        // for (k = 0; k < dataSW.length; k++) {
+                        //     dataSW2[k] = [];
+                        //     // Date format that works also in mobile safari
+                        //     dataSW2[k][0] = new Date(dataSW[k]["utctime"].replace(/-/g, "/"));
+                        //     for (i = 0; i <= perturbations; i = i + 1) {
+                        //         dataSW2[k][i + 1] = dataSW[k][SWensemblelist[i]];
+                        //     }
+                        //     dataSW2[k][perturbations + 2] = dataSW[k]["SWI2-0TO1:SWI:5059"];
+                        // }
+
+                        // Plot combined soil wetness time series
                         var dataSW2 = [];
-                        for (k = 0; k < dataSW.length; k++) {
+                        for (k = 0; k <= ecxensIdx; k++) {
+                            dataSW2[k] = [];
+                            // Date format that works also in mobile safari
+                            dataSW2[k][0] = new Date(dataSW[k]["utctime"].replace(/-/g, "/"));
+                            for (i = 0; i <= perturbations; i = i + 1) {
+                                dataSW2[k][i + 1] = dataSW[k][SWensemblelist_ecxens[i]];
+                            }
+                            dataSW2[k][perturbations + 2] = dataSW[k]["SWI2-0TO1:SWI:5059"];
+                        }
+                        for (k = ecxensIdx + 1; k < dataSW.length; k++) {
                             dataSW2[k] = [];
                             // Date format that works also in mobile safari
                             dataSW2[k][0] = new Date(dataSW[k]["utctime"].replace(/-/g, "/"));
                             for (i = 0; i <= perturbations; i = i + 1) {
                                 dataSW2[k][i + 1] = dataSW[k][SWensemblelist[i]];
                             }
-                            dataSW2[k][perturbations + 2] = dataSW[k]["SWVL2-M3M3:SMARTMET:5015"];
-                            dataSW2[k][perturbations + 3] = dataSW[k]["SWI2-0TO1:EDTE:5068"];
-                            dataSW2[k][perturbations + 4] = dataSW[k]["SWI2-0TO1:SWI:5059"];
+                            dataSW2[k][perturbations + 2] = dataSW[k]["SWI2-0TO1:SWI:5059"];
                         }
 
                         gsw = new Dygraph(
@@ -194,13 +250,44 @@ function drawtimeseries() {
                             gsw.updateOptions({ dateWindow: gsw.xAxisExtremes() })
                         }
 
+                        // // Fetch and plot soil temperature time series
+                        // graphLoad4 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + TGKensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
+
                         // Fetch and plot soil temperature time series
-                        graphLoad4 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,K2C{TSOIL-K:ECBSF:::7:1:0}" + TGKensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
+                        graphLoad4 = $.getJSON("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + TGKensemble + "," + TGKensemble_ecens + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc&format=json",
                             function (data) {
+
+                                // Find the latest SWI2-0TO1:ECENS value
+                                let ecensIdx = -1;
+                                for (let i = 0; i < data.length; i++) {
+                                    if (data[i][TGKensemblelist_ecens[0]] !== null) {
+                                        ecensIdx = i;
+                                    }
+                                }
+
+                                // Plot combined soil temperature time series
+                                var data2 = [];
+                                for (k = 0; k <= ecensIdx; k++) {
+                                    data2[k] = [];
+                                    // Date format that works also in mobile safari
+                                    data2[k][0] = new Date(data[k]["utctime"].replace(/-/g, "/"));
+                                    for (i = 0; i <= perturbations; i = i + 1) {
+                                        data2[k][i + 1] = data[k][TGKensemblelist_ecens[i]];
+                                    }
+                                }
+                                for (k = ecensIdx + 1; k < data.length; k++) {
+                                    data2[k] = [];
+                                    // Date format that works also in mobile safari
+                                    data2[k][0] = new Date(data[k]["utctime"].replace(/-/g, "/"));
+                                    for (i = 0; i <= perturbations; i = i + 1) {
+                                        data2[k][i + 1] = data[k][TGKensemblelist[i]];
+                                    }
+                                }
+
                                 if (data.length > 0) {
                                     gst = new Dygraph(
                                         document.getElementById("graphst"),
-                                        data,
+                                        data2,
                                         dyGraphSTOptions
                                     );
                                     if (typeof gsw !== 'undefined' && typeof gst !== 'undefined' && typeof gsh !== 'undefined') {
@@ -219,9 +306,54 @@ function drawtimeseries() {
                             });
 
 
-                        // Plot scaled snow depth time series
+                        // // Plot scaled snow depth time series
+                        // var dataSH2 = [];
+                        // for (k = 0; k < dataSHscaled.length; k++) {
+                        //     dataSH2[k] = [];
+                        //     // Date format that works also in mobile safari
+                        //     dataSH2[k][0] = new Date(dataSHscaled[k]["utctime"].replace(/-/g, "/"));
+                        //     for (i = 0; i <= perturbations; i = i + 1) {
+                        //         // Remove seasonal forecast before startDate_smartobs-1day
+                        //         if (dataSH2[k][0] < smartobsDate) {
+                        //             // Remove seasonal forecast before smartobsDate
+                        //             dataSH2[k][i+1] = null;
+                        //         } else if (dataSH[k][SHensemblelist[i]] == 0 || dataSHscaled[k][SHensemblelist[i]] < 0) {
+                        //             // Set SD to 0 if non-scaled SD is 0 or scaled < 0
+                        //             dataSH2[k][i+1] = 0;
+                        //         } else {
+                        //             dataSH2[k][i+1] = dataSHscaled[k][SHensemblelist[i]];
+                        //         }
+                        //     }
+                        //     if (dataSHscaled[k]["HSNOW-M:SMARTOBS:13:4"] !== null) {
+                        //         dataSH2[k][perturbations + 2] = dataSHscaled[k]["HSNOW-M:SMARTOBS:13:4"];
+                        //     } else {
+                        //         dataSH2[k][perturbations + 2] = dataSHscaled[k]["HSNOW-M:SMARTMET:5027"];
+                        //     }
+                        // }
+
+                        // Plot scaled and combined snow depth time series
                         var dataSH2 = [];
-                        for (k = 0; k < dataSHscaled.length; k++) {
+                        for (k = 0; k <= SHecensIdx; k++) {
+                            dataSH2[k] = [];
+                            // Date format that works also in mobile safari
+                            dataSH2[k][0] = new Date(dataSHscaled_ecens[k]["utctime"].replace(/-/g, "/"));
+                            for (i = 0; i <= perturbations; i = i + 1) {
+                                // Remove seasonal forecast before startDate_smartobs-1day
+                                if (dataSH2[k][0] < smartobsDate) {
+                                    // Remove seasonal forecast before smartobsDate
+                                    dataSH2[k][i+1] = null;
+                                } else if (dataSH[k][SHensemblelist_ecens[i]] == 0 || dataSHscaled_ecens[k][SHensemblelist_ecens[i]] < 0) {
+                                    // Set SD to 0 if non-scaled SD is 0 or scaled < 0
+                                    dataSH2[k][i+1] = 0;
+                                } else {
+                                    dataSH2[k][i+1] = dataSHscaled_ecens[k][SHensemblelist_ecens[i]];
+                                }
+                            }
+                            if (dataSHscaled_ecens[k]["HSNOW-M:SMARTOBS:13:4"] !== null) {
+                                dataSH2[k][perturbations + 2] = dataSHscaled_ecens[k]["HSNOW-M:SMARTOBS:13:4"];
+                            }
+                        }
+                        for (k = SHecensIdx + 1; k < dataSHscaled.length; k++) {
                             dataSH2[k] = [];
                             // Date format that works also in mobile safari
                             dataSH2[k][0] = new Date(dataSHscaled[k]["utctime"].replace(/-/g, "/"));
@@ -239,8 +371,6 @@ function drawtimeseries() {
                             }
                             if (dataSHscaled[k]["HSNOW-M:SMARTOBS:13:4"] !== null) {
                                 dataSH2[k][perturbations + 2] = dataSHscaled[k]["HSNOW-M:SMARTOBS:13:4"];
-                            } else {
-                                dataSH2[k][perturbations + 2] = dataSHscaled[k]["HSNOW-M:SMARTMET:5027"];
                             }
                         }
 
@@ -263,136 +393,229 @@ function drawtimeseries() {
     });
 }
 
-function drawOutsideFinland() {
+function drawOutsideFinland(dataSW, ecxensIdx) {
+
     // // Outside Finland, no SMARTOBS or scaling
-    graphLoad = $.getJSON("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + param_utctime + "," + param_ecxsf_swi2 + "," + param_ecbsf_tsoil + "," + param_ecbsf_hsnow + "," + param_swi_swi2 + "," + param_smartmet_hsnow + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc",
-        function (data) {
-            var graphdata = [];
-            for (i = 0, k = 0; i < data.length; i++) {
-                var summer1, summer2, winter1, winter2;
-
-                // Seasonal summer index
-                if (data[i][param_ecxsf_swi2] !== null) { summer1 = data[i][param_ecxsf_swi2]; }
-                else { summer1 = 'nan'; }
-
-                // Seasonal winter index
-                if (data[i][param_ecbsf_tsoil] !== null || data[i][param_ecbsf_hsnow] !== null) { winter1 = Math.max(data[i][param_ecbsf_tsoil], data[i][param_ecbsf_hsnow]); }
-                else { winter1 = 'nan'; }
-
-                // 10 day forecast summer index                        
-                if (data[i][param_swi_swi2] !== null) { summer2 = data[i][param_swi_swi2]; }
-                else { summer2 = 'nan'; }
-
-                // // 10 day forecast winter index                        
-                // if (data[i][param6] !== null || data[i][param_smartmet_hsnow] !== null) { winter2 = Math.max(data[i][param6], data[i][param_smartmet_hsnow]); }
-                // if (data[i][param_smartmet_hsnow] !== null) { winter2 = data[i][param_smartmet_hsnow]; }
-                if (data[i][param_smartmet_hsnow] !== null) { winter2 = Math.max(data[i][param_ecbsf_tsoil], data[i][param_smartmet_hsnow]); }
-                else { winter2 = 'nan'; }
-
-                if (summer1 !== 'nan' || winter1 !== 'nan' || summer2 !== 'nan' || winter2 !== 'nan') {
-                    graphdata[k] = [new Date(data[i][param_utctime]), summer1, winter1, summer2, winter2];
-                    k++;
-                }
+    // Fetch snow depth data
+    var dataUrlSH = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,HSNOW-M:SMARTOBS:13:4," + SHensemble + "," + SHensemble_ecens + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&precision=full&source=grid&timeformat=sql&tz=utc";
+    $.getJSON(dataUrlSH, function (dataSH) {
+    
+        // Find the latest HSNOW-M:ECENS value
+        let SHecensIdx = -1;
+        for (let i = 0; i < dataSH.length; i++) {
+            if (dataSH[i][SHensemblelist_ecens[0]] !== null) {
+                SHecensIdx = i;
             }
+        }
 
-            if (!dateFixed && data.length > 0) {
-                // Fix the last date of dateslider to timeseries data
-                var maxDate = new Date(data[data.length - 1][param_utctime]);
-                var maxDays = Math.ceil((maxDate - startDate) / 1000 / 60 / 60 / 24);
-                if (dateslider.value > maxDays) {
-                    dateslider.value = maxDays;
-                    sliderDate = new Date(startDate);
-                    sliderDate.setUTCDate(sliderDate.getUTCDate() + Number(dateslider.value));
-                    dateoutput.innerHTML = sliderDate.toLocaleDateString();
-                    map.timeDimension.setCurrentTime(sliderDate.getTime());
+        graphLoad = $.getJSON("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + param_ecxsf_swi2 + "," + param_ecxens_swi2 + "," + param_ecbsf_tsoil + "," + param_ecens_tsoil + "," + param_swi_swi2 + "," + param_ecbsf_hsnow + "," + param_ecens_hsnow + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc",
+            function (data) {
+                var graphdata = [];
+                for (i = 0, k = 0; i < data.length; i++) {
+                    var summer1, summer2, winter1, winter2;
+
+                    // Seasonal summer index (SWI2:ECXSF)
+                    if (data[i][param_ecxsf_swi2] !== null) { 
+                        summer1 = data[i][param_ecxsf_swi2]; 
+                    }
+                    else { summer1 = 'nan'; }
+
+                    // Seasonal winter index (HSNOW-M:ECBSF, TSOIL-K:ECBSF)      
+              
+                    if (data[i][param_ecbsf_tsoil] !== null || data[i][param_ecbsf_hsnow] !== null ) { 
+                        winter1 = Math.max(data[i][param_ecbsf_tsoil], data[i][param_ecbsf_hsnow]);
+                    } else { winter1 = 'nan'; }
+
+                    // // 10 day forecast summer index (SWI2:SWI)                      
+                    // if (data[i][param_swi_swi2] !== null) { summer2 = data[i][param_swi_swi2]; }
+                    // else { summer2 = 'nan'; }
+
+                    // 15 day forecast summer index (SWI2:ECXENS)
+                    if (data[i][param_ecxens_swi2] !== null) { 
+                        summer2 = data[i][param_ecxens_swi2]; 
+                    }
+                    else { summer2 = 'nan'; }
+
+                    // 15 day winter index (HSNOW-M:ECENS , TSOIL-K:ECENS)
+                
+                    if (data[i][param_ecens_tsoil] !== null || data[i][param_ecens_hsnow] !== null ) { 
+                        winter2 = Math.max(data[i][param_ecens_tsoil], data[i][param_ecens_hsnow]); }
+                    else { winter2 = 'nan'; }
+
+                    // Combined trafficability index time series
+                    if (summer1 !== 'nan' || winter1 !== 'nan' || summer2 !== 'nan' || winter2 !== 'nan') {
+                        graphdata[k] = [new Date(data[i][param_utctime]), summer1, winter1, summer2, winter2];
+                        k++;
+                    }
                 }
-                dateslider.max = maxDays;
-                dateFixed = true;
-            }
 
-            if (graphdata.length > 0) {
-                gB = new Dygraph(
-                    document.getElementById("graphB"),
-                    graphdata,
-                    dyGraphBOptions
+                if (!dateFixed && data.length > 0) {
+                    // Fix the last date of dateslider to timeseries data
+                    var maxDate = new Date(data[data.length - 1][param_utctime]);
+                    var maxDays = Math.ceil((maxDate - startDate) / 1000 / 60 / 60 / 24);
+                    if (dateslider.value > maxDays) {
+                        dateslider.value = maxDays;
+                        sliderDate = new Date(startDate);
+                        sliderDate.setUTCDate(sliderDate.getUTCDate() + Number(dateslider.value));
+                        dateoutput.innerHTML = sliderDate.toLocaleDateString();
+                        map.timeDimension.setCurrentTime(sliderDate.getTime());
+                    }
+                    dateslider.max = maxDays;
+                    dateFixed = true;
+                }
+
+                if (graphdata.length > 0) {
+                    gB = new Dygraph(
+                        document.getElementById("graphB"),
+                        graphdata,
+                        dyGraphBOptions
+                    );
+                    document.getElementById("graphB").style = "line-height: 1;";
+                } else {
+                    document.getElementById("graphB").innerHTML = "Error loading data";
+                }
+
+                // // Plot soil wetness time series
+                // var dataSW2 = [];
+                // for (k = 0; k < dataSW.length; k++) {
+                //     dataSW2[k] = [];
+                //     // Date format that works also in mobile safari
+                //     dataSW2[k][0] = new Date(dataSW[k]["utctime"].replace(/-/g, "/"));
+                //     for (i = 0; i <= perturbations; i = i + 1) {
+                //         dataSW2[k][i + 1] = dataSW[k][SWensemblelist[i]];
+                //     }
+                //     dataSW2[k][perturbations + 2] = dataSW[k]["SWI2-0TO1:SWI:5059"];
+                // }
+
+                // Plot combined soil wetness time series
+                var dataSW2 = [];
+                for (k = 0; k <= ecxensIdx; k++) {
+                    dataSW2[k] = [];
+                    // Date format that works also in mobile safari
+                    dataSW2[k][0] = new Date(dataSW[k]["utctime"].replace(/-/g, "/"));
+                    for (i = 0; i <= perturbations; i = i + 1) {
+                        dataSW2[k][i + 1] = dataSW[k][SWensemblelist_ecxens[i]];
+                    }
+                    dataSW2[k][perturbations + 2] = dataSW[k]["SWI2-0TO1:SWI:5059"];
+                }
+                for (k = ecxensIdx + 1; k < dataSW.length; k++) {
+                    dataSW2[k] = [];
+                    // Date format that works also in mobile safari
+                    dataSW2[k][0] = new Date(dataSW[k]["utctime"].replace(/-/g, "/"));
+                    for (i = 0; i <= perturbations; i = i + 1) {
+                        dataSW2[k][i + 1] = dataSW[k][SWensemblelist[i]];
+                    }
+                    dataSW2[k][perturbations + 2] = dataSW[k]["SWI2-0TO1:SWI:5059"];
+                }
+
+                gsw = new Dygraph(
+                    document.getElementById("graphsw"),
+                    dataSW2,
+                    dyGraphSWOptions
                 );
-                document.getElementById("graphB").style = "line-height: 1;";
-            } else {
-                document.getElementById("graphB").innerHTML = "Error loading data";
-            }
+                document.getElementById("graphsw").style = "line-height: 1;";
+                if (typeof gsw !== 'undefined' && typeof gst !== 'undefined' && typeof gsh !== 'undefined') {
+                    var sync = Dygraph.synchronize(gsw, gst, gsh, {
+                        selection: false,
+                        zoom: true,
+                        range: false
+                    });
+                    //gB_ecsf.updateOptions({dateWindow: gB_ecbsf.xAxisExtremes()})
+                    gsw.updateOptions({ dateWindow: gsw.xAxisExtremes() })
+                }
 
-            // graphLoad3 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SOILWET1-M:ECBSF::9:7:1:0" + SWensemble + ",SWVL2-M3M3:SMARTMET:5015&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
-            // graphLoad3 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SOILWET-M3M3:ECBSF:::7:1:0" + SWensemble + ",SWVL2-M3M3:SMARTMET:5015&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
-            graphLoad3 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime" + SWensemble + ",SWVL2-M3M3:SMARTMET:5015,SWI2-0TO1:EDTE:5068,SWI2-0TO1:SWI:5059&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
-                function (data) {
-                    if (data.length > 0) {
-                        gsw = new Dygraph(
-                            document.getElementById("graphsw"),
-                            data,
-                            dyGraphSWOptions
-                        );
-                        document.getElementById("graphsw").style = "line-height: 1;";
-                        if (typeof gsw !== 'undefined' && typeof gst !== 'undefined' && typeof gsh !== 'undefined') {
-                            var sync = Dygraph.synchronize(gsw, gst, gsh, {
-                                selection: false,
-                                zoom: true,
-                                range: false
-                            });
-                            //gB_ecsf.updateOptions({dateWindow: gB_ecbsf.xAxisExtremes()})
-                            gsw.updateOptions({ dateWindow: gsw.xAxisExtremes() })
-                        }
-                    } else {
-                        document.getElementById("graphsw").innerHTML = "Error loading data";
-                    }
-                })
+                // // Fetch and plot soil temperature time series
+                // graphLoad4 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + TGKensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
 
-            // graphLoad4 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,K2C{TSOIL-K:ECBSF::9:7:1:0}" + TGKensemble + ",TG-K:SMARTMET&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
-            // graphLoad4 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,K2C{TSOIL-K:ECBSF::9:7:1:0}" + TGKensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
-            graphLoad4 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,K2C{TSOIL-K:ECBSF:::7:1:0}" + TGKensemble + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
-                function (data) {
-                    if (data.length > 0) {
-                        gst = new Dygraph(
-                            document.getElementById("graphst"),
-                            data,
-                            dyGraphSTOptions
-                        );
-                        if (typeof gsw !== 'undefined' && typeof gst !== 'undefined' && typeof gsh !== 'undefined') {
-                            var sync = Dygraph.synchronize(gsw, gst, gsh, {
-                                selection: false,
-                                zoom: true,
-                                range: false
-                            });
-                            //gB_ecsf.updateOptions({dateWindow: gB_ecbsf.xAxisExtremes()})
-                            gsw.updateOptions({ dateWindow: gsw.xAxisExtremes() })
-                        }
-                    } else {
-                        document.getElementById("graphst").innerHTML = "Error loading data";
-                        document.getElementById("graphst").style = "line-height: 240px;";
-                    }
-                });
+                // Fetch and plot soil temperature time series
+                graphLoad4 = $.getJSON("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + TGKensemble + "," + TGKensemble_ecens + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc&format=json",
+                    function (data) {
 
-            graphLoad2 = $.get("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + SHensemble + ",HSNOW-M:SMARTMET:5027&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&timeformat=sql&precision=full&separator=,&source=grid&tz=utc",
-                function (data) {
-                    if (data.length > 0) {
-                        gsh = new Dygraph(
-                            document.getElementById("graphsh"),
-                            data,
-                            dyGraphSHOptions
-                        );
-                        if (typeof gsw !== 'undefined' && typeof gst !== 'undefined' && typeof gsh !== 'undefined') {
-                            var sync = Dygraph.synchronize(gsw, gst, gsh, {
-                                selection: false,
-                                zoom: true,
-                                range: false
-                            });
-                            //gB_ecsf.updateOptions({dateWindow: gB_ecbsf.xAxisExtremes()})                    
+                        // Find the latest SWI2-0TO1:ECENS value
+                        let ecensIdx = -1;
+                        for (let i = 0; i < data.length; i++) {
+                            if (data[i][TGKensemblelist_ecens[0]] !== null) {
+                                ecensIdx = i;
+                            }
                         }
-                    } else {
-                        document.getElementById("graphsh").innerHTML = "Error loading data";
-                        document.getElementById("graphsh").style = "line-height: 240px;";
+
+                        // Plot combined soil temperature time series
+                        var data2 = [];
+                        for (k = 0; k <= ecensIdx; k++) {
+                            data2[k] = [];
+                            // Date format that works also in mobile safari
+                            data2[k][0] = new Date(data[k]["utctime"].replace(/-/g, "/"));
+                            for (i = 0; i <= perturbations; i = i + 1) {
+                                data2[k][i + 1] = data[k][TGKensemblelist_ecens[i]];
+                            }
+                        }
+                        for (k = ecensIdx + 1; k < data.length; k++) {
+                            data2[k] = [];
+                            // Date format that works also in mobile safari
+                            data2[k][0] = new Date(data[k]["utctime"].replace(/-/g, "/"));
+                            for (i = 0; i <= perturbations; i = i + 1) {
+                                data2[k][i + 1] = data[k][TGKensemblelist[i]];
+                            }
+                        }
+
+                        if (data.length > 0) {
+                            gst = new Dygraph(
+                                document.getElementById("graphst"),
+                                data2,
+                                dyGraphSTOptions
+                            );
+                            if (typeof gsw !== 'undefined' && typeof gst !== 'undefined' && typeof gsh !== 'undefined') {
+                                var sync = Dygraph.synchronize(gsw, gst, gsh, {
+                                    selection: false,
+                                    zoom: true,
+                                    range: false
+                                });
+                                //gB_ecsf.updateOptions({dateWindow: gB_ecbsf.xAxisExtremes()})
+                                gsw.updateOptions({ dateWindow: gsw.xAxisExtremes() })
+                            }
+                        } else {
+                            document.getElementById("graphst").innerHTML = "Error loading data";
+                            document.getElementById("graphst").style = "line-height: 240px;";
+                        }
+                    });
+
+
+                // Plot combined snow depth time series
+                var dataSH2 = [];
+                for (k = 0; k <= SHecensIdx; k++) {
+                    dataSH2[k] = [];
+                    // Date format that works also in mobile safari
+                    dataSH2[k][0] = new Date(dataSH[k]["utctime"].replace(/-/g, "/"));
+                    for (i = 0; i <= perturbations; i = i + 1) {
+                        dataSH2[k][i + 1] = dataSH[k][SHensemblelist_ecens[i]];
                     }
-                });
-        });
+                    dataSH2[k][perturbations + 2] = dataSH[k]["HSNOW-M:SMARTOBS:13:4"];
+                }
+                for (k = SHecensIdx + 1; k < dataSH.length; k++) {
+                    dataSH2[k] = [];
+                    // Date format that works also in mobile safari
+                    dataSH2[k][0] = new Date(dataSH[k]["utctime"].replace(/-/g, "/"));
+                    for (i = 0; i <= perturbations; i = i + 1) {
+                        dataSH2[k][i + 1] = dataSH[k][SHensemblelist[i]];
+                    }
+                    dataSH2[k][perturbations + 2] = dataSH[k]["HSNOW-M:SMARTOBS:13:4"];
+                }
+
+                gsh = new Dygraph(
+                    document.getElementById("graphsh"),
+                    dataSH2,
+                    dyGraphSHOptions
+                );
+                if (typeof gsw !== 'undefined' && typeof gst !== 'undefined' && typeof gsh !== 'undefined') {
+                    var sync = Dygraph.synchronize(gsw, gst, gsh, {
+                        selection: false,
+                        zoom: true,
+                        range: false
+                    });
+                    gsw.updateOptions({ dateWindow: gsw.xAxisExtremes() })
+                }
+            });
+    });
 }
 
 

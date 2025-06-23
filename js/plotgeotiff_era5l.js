@@ -158,7 +158,7 @@ function plotgeotiff_scaling() {
         let param_ecbsf_hsnow_ensemble = "ensover{0.4;0.9;" + SHensemble3ensover + "}";
 
         // HSNOW-M:SMARTOBS (param_smartobs_hsnow) and HSNOW-M:SMARTMET (param_smartmet_hsnow)
-        let dataUrl2 = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + param_utctime + "," + param_ecxsf_swi2 + "," + param_ecbsf_tsoil + "," + param_ecbsf_hsnow_ensemble + "," + param_swi_swi2 + "," + param_smartmet_hsnow + "," + param_smartobs_hsnow + "&starttime=" + dataYear + dataMonth + dataDay + "T000000Z&timesteps=1&format=json";
+        let dataUrl2 = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + param_utctime + "," + param_ecxsf_swi2 + "," + param_ecbsf_tsoil + "," + param_ecbsf_hsnow_ensemble + "," + param_swi_swi2 + "," + param_smartobs_hsnow + "&starttime=" + dataYear + dataMonth + dataDay + "T000000Z&timesteps=1&format=json";
 
         // const param_ecxsf_swi2 = "HARVIDX{0.69;SWI2-0TO1:ECXSF:5062:1:0:0:0-50}";
         // const param_ecbsf_tsoil = "HARVIDX{273;TSOIL-K:ECBSF:::7:3:1-50;TSOIL-K:ECBSF:::7:1:0}";
@@ -180,8 +180,8 @@ function plotgeotiff_scaling() {
             // // Use SMARTOBS (param_smartobs_hsnow) and SMARTMET (param_smartmet_hsnow)
             if (data[0][param_smartobs_hsnow] !== null) {
                 idxWinter = Math.max(data[0][param_ecbsf_tsoil], data[0][param_smartobs_hsnow]);
-            } else if (data[0][param_smartmet_hsnow] !== null) {
-                idxWinter = Math.max(data[0][param_ecbsf_tsoil], data[0][param_smartmet_hsnow]);
+            // } else if (data[0][param_smartmet_hsnow] !== null) {
+            //     idxWinter = Math.max(data[0][param_ecbsf_tsoil], data[0][param_smartmet_hsnow]);
             } else {
                 idxWinter = Math.max(data[0][param_ecbsf_tsoil], data[0][param_ecbsf_hsnow_ensemble]);
             }

@@ -660,7 +660,7 @@ const param_swi_swi2 = "HARVIDX{0.69;SWI2-0TO1:SWI}";
 // const param6 = "HARVIDX{-0.7;TG-K:SMARTMET}";
 // const param6 = "HARVIDX{273.05;TSOIL-K:EDTE}";
 
-const param_smartmet_hsnow = "ensover{0.4;0.9;HSNOW-M:SMARTMET:5027}";
+// const param_smartmet_hsnow = "ensover{0.4;0.9;HSNOW-M:SMARTMET:5027}";
 const param_smartobs_hsnow = "ensover{0.4;0.9;HSNOW-M:SMARTOBS:13:4}";
 
 var harvLayer, harvStaticLayer;
@@ -688,17 +688,39 @@ var perturbations = 50;
 //     SWensemblelist[i] = "SWI2-0TO1:ECXSF:5062:1:0:0:" + i;
 // }
 var SWensemblelist = ["SWI2-0TO1:ECXSF:5062:1:0:1:0"];
+var SWensemblelist_ecxens = ["SWI2-0TO1:ECXENS:5072:1:0:1:0"];
+
+var TGKensemblelist = ["K2C{TSOIL-K:ECBSF:::7:1:0}"];
+var TGKensemblelist_ecens = ["K2C{TSOIL-K:ECENS::::1:0}"];
+
+
 for (i = 1; i <= perturbations; i = i + 1) {
     SWensemblelist[i] = "SWI2-0TO1:ECXSF:5062:1:0:3:" + i;
+    SWensemblelist_ecxens[i] = "SWI2-0TO1:ECXENS:5072:1:0:3:" + i;
+
+    TGKensemblelist[i] = "K2C{TSOIL-K:ECBSF:::7:3:" + i + "}";
+    TGKensemblelist_ecens[i] = "K2C{TSOIL-K:ECENS::::3:" + i + "}";
 }
 
+
 var SHensemblelist = ["HSNOW-M:ECBSF::1:0:1:0"];
+var SHensemblelist_ecens = ["HSNOW-M:ECENS::1:0:1:0"];
+
 var SHensemble2 = "DIFF{HSNOW-M:ECBSF::1:0:1:0;HSNOW-M:SMARTOBS:13:4}";
 var SHensemble2list = ["DIFF{HSNOW-M:ECBSF::1:0:1:0;HSNOW-M:SMARTOBS:13:4}"];
+
+var SHensemble2_ecens = "DIFF{HSNOW-M:ECENS::1:0:1:0;HSNOW-M:SMARTOBS:13:4}";
+var SHensemble2list_ecens = ["DIFF{HSNOW-M:ECENS::1:0:1:0;HSNOW-M:SMARTOBS:13:4}"];
+
 for (i = 1; i <= perturbations; i = i + 1) {
     SHensemblelist[i] = "HSNOW-M:ECBSF::1:0:3:" + i ;
+    SHensemblelist_ecens[i] = "HSNOW-M:ECENS::1:0:3:" + i ;  
+
     SHensemble2 += ",DIFF{HSNOW-M:ECBSF::1:0:3:" + i + ";HSNOW-M:SMARTOBS:13:4}";
     SHensemble2list[i] = "DIFF{HSNOW-M:ECBSF::1:0:3:" + i + ";HSNOW-M:SMARTOBS:13:4}";
+
+    SHensemble2_ecens += ",DIFF{HSNOW-M:ECENS::1:0:3:" + i + ";HSNOW-M:SMARTOBS:13:4}";
+    SHensemble2list_ecens[i] = "DIFF{HSNOW-M:ECENS::1:0:3:" + i + ";HSNOW-M:SMARTOBS:13:4}";
 }
 
 // Default colormap
@@ -2152,21 +2174,27 @@ var dyGraphBOptions = {
 //     labelstxt[label[i+1]]= { fillGraph: false };
 //     SWensemble += ",SWI2-0TO1:ECXSF:5062:1:0:0:" + i;
 // }
-var SWensemble = ",SWI2-0TO1:ECXSF:5062:1:0:1:0";
+var SWensemble = "SWI2-0TO1:ECXSF:5062:1:0:1:0";
+var SWensemble_ecxens = "SWI2-0TO1:ECXENS:5072:1:0:1:0";
+
 var label = ["date", "SWI-0"];
 var labelstxt = {'SWI-0': { fillGraph: false }};
 for (i = 1; i <= perturbations; i = i + 1) {
     label[i+1] = 'SWI-' + i ;
     labelstxt[label[i+1]]= { fillGraph: false };
     SWensemble += ",SWI2-0TO1:ECXSF:5062:1:0:3:" + i;
+    SWensemble_ecxens += ",SWI2-0TO1:ECXENS:5072:1:0:3:" + i;
 }
 
-label[perturbations+2] = 'SW-FMI';
-label[perturbations+3] = 'SWI-EDTE';
-label[perturbations+4] = 'SWI2';
-labelstxt[label[perturbations+2]]= { fillGraph: false, strokeWidth: 3, color: 'black' };
-labelstxt[label[perturbations+3]]= { fillGraph: false, strokeWidth: 3, color: 'red' };
-labelstxt[label[perturbations+4]]= { fillGraph: false, strokeWidth: 3, color: 'blue' };
+label[perturbations+2] = 'SWI2';
+labelstxt[label[perturbations+2]]= { fillGraph: false, strokeWidth: 3, color: 'blue' };
+
+// label[perturbations+2] = 'SW-FMI';
+// label[perturbations+3] = 'SWI-EDTE';
+// label[perturbations+4] = 'SWI2';
+// labelstxt[label[perturbations+2]]= { fillGraph: false, strokeWidth: 3, color: 'black' };
+// labelstxt[label[perturbations+3]]= { fillGraph: false, strokeWidth: 3, color: 'red' };
+// labelstxt[label[perturbations+4]]= { fillGraph: false, strokeWidth: 3, color: 'blue' };
 
 var dyGraphSWOptions = {
     legend: "always",
@@ -2189,14 +2217,16 @@ var labelstxt = {'ST-0': { fillGraph: false }};
 //var label = ["date", "ST-FMI", "ST-0"];
 //var labelstxt = {'ST-FMI': { fillGraph: false, strokeWidth: 3, color: 'rgb(75,75,75)' },
 //                'ST-0': { fillGraph: false }};
-var TGKensemble = "";
+var TGKensemble = "K2C{TSOIL-K:ECBSF:::7:1:0}";
+var TGKensemble_ecens = "K2C{TSOIL-K:ECENS::::1:0}";
+
 for (i = 1; i <= perturbations; i = i + 1) {
     label[i+1] = 'ST-' + i ;
     labelstxt[label[i+1]]= { fillGraph: false };
     //label[i+2] = 'ST-' + i ;
     //labelstxt[label[i+2]]= { fillGraph: false };
-    // TGKensemble = TGKensemble + ",K2C{TSOIL-K:ECBSF::9:7:3:" + i + "}";
-    TGKensemble = TGKensemble + ",K2C{TSOIL-K:ECBSF:::7:3:" + i + "}";
+    TGKensemble += ",K2C{TSOIL-K:ECBSF:::7:3:" + i + "}";
+    TGKensemble_ecens += ",K2C{TSOIL-K:ECENS::::3:" + i + "}";
 }
 // label[perturbations+2] = 'ST-FMI';
 // labelstxt[label[perturbations+2]]= { fillGraph: false, strokeWidth: 3, color: 'red' };
@@ -2217,12 +2247,14 @@ var dyGraphSTOptions = {
 
 // var SHensemble = "";
 var SHensemble = "HSNOW-M:ECBSF::1:0:1:0";
+var SHensemble_ecens = "HSNOW-M:ECENS::1:0:1:0";
 var label = ["date", "SH-0"];
 var labelstxt = {'SH-0': { fillGraph: false }};
 for (i = 1; i <= perturbations; i = i + 1) {
     label[i+1] = 'SH-' + i ;
     labelstxt[label[i+1]]= { fillGraph: false };
     SHensemble += ",HSNOW-M:ECBSF::1:0:3:" + i ;
+    SHensemble_ecens += ",HSNOW-M:ECENS::1:0:3:" + i;
 }
 label[perturbations+2] = 'SH-FMI';
 labelstxt[label[perturbations+2]]= { fillGraph: false, strokeWidth: 3, color: 'red' };
