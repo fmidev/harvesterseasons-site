@@ -69,15 +69,15 @@ function drawtimeseries() {
                 let winter1series = [];
                 winter1series = ensover(0.4, 0.9, dataSHscaled, SHensemblelist, perturbations, "HSNOW-M:SMARTOBS:13:4")
 
-                // const param2 = "HARVIDX{0.69;SWI2-0TO1:ECXSF:5062:1:0:0:0-50}";
-                // const param3 = "HARVIDX{273;TSOIL-K:ECBSF:::7:3:1-50;TSOIL-K:ECBSF:::7:1:0}";
-                // const param5 = "HARVIDX{0.69;SWI2-0TO1:EDTE:5068}";
-                // const param7 = "ensover{0.4;0.9;HSNOW-M:SMARTMET:5027}";
-                // const param8 = "ensover{0.4;0.9;HSNOW-M:SMARTOBS:13:4}";
+                // const param_ecxsf_swi2 = "HARVIDX{0.69;SWI2-0TO1:ECXSF:5062:1:0:0:0-50}";
+                // const param_ecbsf_tsoil = "HARVIDX{273;TSOIL-K:ECBSF:::7:3:1-50;TSOIL-K:ECBSF:::7:1:0}";
+                // const param_swi_swi2 = "HARVIDX{0.69;SWI2-0TO1:EDTE:5068}";
+                // const param_smartmet_hsnow = "ensover{0.4;0.9;HSNOW-M:SMARTMET:5027}";
+                // const param_smartobs_hsnow = "ensover{0.4;0.9;HSNOW-M:SMARTOBS:13:4}";
 
                 // Fetch rest of the trafficability index series
-                // graphLoad = $.getJSON("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWI2-0TO1:SWI:5059,SWVL2-M3M3:SMARTMET:5015," + param2 + "," + param3 + "," + param5 + "," + param7 + "," + param8 + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc",
-                graphLoad = $.getJSON("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + param2 + "," + param3 + "," + param5 + "," + param7 + "," + param8 + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc",
+                // graphLoad = $.getJSON("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,SWI2-0TO1:SWI:5059,SWVL2-M3M3:SMARTMET:5015," + param_ecxsf_swi2 + "," + param_ecbsf_tsoil + "," + param_swi_swi2 + "," + param_smartmet_hsnow + "," + param_smartobs_hsnow + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc",
+                graphLoad = $.getJSON("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime," + param_ecxsf_swi2 + "," + param_ecbsf_tsoil + "," + param_swi_swi2 + "," + param_smartmet_hsnow + "," + param_smartobs_hsnow + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc",
                     function (data) {
                         var graphdata = [];
                         for (i = 0, k = 0; i < data.length; i++) {
@@ -88,35 +88,35 @@ function drawtimeseries() {
                             // else { summer1 = 'nan'; }
 
                             // Seasonal summer index (SWI2:ECXSF)
-                            if (data[i][param2] !== null) { summer1 = data[i][param2]; }
+                            if (data[i][param_ecxsf_swi2] !== null) { summer1 = data[i][param_ecxsf_swi2]; }
                             else { summer1 = 'nan'; }
 
                             // Seasonal winter index, combined and scaled with observations (HSNOW-M:ECBSF & HSNOW-M:SMARTOBS, TSOIL-K:ECBSF)                     
-                            if (data[i][param8] !== null) { winter1 = Math.max(data[i][param3], data[i][param8]); }
-                            else if (data[i][param3] !== null || winter1series[i] !== null && winter1series.length == data.length) 
-                                { winter1 = Math.max(data[i][param3], winter1series[i]); }
+                            if (data[i][param_smartobs_hsnow] !== null) { winter1 = Math.max(data[i][param_ecbsf_tsoil], data[i][param_smartobs_hsnow]); }
+                            else if (data[i][param_ecbsf_tsoil] !== null || winter1series[i] !== null && winter1series.length == data.length) 
+                                { winter1 = Math.max(data[i][param_ecbsf_tsoil], winter1series[i]); }
                             else { winter1 = 'nan'; }
                             
                             // 10 day forecast summer index (SWI2:EDTE)                      
-                            if (data[i][param5] !== null) { summer2 = data[i][param5]; }
+                            if (data[i][param_swi_swi2] !== null) { summer2 = data[i][param_swi_swi2]; }
                             else { summer2 = 'nan'; }
 
                             // // 10 day forecast winter index (HSNOW-M:SMARTOBS, HSNOW-M:SMARTMET, TSOIL-K:ECBSF)                      
                             // First HSNOW-M:SMARTOBS and then HSNOW-M:SMARTMET
-                            if (data[i][param8] !== null) { winter2 = Math.max(data[i][param3], data[i][param8]); }
-                            else if (data[i][param7] !== null) { winter2 = Math.max(data[i][param3], data[i][param7]); }
+                            if (data[i][param_smartobs_hsnow] !== null) { winter2 = Math.max(data[i][param_ecbsf_tsoil], data[i][param_smartobs_hsnow]); }
+                            else if (data[i][param_smartmet_hsnow] !== null) { winter2 = Math.max(data[i][param_ecbsf_tsoil], data[i][param_smartmet_hsnow]); }
                             else { winter2 = 'nan'; }
 
                             // Combined trafficability index time series
                             if (summer1 !== 'nan' || winter1 !== 'nan' || summer2 !== 'nan' || winter2 !== 'nan') {
-                                graphdata[k] = [new Date(data[i][param1]), summer1, winter1, summer2, winter2];
+                                graphdata[k] = [new Date(data[i][param_utctime]), summer1, winter1, summer2, winter2];
                                 k++;
                             }
                         }
 
                         if (!dateFixed && data.length > 0) {
                             // Fix the last date of dateslider to timeseries data
-                            var maxDate = new Date(data[data.length - 1][param1]);
+                            var maxDate = new Date(data[data.length - 1][param_utctime]);
                             var maxDays = Math.ceil((maxDate - startDate) / 1000 / 60 / 60 / 24);
                             if (dateslider.value > maxDays) {
                                 dateslider.value = maxDays;
@@ -265,39 +265,39 @@ function drawtimeseries() {
 
 function drawOutsideFinland() {
     // // Outside Finland, no SMARTOBS or scaling
-    graphLoad = $.getJSON("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + param1 + "," + param2 + "," + param3 + "," + param4 + "," + param5 + "," + param7 + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc",
+    graphLoad = $.getJSON("https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + param_utctime + "," + param_ecxsf_swi2 + "," + param_ecbsf_tsoil + "," + param_ecbsf_hsnow + "," + param_swi_swi2 + "," + param_smartmet_hsnow + "&starttime=" + dateString_timeseries + "&endtime=" + dateString_ecbsf + "&timestep=1440&format=json&source=grid&timeformat=xml&tz=utc",
         function (data) {
             var graphdata = [];
             for (i = 0, k = 0; i < data.length; i++) {
                 var summer1, summer2, winter1, winter2;
 
                 // Seasonal summer index
-                if (data[i][param2] !== null) { summer1 = data[i][param2]; }
+                if (data[i][param_ecxsf_swi2] !== null) { summer1 = data[i][param_ecxsf_swi2]; }
                 else { summer1 = 'nan'; }
 
                 // Seasonal winter index
-                if (data[i][param3] !== null || data[i][param4] !== null) { winter1 = Math.max(data[i][param3], data[i][param4]); }
+                if (data[i][param_ecbsf_tsoil] !== null || data[i][param_ecbsf_hsnow] !== null) { winter1 = Math.max(data[i][param_ecbsf_tsoil], data[i][param_ecbsf_hsnow]); }
                 else { winter1 = 'nan'; }
 
                 // 10 day forecast summer index                        
-                if (data[i][param5] !== null) { summer2 = data[i][param5]; }
+                if (data[i][param_swi_swi2] !== null) { summer2 = data[i][param_swi_swi2]; }
                 else { summer2 = 'nan'; }
 
                 // // 10 day forecast winter index                        
-                // if (data[i][param6] !== null || data[i][param7] !== null) { winter2 = Math.max(data[i][param6], data[i][param7]); }
-                // if (data[i][param7] !== null) { winter2 = data[i][param7]; }
-                if (data[i][param7] !== null) { winter2 = Math.max(data[i][param3], data[i][param7]); }
+                // if (data[i][param6] !== null || data[i][param_smartmet_hsnow] !== null) { winter2 = Math.max(data[i][param6], data[i][param_smartmet_hsnow]); }
+                // if (data[i][param_smartmet_hsnow] !== null) { winter2 = data[i][param_smartmet_hsnow]; }
+                if (data[i][param_smartmet_hsnow] !== null) { winter2 = Math.max(data[i][param_ecbsf_tsoil], data[i][param_smartmet_hsnow]); }
                 else { winter2 = 'nan'; }
 
                 if (summer1 !== 'nan' || winter1 !== 'nan' || summer2 !== 'nan' || winter2 !== 'nan') {
-                    graphdata[k] = [new Date(data[i][param1]), summer1, winter1, summer2, winter2];
+                    graphdata[k] = [new Date(data[i][param_utctime]), summer1, winter1, summer2, winter2];
                     k++;
                 }
             }
 
             if (!dateFixed && data.length > 0) {
                 // Fix the last date of dateslider to timeseries data
-                var maxDate = new Date(data[data.length - 1][param1]);
+                var maxDate = new Date(data[data.length - 1][param_utctime]);
                 var maxDays = Math.ceil((maxDate - startDate) / 1000 / 60 / 60 / 24);
                 if (dateslider.value > maxDays) {
                     dateslider.value = maxDays;
