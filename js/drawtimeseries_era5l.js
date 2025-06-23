@@ -124,8 +124,11 @@ function drawtimeseries() {
                             // if (data[i][param_swi_swi2] !== null) { summer2 = data[i][param_swi_swi2]; }
                             // else { summer2 = 'nan'; }
 
-                            // 15 day forecast summer index (SWI2:ECXENS)
-                            if (data[i][param_ecxens_swi2] !== null) { 
+                            // 15 day forecast summer index (SWI2:SWI & SWI2:ECXENS)
+                            if (data[i][param_swi_swi2] !== null) { 
+                                summer2 = data[i][param_swi_swi2]; 
+                            }
+                            else if (data[i][param_ecxens_swi2] !== null) { 
                                 summer2 = data[i][param_ecxens_swi2]; 
                             }
                             else { summer2 = 'nan'; }
@@ -140,7 +143,7 @@ function drawtimeseries() {
                             if (data[i][param_smartobs_hsnow] !== null) { 
                                 winter2 = Math.max(data[i][param_ecens_tsoil], data[i][param_smartobs_hsnow]); 
                             }
-                            else if (data[i][param_ecbsf_tsoil] !== null || winter2series[i] !== null && winter2series.length == data.length) 
+                            else if (data[i][param_ecens_tsoil] !== null || winter2series[i] !== null && winter2series.length == data.length) 
                                 { winter2 = Math.max(data[i][param_ecens_tsoil], winter2series[i]); }
                             else { winter2 = 'nan'; }
 
@@ -431,13 +434,15 @@ function drawOutsideFinland(dataSW, ecxensIdx) {
                     // else { summer2 = 'nan'; }
 
                     // 15 day forecast summer index (SWI2:ECXENS)
-                    if (data[i][param_ecxens_swi2] !== null) { 
+                    if (data[i][param_swi_swi2] !== null) {
+                        summer2 = data[i][param_swi_swi2];
+                    }
+                    else if (data[i][param_ecxens_swi2] !== null) { 
                         summer2 = data[i][param_ecxens_swi2]; 
                     }
                     else { summer2 = 'nan'; }
 
-                    // 15 day winter index (HSNOW-M:ECENS , TSOIL-K:ECENS)
-                
+                    // 15 day winter index (HSNOW-M:ECENS, TSOIL-K:ECENS)
                     if (data[i][param_ecens_tsoil] !== null || data[i][param_ecens_hsnow] !== null ) { 
                         winter2 = Math.max(data[i][param_ecens_tsoil], data[i][param_ecens_hsnow]); }
                     else { winter2 = 'nan'; }

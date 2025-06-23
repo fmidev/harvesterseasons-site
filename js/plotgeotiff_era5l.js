@@ -29,7 +29,7 @@ function plotgeotiff() {
         if (typeof geotiffSmartobsDate == 'undefined') {
 
             // // Find the latest EDTE and SMARTOBS values
-            let smartobsUrl = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,HSNOW-M:SMARTOBS:13:4,SWI2-0TO1:EDTE:5068&starttime=" + dateString_smartobs + "T000000Z&endtime=" + dateString_smartmet + "&timestep=1440&format=json&precision=full&tz=utc&timeformat=xml";
+            let smartobsUrl = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=utctime,HSNOW-M:SMARTOBS:13:4&starttime=" + dateString_smartobs + "T000000Z&endtime=" + dateString_smartmet + "&timestep=1440&format=json&precision=full&tz=utc&timeformat=xml";
             $.getJSON(smartobsUrl, function (smartobsData) {
 
                 // // Find the latest EDTE value
@@ -146,19 +146,21 @@ function plotgeotiff_scaling() {
 
     // Inside Finland (where SMARTOBS data available), seasonal snow depth is combined and scaled with SMARTOBS observations
     // Snow depth at the SMARTOBS scaling point
-    let dataUrl3 = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + SHensemble2 + "&starttime=" + geotiffSmartobsDate + "T000000Z&timesteps=1&format=json&precision=full";
+    let dataUrl3 = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + SHensemble2 + "," + SHensemble2_ecens + "&starttime=" + geotiffSmartobsDate + "T000000Z&timesteps=1&format=json&precision=full";
     $.getJSON(dataUrl3, function (data2) {
 
         // Scale seasonal snow forecast using SMARTOBS observations
         let SHensemble3ensover = "DIFF{HSNOW-M:ECBSF::1:0:1:0;" + data2[0][SHensemble2list[0]] + "}";
+        let SHensemble3ensover_ecens = "DIFF{HSNOW-M:ECENS::1:0:1:0;" + data2[0][SHensemble2list_ecens[0]] + "}";
         for (i = 1; i <= perturbations; i = i + 1) {
             SHensemble3ensover += ";DIFF{HSNOW-M:ECBSF::1:0:3:" + i + ";" + data2[0][SHensemble2list[i]] + "}";
+            SHensemble3ensover_ecens += ";DIFF{HSNOW-M:ECENS::1:0:3:" + i + ";" + data2[0][SHensemble2list_ecens[i]] + "}";
         }
 
         let param_ecbsf_hsnow_ensemble = "ensover{0.4;0.9;" + SHensemble3ensover + "}";
+        let param_ecens_hsnow_ensemble = "ensover{0.4;0.9;" + SHensemble3ensover_ecens + "}";
 
-        // HSNOW-M:SMARTOBS (param_smartobs_hsnow) and HSNOW-M:SMARTMET (param_smartmet_hsnow)
-        let dataUrl2 = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + param_utctime + "," + param_ecxsf_swi2 + "," + param_ecbsf_tsoil + "," + param_ecbsf_hsnow_ensemble + "," + param_swi_swi2 + "," + param_smartobs_hsnow + "&starttime=" + dataYear + dataMonth + dataDay + "T000000Z&timesteps=1&format=json";
+        let dataUrl2 = "https://desm.harvesterseasons.com/timeseries?latlon=" + latlonPoint + "&param=" + param_utctime + "," + param_ecxsf_swi2 + "," + param_ecxens_swi2 + "," + param_ecbsf_tsoil + "," + param_ecens_tsoil + "," + param_ecbsf_hsnow_ensemble + "," + param_ecens_hsnow_ensemble + "," + param_swi_swi2 + "," + param_smartobs_hsnow + "&starttime=" + dataYear + dataMonth + dataDay + "T000000Z&timesteps=1&format=json";
 
         // const param_ecxsf_swi2 = "HARVIDX{0.69;SWI2-0TO1:ECXSF:5062:1:0:0:0-50}";
         // const param_ecbsf_tsoil = "HARVIDX{273;TSOIL-K:ECBSF:::7:3:1-50;TSOIL-K:ECBSF:::7:1:0}";
@@ -169,19 +171,22 @@ function plotgeotiff_scaling() {
 
         $.getJSON(dataUrl2, function (data) {
 
-            // Use EDTE when available            
+            // Use SWI2:SWI when available            
             if (data[0][param_swi_swi2] !== null) {
                 idxSummer = data[0][param_swi_swi2];
+            // Use SWI2:ECXENS when available            
+            } else if (data[0][param_ecxens_swi2] !== null) {
+                idxSummer = data[0][param_ecxens_swi2];
             } else {
                 idxSummer = data[0][param_ecxsf_swi2];
                 // idxSummer = summer1;
             }
 
-            // // Use SMARTOBS (param_smartobs_hsnow) and SMARTMET (param_smartmet_hsnow)
+            // // Use SMARTOBS (param_smartobs_hsnow) and ECENS
             if (data[0][param_smartobs_hsnow] !== null) {
-                idxWinter = Math.max(data[0][param_ecbsf_tsoil], data[0][param_smartobs_hsnow]);
-            // } else if (data[0][param_smartmet_hsnow] !== null) {
-            //     idxWinter = Math.max(data[0][param_ecbsf_tsoil], data[0][param_smartmet_hsnow]);
+                idxWinter = Math.max(data[0][param_ecens_tsoil], data[0][param_smartobs_hsnow]);
+            } else if (data[0][param_ecens_hsnow_ensemble] !== null) {
+                idxWinter = Math.max(data[0][param_ecens_tsoil], data[0][param_ecens_hsnow_ensemble]);
             } else {
                 idxWinter = Math.max(data[0][param_ecbsf_tsoil], data[0][param_ecbsf_hsnow_ensemble]);
             }
