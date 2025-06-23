@@ -2127,7 +2127,7 @@ var dyGraphBOptions = {
     legend: 'always',
     ylabel: "Trafficability",
     // labels: ["date", "Summer Forecast", "Winter Forecast", "Summer Observation", "Winter Observation"],
-    labels: ["date", "Summer Index", "Winter Index", "Summer 10 days", "Winter 10 days"],
+    labels: ["date", "Summer Index", "Winter Index", "Summer 15 days", "Winter 15 days"],
 
     //labels: ["date", "Summer Index", "Winter Index"],
 
@@ -2145,8 +2145,8 @@ var dyGraphBOptions = {
         "Winter Observation": { fillGraph: true, strokeWidth: 3, color: 'rgb(150,0,0)' }, */
         "Summer Index": { fillGraph: true, color: 'green' },
         "Winter Index": { fillGraph: true, color: 'rgb(0,0,150)' },
-        "Summer 10 days": { fillGraph: true, strokeWidth: 3, color: 'rgb(75,75,75)' },
-        "Winter 10 days": { fillGraph: true, strokeWidth: 3, color: 'rgb(150,0,0)' },
+        "Summer 15 days": { fillGraph: true, strokeWidth: 3, color: 'rgb(75,75,75)' },
+        "Winter 15 days": { fillGraph: true, strokeWidth: 3, color: 'rgb(150,0,0)' },
     },
     axes: {
         y: { 
